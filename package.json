@@ -11,6 +11,10 @@
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json,html,scss}' --config ./.prettierrc.json"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.11.16",
     "@reduxjs/toolkit": "^1.8.1",
     "lodash": "^4.17.21",
     "next": "12.1.5",

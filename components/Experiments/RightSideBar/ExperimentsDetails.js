@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import styles from "./ExperimentsDetails.module.scss";
-import PromptTemplate from "./PromptTemplate";
+import PromptTemplate from "./PromptTemplate/PromptTemplate";
 
 function ExperimentsDetails() {
   return (
@@ -21,7 +21,7 @@ function ExperimentsDetails() {
             </div>
           </div>
           <div>
-            <Button size="large">+ Add new template</Button>
+            <Button size="large" style={{textTransform: 'none'}}>+ Add new template</Button>
           </div>
         </div>
       </div>

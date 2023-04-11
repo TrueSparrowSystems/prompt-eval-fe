@@ -95,7 +95,7 @@ function PromptTemplate(props) {
         <div className="relative w-full">
           <EmptyState className="w-full" />
 
-          <div className="flex justify-center items-center flex-col absolute top-[184px] left-[192px]">
+          <div className="flex justify-center items-center flex-col absolute top-[43%] left-[37%]">
             <p className="flex items-center opacity-[60%] text-[15px] leading-[24px] font-[400px] mb-[14px]">
               Create a new template and get started
             </p>
@@ -106,7 +106,6 @@ function PromptTemplate(props) {
                 setCreateNewTemplate(true);
               }}
             >
-              {" "}
               <AddIcon className="mr-[11px]" /> new template
             </Button>
           </div>

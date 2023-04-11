@@ -8,7 +8,7 @@ function ExperimentCell({
 }) {
   return (
     <div
-      className={`flex items-center gap-[10px] p-[10px] cursor-pointer ${
+      className={`flex items-center gap-[10px] p-[10px] cursor-pointer hover:bg-[#F0F0F0] ${
         selectedExperiment == index
           ? "bg-[#F8FAFB] rounded-[4px]"
           : "opacity-60"

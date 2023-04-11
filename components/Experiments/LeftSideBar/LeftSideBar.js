@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 
 function LeftSideBar(props) {
   return (
-    <div className="px-[14px] py-[26px] bg-[#fff]">
+    <div className="px-[14px] bg-[#fff]">
       <Button
         fullWidth
         variant="outlined"

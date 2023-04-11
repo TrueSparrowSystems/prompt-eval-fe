@@ -4,11 +4,13 @@ import RightSideBar from "../components/Experiments/RightSideBar/RightSideBar";
 
 function Experiments(props) {
   return (
-    <div className="flex">
-      <div className="basis-2/12">
+    <div className="flex h-[100vh]">
+      <div className="basis-2/12 py-[26px] ">
         <LeftSideBar />
       </div>
-      <RightSideBar />
+      <div className="bg-[#F3F4F6] w-full px-[35px] py-[26px]">
+        <RightSideBar />
+      </div>
     </div>
   );
 }

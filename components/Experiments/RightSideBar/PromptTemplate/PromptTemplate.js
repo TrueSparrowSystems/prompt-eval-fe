@@ -91,7 +91,7 @@ function PromptTemplate(props) {
   };
   return (
     <div>
-      {ExperimentListData.length != 0 ? (
+      {ExperimentListData.length == 0 ? (
         <div className="relative w-full">
           <EmptyState className="w-full" />
 

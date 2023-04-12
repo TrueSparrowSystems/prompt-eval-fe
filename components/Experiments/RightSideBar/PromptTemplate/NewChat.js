@@ -17,7 +17,7 @@ function NewChat({ prompt, remove }) {
         placeholder="Define template variables in {‘variable_name’} format within the prompt."
       />
       <div
-        className="cursor-pointer"
+        className="cursor-pointer hover:opacity-60 opacity-40"
         onClick={(e) => {
           remove(e.target.id);
         }}

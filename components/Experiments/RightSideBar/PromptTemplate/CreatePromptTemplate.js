@@ -27,7 +27,7 @@ function CreatePromptTemplate() {
 
   return (
     <div className={`${styles.experimentBox}`}>
-      <div className="flex items-center gap-[20px] cursor-pointer">
+      <div className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60">
         <svg
           width="18"
           height="18"

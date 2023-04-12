@@ -1,9 +1,30 @@
 import React, { useState } from "react";
 import styles from "../ExperimentsDetails.module.scss";
 import NewChat from "./NewChat";
+import Button from "@mui/material/Button";
+import { v4 as uuid } from "uuid";
 
 function CreatePromptTemplate() {
   const [templateName, setTemplateName] = useState("Untitled Template");
+  const [prompts, setPrompts] = useState([{ id: uuid(), role: "system" }]);
+  const [prevRole, setPrevRole] = useState("system");
+
+  const addNewPrompt = (e) => {
+    e.preventDefault();
+    const newRole = prevRole === "system" ? "user" : "system";
+    const newPrompt = { id: uuid(), role: newRole };
+    setPrompts((prompts) => [...prompts, newPrompt]);
+    setPrevRole(newRole);
+  };
+
+  const removePrompt = (id) => {
+    setPrompts(prompts.filter((prompt) => prompt.id !== id));
+  };
+
+  const promptsList = prompts.map((prompt) => (
+    <NewChat remove={removePrompt} prompt={prompt} key={prompt.id} />
+  ));
+
   return (
     <div className={`${styles.experimentBox}`}>
       <div className="flex items-center gap-[20px]">
@@ -30,7 +51,26 @@ function CreatePromptTemplate() {
           setTemplateName(e.target.value);
         }}
       />
-      <NewChat />
+      <ul>{promptsList}</ul>
+      <div className="flex gap-[25px]">
+        <div className="basis-20"></div>
+        <div>
+          <div>
+            <Button
+              size="large"
+              style={{ textTransform: "none", color: "#000" }}
+              onClick={(e) => {
+                addNewPrompt(e);
+              }}
+            >
+              + Add message
+            </Button>
+          </div>
+          <Button variant="outlined" sx={{ ml: "10px" }}>
+            RUN
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }

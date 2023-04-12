@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import ReactJoyride from "../../Onboarding/ReactJoyride";
 
 function LeftSideBar(props) {
+  const showLanding = false
   return (
     <div className="px-[14px] bg-[#fff]">
       <div className="first-step pt-[5px]">
@@ -12,7 +13,7 @@ function LeftSideBar(props) {
         </Button>
       </div>
       <ExperimentList />
-      <ReactJoyride />
+      {showLanding && <ReactJoyride />}
     </div>
   );
 }

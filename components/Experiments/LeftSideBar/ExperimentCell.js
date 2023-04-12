@@ -1,14 +1,15 @@
-import React from "react";
-
+import React, { useState } from "react";
 function ExperimentCell({
   experimentName,
   index,
   setSelectedExperiment,
   selectedExperiment,
 }) {
+  const [showEditIcon, setShowEditIcon] = useState(false);
+  const renameExperiment = () => {}
   return (
     <div
-      className={`flex items-center gap-[10px] p-[10px] cursor-pointer ${
+      className={`flex items-center gap-[10px] p-[10px] cursor-pointer hover:bg-[#F0F0F0] ${
         selectedExperiment == index
           ? "bg-[#F8FAFB] rounded-[4px]"
           : "opacity-60"
@@ -16,6 +17,8 @@ function ExperimentCell({
       onClick={() => {
         setSelectedExperiment(index);
       }}
+      onMouseEnter={() => setShowEditIcon(true)}
+      onMouseLeave={() => setShowEditIcon(false)}
     >
       <div>
         <svg
@@ -35,6 +38,23 @@ function ExperimentCell({
         </svg>
       </div>
       <div className="text-[13px] text-[#000]">{experimentName}</div>
+      <button className={`ml-auto hover:bg-[#0000001A] p-[5px] ${showEditIcon ? "opacity-100" : "opacity-0"}`} title='Rename' onClick={() => {renameExperiment()}}>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M8.96578 4.63461L11.3658 7.03461M2.96582 13.0346L5.87648 12.4481C6.03099 12.417 6.17287 12.3409 6.2843 12.2294L12.8001 5.71007C13.1125 5.3975 13.1123 4.89084 12.7996 4.57853L11.4193 3.19981C11.1068 2.88764 10.6004 2.88785 10.2881 3.20029L3.77166 9.72032C3.66045 9.83159 3.58452 9.97318 3.55336 10.1274L2.96582 13.0346Z"
+            stroke="black"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
     </div>
   );
 }

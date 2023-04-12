@@ -1,33 +1,83 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import styles from "./ExperimentsDetails.module.scss";
-import PromptTemplate from "./PromptTemplate";
+import PromptTemplate from "./PromptTemplate/PromptTemplate";
+import TestCases from "./TestCases/TestCases";
+import CreatePromptTemplate from "./PromptTemplate/CreatePromptTemplate";
 
 function ExperimentsDetails() {
+  const experimentTypes = {
+    promptTemplate: "promptTemplate",
+    testCases: "testCases",
+  };
+  const [addNewTemplate, setAddnewTemplate] = useState(false);
+  const [toggleState, setToggleState] = useState(
+    experimentTypes.promptTemplate
+  );
+  const toggleTab = (type) => {
+    if (type != toggleState) {
+      setToggleState(type);
+    }
+  };
+
+  const getExperimentUi = () => {
+    if(addNewTemplate){
+      return  <CreatePromptTemplate />
+    }else if (toggleState === experimentTypes.promptTemplate) {
+      return <PromptTemplate />;
+    } else {
+      return <TestCases />;
+    }
+  };
+
   return (
     <div className="relative">
       <div>
         <div className="pt-[25px] flex items-center justify-between ">
           <div className="flex items-center uppercase border-b relative">
             <div
-              className={`px-[50px] pt-[20px] pb-[25px] cursor-pointer ${styles.SelectedTab}`}
+              className={`${
+                toggleState === experimentTypes.promptTemplate
+                  ? `${styles.selectedTab} text-[#2196F3] z-10`
+                  : `${styles.notSelectedtab}`
+              }
+              px-[80px] pt-[20px] pb-[25px] cursor-pointer`}
+              onClick={() => {
+                setAddnewTemplate(false);
+                toggleTab(experimentTypes.promptTemplate);
+              }}
             >
               Prompt Template
             </div>
             <div
-              className={`px-[50px] pt-[20px] pb-[25px] cursor-pointer ${styles.NotSelectedtab}`}
+              className={`${
+                toggleState === experimentTypes.testCases
+                  ? `${styles.selectedTab} text-[#2196F3] ml-[-20px]`
+                  : `${styles.notSelectedtab} ml-[-15px]`
+              }
+              px-[80px] pt-[20px] pb-[25px] cursor-pointer`}
+              onClick={() => {
+                setAddnewTemplate(false);
+                toggleTab(experimentTypes.testCases);
+              }}
             >
-              Text Cases
+              Test Cases
             </div>
           </div>
           <div>
-            <Button size="large">+ Add new template</Button>
+            <Button
+              size="large"
+              style={{ textTransform: "none" }}
+              onClick={() => {
+                setAddnewTemplate(true);
+              }}
+            >
+              + Add new template
+            </Button>
           </div>
         </div>
       </div>
-      <div className="w-full">
-        <PromptTemplate />
-      </div>
+      <div className="w-full">{getExperimentUi()}</div>
     </div>
   );
 }

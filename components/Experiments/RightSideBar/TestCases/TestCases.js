@@ -1,11 +1,11 @@
 import React from 'react';
 
-function TestCase(props) {
+function TestCases(props) {
     return (
         <div>
-            text    
+            TestCases
         </div>
     );
 }
 
-export default TestCase;
+export default TestCases;

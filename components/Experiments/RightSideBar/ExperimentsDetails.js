@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import styles from "./ExperimentsDetails.module.scss";
 import PromptTemplate from "./PromptTemplate/PromptTemplate";
 import TestCases from "./TestCases/TestCases";
+import AddIcon from "../../../assets/Svg/AddIcon";
 
 function ExperimentsDetails() {
   const experimentTypes = {
@@ -25,10 +26,10 @@ function ExperimentsDetails() {
             <div
               className={`${
                 toggleState === experimentTypes.promptTemplate
-                  ? `${styles.selectedTab} text-[#2196F3]`
+                  ? `${styles.selectedTab} text-[rgb(33,150,243)] z-[1]`
                   : `${styles.notSelectedtab}`
               }
-              px-[80px] pt-[20px] pb-[25px] cursor-pointer`}
+              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative`}
               onClick={() => {
                 toggleTab(experimentTypes.promptTemplate);
               }}
@@ -41,17 +42,17 @@ function ExperimentsDetails() {
                   ? `${styles.selectedTab} text-[#2196F3]`
                   : `${styles.notSelectedtab}`
               }
-              px-[80px] pt-[20px] pb-[25px] cursor-pointer`}
+              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative`}
               onClick={() => {
                 toggleTab(experimentTypes.testCases);
               }}
             >
-              Text Cases
+              Test Cases
             </div>
           </div>
           <div>
-            <Button size="large" style={{ textTransform: "none" }}>
-              + Add new template
+            <Button size="large" style={{ textTransform: "none" }} sx={{color:'#2196F3'}}>
+              <AddIcon className="mr-[11px]" /> Add new template
             </Button>
           </div>
         </div>

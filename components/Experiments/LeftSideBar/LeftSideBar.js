@@ -1,6 +1,7 @@
 import React from "react";
 import ExperimentList from "./ExperimentList";
 import Button from "@mui/material/Button";
+import AddIcon from "../../../assets/Svg/AddIcon";
 
 function LeftSideBar(props) {
   return (
@@ -8,8 +9,9 @@ function LeftSideBar(props) {
       <Button
         fullWidth
         variant="outlined"
+        sx={{ color: "#2196F3" }}
       >
-       + Create experiment
+       <AddIcon className="mr-[12px]"/> Create experiment
       </Button>
       <ExperimentList />
     </div>

@@ -11,7 +11,7 @@ const ExperimentListData = [
 export default function ExperimentList() {
   const [selectedExperiment , setSelectedExperiment] = useState(0);
   return (
-    <div className="mt-[20px]">
+    <div className="mt-[20px] second-step">
       {ExperimentListData.map((experiment, index) => (
         <ExperimentCell experimentName={experiment.name} key={index} index ={index} selectedExperiment={selectedExperiment} setSelectedExperiment={setSelectedExperiment}/>
       ))}

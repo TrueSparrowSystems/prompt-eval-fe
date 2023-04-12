@@ -1,5 +1,5 @@
 import React from 'react';
-import EmptyState from '../../../../assets/Svg/EmptyState';
+import styles from '../ExperimentsDetails.module.scss';
 import Button from '@mui/material/Button';
 import AddIcon from '../../../../assets/Svg/AddIcon';
 
@@ -9,10 +9,9 @@ function TestCases(props) {
     return (
         <div>
             {TestCaseList.length==0?(
-                <div className="relative w-full">
-                <EmptyState className="w-full" />
+                <div className={`relative w-full ${styles.emptyState} flex justify-center items-center `}>
       
-                <div className="flex justify-center items-center flex-col absolute top-[43%] left-[37%]">
+                <div className="flex justify-center items-center flex-col">
                   <p className="flex items-center opacity-[60%] text-[15px] leading-[24px] font-[400px] mb-[14px]">
                     Create a new template and get started
                   </p>

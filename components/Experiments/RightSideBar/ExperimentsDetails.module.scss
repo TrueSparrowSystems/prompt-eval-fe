@@ -18,3 +18,12 @@
   border-radius: 8px;
   padding: 25px;
 }
+
+.emptyState{
+  background-image: url("../../../assets/Svg/EmptyPage.svg");
+  background-size: cover;
+  background-position: left;
+  height: 100%;
+  width: 100%;
+  min-height: 70vh;
+}

@@ -8,7 +8,8 @@ function ExperimentCell({
   selectedExperiment,
 }) {
   const [showEditIcon, setShowEditIcon] = useState(false);
-  const renameExperiment = () => {};
+  const [editable, setEditable] = useState(false);
+  const [newExperimentName, setNewExperimentName] = useState(experimentName);
   return (
     <div
       className={`flex items-center gap-[10px] p-[10px] cursor-pointer hover:bg-[#F0F0F0] ${
@@ -23,14 +24,23 @@ function ExperimentCell({
       onMouseLeave={() => setShowEditIcon(false)}
     >
       <ExperimentsIcon />
-      <div className="text-[13px] text-[#000]">{experimentName}</div>
+      {editable ? (
+        <input
+          type="text"
+          value={newExperimentName}
+          className="text-[13px] text-[#000] focus:outline-none outline-none"
+          onChange={(e) => setNewExperimentName(e.target.value)}
+        />
+      ) : (
+        <div className="text-[13px] text-[#000]">{newExperimentName}</div>
+      )}
       <button
         className={`ml-auto hover:bg-[#0000001A] p-[5px] ${
           showEditIcon ? "opacity-100" : "opacity-0"
         }`}
         title="Rename"
         onClick={() => {
-          renameExperiment();
+          setEditable(true);
         }}
       >
         <Rename />

@@ -1,9 +1,14 @@
 import React from 'react';
+import EmptyState from '../EmptyState';
 
 function TestCases(props) {
+    const TestCaseList =[];
+
     return (
         <div>
-            TestCases
+            {TestCaseList.length==0?(
+                <EmptyState />
+            ):(null)}
         </div>
     );
 }

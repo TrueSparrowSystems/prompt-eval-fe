@@ -66,7 +66,14 @@ function CreatePromptTemplate() {
               + Add message
             </Button>
           </div>
-          <Button variant="outlined" sx={{ ml: "10px" }}>
+          <Button
+            variant="contained"
+            style={{
+              background: "#2196F3",
+              border: "1px solid rgba(0, 0, 0, 0.23)",
+            }}
+            sx={{ ml: "10px" }}
+          >
             RUN
           </Button>
         </div>

@@ -4,7 +4,7 @@ import styles from "../ExperimentsDetails.module.scss";
 import EmptyState from "../EmptyState";
 import PaginationUI from "./PaginationUI";
 
-function PromptTemplate(props) {
+function PromptTemplate({setReportId,setShowReport}) {
   const ExperimentListData = [
     {
       Id: " 1",
@@ -107,6 +107,9 @@ function PromptTemplate(props) {
               <PromptTemplateCells
                 key={index}
                 PromptTemplate={PromptTemplate}
+                setShowReport={setShowReport}
+                setReportId={setReportId}
+
               />
             ))}
             <PaginationUI />

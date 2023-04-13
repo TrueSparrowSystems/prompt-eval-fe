@@ -9,7 +9,7 @@ export default function TestCases(props) {
 
   return (
     <div>
-      {TestCaseList.length === 0 ? (
+      {TestCaseList.length !== 0 ? (
         <EmptyState />
       ) : (
         <div className={`flex gap-[20px] ${styles.experimentBox}`}>

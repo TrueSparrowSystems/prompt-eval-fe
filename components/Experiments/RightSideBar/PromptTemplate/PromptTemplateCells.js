@@ -7,7 +7,7 @@ import Clone from "../../../../assets/Svg/Clone";
 import Edit from "../../../../assets/Svg/Edit";
 import Calendar from "../../../../assets/Svg/Calendar";
 
-function PromptTemplateCells({ PromptTemplate }) {
+function PromptTemplateCells({ PromptTemplate, setReportId, setShowReport }) {
   return (
     <div className={`flex items-center text-[13px] border-b-2`}>
       <div className={`basis-1/5 border-r-2 px-[10px] py-[34px] mr-[10px]`}>
@@ -24,7 +24,7 @@ function PromptTemplateCells({ PromptTemplate }) {
           <div>{PromptTemplate.status === "pass" ? <Pass /> : <Fail />}</div>
           <div>{PromptTemplate.status}</div>
         </div>
-        <div className="flex items-center gap-[10px] cursor-pointer">
+        <div className="flex items-center gap-[10px] cursor-pointer" onClick={()=>{setShowReport(true); setReportId(PromptTemplate.Id)}}>
           <div className="underline">view report</div>
           <div>
             <ViewReportArrow />

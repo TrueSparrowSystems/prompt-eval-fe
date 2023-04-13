@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import ExperimentCell from "./ExperimentCell";
 const ExperimentListData = [
   { name: "Experiment 1" },
@@ -9,11 +9,23 @@ const ExperimentListData = [
   { name: "Experiment 6" },
 ];
 export default function ExperimentList() {
-  const [selectedExperiment , setSelectedExperiment] = useState(0);
+  const [selectedExperiment, setSelectedExperiment] = useState(0);
   return (
-    <div className="mt-[20px] second-step">
+    <div
+      className="mt-[20px] second-step"
+      style={{
+        height: `calc(100vh - 100px)`,
+        overflow: "auto",
+      }}
+    >
       {ExperimentListData.map((experiment, index) => (
-        <ExperimentCell experimentName={experiment.name} key={index} index ={index} selectedExperiment={selectedExperiment} setSelectedExperiment={setSelectedExperiment}/>
+        <ExperimentCell
+          experimentName={experiment.name}
+          key={index}
+          index={index}
+          selectedExperiment={selectedExperiment}
+          setSelectedExperiment={setSelectedExperiment}
+        />
       ))}
     </div>
   );

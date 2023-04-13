@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import styles from "./ExperimentsDetails.module.scss";
 import PromptTemplate from "./PromptTemplate/PromptTemplate";
 import TestCases from "./TestCases/TestCases";
+import AddIcon from "../../../assets/Svg/AddIcon";
 import CreatePromptTemplate from "./PromptTemplate/CreatePromptTemplate";
 
 function ExperimentsDetails() {
@@ -41,7 +42,7 @@ function ExperimentsDetails() {
                   ? `${styles.selectedTab} text-[#2196F3] z-10`
                   : `${styles.notSelectedtab}`
               }
-              px-[80px] pt-[20px] pb-[25px] cursor-pointer`}
+              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative`}
               onClick={() => {
                 setAddnewTemplate(false);
                 toggleTab(experimentTypes.promptTemplate);
@@ -55,7 +56,7 @@ function ExperimentsDetails() {
                   ? `${styles.selectedTab} text-[#2196F3] ml-[-20px]`
                   : `${styles.notSelectedtab} ml-[-15px]`
               }
-              px-[80px] pt-[20px] pb-[25px] cursor-pointer`}
+              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative`}
               onClick={() => {
                 setAddnewTemplate(false);
                 toggleTab(experimentTypes.testCases);
@@ -71,8 +72,10 @@ function ExperimentsDetails() {
               onClick={() => {
                 setAddnewTemplate(true);
               }}
+              sx={{color:'#2196F3'}}
             >
-              + Add new template
+              <AddIcon className="mr-[11px]" />
+              Add new template
             </Button>
           </div>
         </div>

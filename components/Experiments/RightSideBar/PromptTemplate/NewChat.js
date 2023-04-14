@@ -2,8 +2,13 @@ import React, { useState } from "react";
 
 function NewChat({ prompt, remove }) {
   const [role, setRole] = useState(prompt.role);
+  const [isHover, setIsHover] = useState(false);
   return (
-    <li className="flex hover:bg-[#F8FAFB] p-2">
+    <li
+      className="flex hover:bg-[#F8FAFB] p-2"
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
+    >
       <div
         className="uppercase cursor-pointer text-[13px] hover:bg-[#fff] p-[10px] h-[40px] basis-20"
         onClick={() => {
@@ -13,11 +18,15 @@ function NewChat({ prompt, remove }) {
         {role}
       </div>
       <textarea
-        className="w-full border rounded-[4px] h-[120px] p-[10px] ml-[40px] mr-[10px] outline-none"
+        className={`w-full border rounded-[4px] h-[120px] p-[10px] ml-[40px] mr-[10px] outline-none ${
+          isHover ? "border-[#2196F380] bg-[#F8FAFB]" : ""
+        }`}
         placeholder="Define template variables in {‘variable_name’} format within the prompt."
       />
       <div
-        className="cursor-pointer hover:opacity-60 opacity-40"
+        className={`cursor-pointer ${
+          isHover ? "opacity-40  hover:opacity-60" : "opacity-0"
+        }`}
         onClick={(e) => {
           remove(e.target.id);
         }}

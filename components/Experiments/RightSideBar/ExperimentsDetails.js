@@ -5,6 +5,7 @@ import PromptTemplate from "./PromptTemplate/PromptTemplate";
 import TestCases from "./TestCases/TestCases";
 import AddIcon from "../../../assets/Svg/AddIcon";
 import CreatePromptTemplate from "./PromptTemplate/CreatePromptTemplate";
+import Report from "./Report/Report";
 
 function ExperimentsDetails() {
   const experimentTypes = {
@@ -12,6 +13,8 @@ function ExperimentsDetails() {
     testCases: "testCases",
   };
   const [addNewTemplate, setAddnewTemplate] = useState(false);
+  const [showReport, setShowReport] = useState(false);
+  const [reportId, setReportId] = useState(null);
   const [toggleState, setToggleState] = useState(
     experimentTypes.promptTemplate
   );
@@ -22,10 +25,18 @@ function ExperimentsDetails() {
   };
 
   const getExperimentUi = () => {
-    if(addNewTemplate){
-      return  <CreatePromptTemplate />
-    }else if (toggleState === experimentTypes.promptTemplate) {
-      return <PromptTemplate />;
+    if (showReport) {
+      toggleTab(experimentTypes.testCases);
+      return <Report />;
+    } else if (addNewTemplate) {
+      return <CreatePromptTemplate />;
+    } else if (toggleState === experimentTypes.promptTemplate) {
+      return (
+        <PromptTemplate
+          setShowReport={setShowReport}
+          setReportId={setReportId}
+        />
+      );
     } else {
       return <TestCases />;
     }
@@ -44,6 +55,7 @@ function ExperimentsDetails() {
               }
               px-[80px] pt-[20px] pb-[25px] cursor-pointer relative`}
               onClick={() => {
+                setShowReport(false);
                 setAddnewTemplate(false);
                 toggleTab(experimentTypes.promptTemplate);
               }}
@@ -72,7 +84,7 @@ function ExperimentsDetails() {
               onClick={() => {
                 setAddnewTemplate(true);
               }}
-              sx={{color:'#2196F3'}}
+              sx={{ color: "#2196F3" }}
             >
               <AddIcon className="mr-[11px]" />
               Add new template

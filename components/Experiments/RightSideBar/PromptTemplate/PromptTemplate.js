@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import PromptTemplateCells from "./PromptTemplateCells";
 import styles from "../ExperimentsDetails.module.scss";
-import MenuItem from "@mui/material/MenuItem";
-import Box from "@mui/material/Box";
-import Select from "@mui/material/Select";
 import EmptyState from "../EmptyState";
+import PaginationUI from "./PaginationUI";
 
-function PromptTemplate(props) {
+function PromptTemplate({setReportId,setShowReport}) {
   const ExperimentListData = [
     {
       Id: " 1",
@@ -14,7 +12,7 @@ function PromptTemplate(props) {
       accuracy: "23%",
       model: "turbo",
       date: "27/01/2023",
-      status: "pass",
+      status: "fail",
     },
     {
       Id: " 2",
@@ -81,15 +79,10 @@ function PromptTemplate(props) {
       status: "pass",
     },
   ];
-  const [recordPerPage, setRecordPerPage] = useState(6);
-  const [createNewTemplate, setCreateNewTemplate] = useState(false);
-
-  const handleChange = (event) => {
-    setRecordPerPage(event.target.value);
-  };
+  
   return (
     <div>
-      {ExperimentListData.length != 0 ? (
+      {ExperimentListData.length === 0 ? (
         <EmptyState />
       ) : (
         <div className={`${styles.experimentBox}`}>
@@ -114,59 +107,12 @@ function PromptTemplate(props) {
               <PromptTemplateCells
                 key={index}
                 PromptTemplate={PromptTemplate}
+                setShowReport={setShowReport}
+                setReportId={setReportId}
+
               />
             ))}
-            <div className="flex justify-end px-[20px] py-[15px] border-b-2">
-              <div className="flex items-center text-[13px] text-[#000]">
-                <div className="opacity-60 mr-[20px]">Rows per page:</div>
-                <Box
-                  sx={{
-                    minWidth: 60,
-                  }}
-                >
-                  <Select
-                    value={recordPerPage}
-                    onChange={handleChange}
-                    sx={{ "& > fieldset": { border: "none" } }}
-                  >
-                    <MenuItem value="6">6</MenuItem>
-                    <MenuItem value={"10"}>10</MenuItem>
-                    <MenuItem value={"20"}>20</MenuItem>
-                    <MenuItem value={"10"}>30</MenuItem>
-                    <MenuItem value={"20"}>40</MenuItem>
-                  </Select>
-                </Box>
-                <div className="mx-[25px]">1-5 of 13</div>
-                <div className="flex gap-[40px]">
-                  <svg
-                    width="8"
-                    height="12"
-                    viewBox="0 0 8 12"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M7.70492 1.41L6.29492 0L0.294922 6L6.29492 12L7.70492 10.59L3.12492 6L7.70492 1.41Z"
-                      fill="black"
-                      fillOpacity="0.56"
-                    />
-                  </svg>
-                  <svg
-                    width="8"
-                    height="12"
-                    viewBox="0 0 8 12"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M1.70492 0L0.294922 1.41L4.87492 6L0.294922 10.59L1.70492 12L7.70492 6L1.70492 0Z"
-                      fill="black"
-                      fillOpacity="0.56"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </div>
+            <PaginationUI />
           </div>
         </div>
       )}

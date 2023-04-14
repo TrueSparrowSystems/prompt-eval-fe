@@ -1,10 +1,11 @@
-import React from "react";
+import React,{useState} from "react";
 import BackArrow from "../../../../assets/Svg/BackArrow";
-import styles from "../ExperimentsDetails.module.scss";
 import ReportCell from "./ReportCell";
 import PaginationUI from "../PromptTemplate/PaginationUI";
 
 function Report(props) {
+  const [expanded, setExpanded] = useState("panel1");
+
   const ReportData = [
     {
       Id: " 1",
@@ -62,12 +63,19 @@ function Report(props) {
     },
   ];
   return (
-    <div className={`${styles.experimentBox}`}>
-      <div className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60">
+    <div
+      style={{
+        background: " #ffffff",
+        "box-shadow":
+          "0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.14),0px 2px 1px -1px rgba(0, 0, 0, 0.2)",
+        " border-radius": " 8px;",
+      }}
+    >
+      <div className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60 px-[30px]">
         <BackArrow />
         <div className="text-[14px] opacity-60 py-[25px]">View Report</div>
       </div>
-      <div className={`flex items-center text-[13px] font-bold border-b-2`}>
+      <div className={`flex items-center text-[13px] font-bold border-t`}>
         <div className="w-1/6 py-[34px] px-[10px]">Test Case Name</div>
         <div className="w-4/6 pr-[10px] pl-[20px] py-[34px] border-l-2">
           Description
@@ -76,7 +84,7 @@ function Report(props) {
       </div>
       <div className="h-[450px] overflow-auto">
         {ReportData.map((report, index) => (
-          <ReportCell key={index} report={report} />
+          <ReportCell key={index} report={report} index={index+1}  expanded={expanded} setExpanded={setExpanded}/>
         ))}
         <PaginationUI />
       </div>

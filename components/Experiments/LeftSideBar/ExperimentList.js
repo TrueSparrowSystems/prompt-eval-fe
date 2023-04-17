@@ -16,7 +16,6 @@ export default function ExperimentList() {
     console.error(error);
     return null;
   }
-
   return (
     <div
       className="mt-[20px] second-step"

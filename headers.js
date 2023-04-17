@@ -59,6 +59,10 @@ const securityHeaders = [
     value: 'on'
   },
   {
+    key: "Access-Control-Allow-Origin",
+    value: '*',
+  },
+  {
     // not required if deployed on vercel, max-age=180days
     key: 'Strict-Transport-Security',
     value: 'max-age=15552000; includeSubDomains; preload'

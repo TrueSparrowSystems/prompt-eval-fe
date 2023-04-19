@@ -8,21 +8,22 @@ import Edit from "../../../../assets/Svg/Edit";
 import Calendar from "../../../../assets/Svg/Calendar";
 
 function PromptTemplateCells({ PromptTemplate, setReportId, setShowReport }) {
+  const [status,setStatus] = React.useState("pass")
   return (
     <div className={`flex items-center text-[13px] border-b-2`}>
       <div className={`basis-1/5 border-r-2 px-[10px] py-[34px] mr-[10px]`}>
         {PromptTemplate.name}
       </div>
-      <div className="basis-1/5 px-[10px]">{PromptTemplate.accuracy}</div>
-      <div className="basis-1/5 px-[10px]">{PromptTemplate.model}</div>
+      <div className="basis-1/5 px-[10px]">{PromptTemplate.accuracy?(PromptTemplate.accuracy):("50%")}</div>
+      <div className="basis-1/5 px-[10px]">{PromptTemplate.model?(PromptTemplate.model):("turbo")}</div>
       <div className="basis-1/5 px-[10px]">
         <div className="flex items-center gap-[10px]">
           <Calendar />
-          <div>{PromptTemplate.date}</div>
+          <div>{PromptTemplate.createdAt}</div>
         </div>
         <div className="flex items-center gap-[10px]">
-          <div>{PromptTemplate.status === "pass" ? <Pass /> : <Fail />}</div>
-          <div>{PromptTemplate.status}</div>
+          <div>{status === "pass" ? <Pass /> : <Fail />}</div>
+          <div>{status}</div>
         </div>
         <div className="flex items-center gap-[10px] cursor-pointer" onClick={()=>{setShowReport(true); setReportId(PromptTemplate.Id)}}>
           <div className="underline">view report</div>
@@ -37,8 +38,9 @@ function PromptTemplateCells({ PromptTemplate, setReportId, setShowReport }) {
           <Button variant="outlined">run</Button>
         </div>
         <div className="flex items-center gap-[20px]">
-          <Clone />
-          <Edit />
+          
+            <Clone />
+            <Edit />  
         </div>
       </div>
     </div>

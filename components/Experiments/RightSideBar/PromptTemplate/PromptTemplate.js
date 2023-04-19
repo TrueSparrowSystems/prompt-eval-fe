@@ -3,86 +3,33 @@ import PromptTemplateCells from "./PromptTemplateCells";
 import styles from "../ExperimentsDetails.module.scss";
 import EmptyState from "../EmptyState";
 import PaginationUI from "./PaginationUI";
+import { useQuery } from "@apollo/client";
+import Queries  from "../../../../queries/Queries";
+import {useExpContext} from "../../../../context/ExpContext";
 
 function PromptTemplate({setReportId,setShowReport}) {
-  const ExperimentListData = [
-    {
-      Id: " 1",
-      name: "Cell 1",
-      accuracy: "23%",
-      model: "turbo",
-      date: "27/01/2023",
-      status: "fail",
-    },
-    {
-      Id: " 2",
-      name: "Cell 1",
-      accuracy: "23%",
-      model: "turbo",
-      date: "27/01/2023",
-      status: "pass",
-    },
-    {
-      Id: " 3",
-      name: "Cell 1",
-      accuracy: "23%",
-      model: "turbo",
-      date: "27/01/2023",
-      status: "pass",
-    },
-    {
-      Id: " 4",
-      name: "Cell 1",
-      accuracy: "23%",
-      model: "turbo",
-      date: "27/01/2023",
-      status: "pass",
-    },
-    {
-      Id: " 2",
-      name: "Cell 1",
-      accuracy: "23%",
-      model: "turbo",
-      date: "27/01/2023",
-      status: "pass",
-    },
-    {
-      Id: " 3",
-      name: "Cell 1",
-      accuracy: "23%",
-      model: "turbo",
-      date: "27/01/2023",
-      status: "pass",
-    },
-    {
-      Id: " 4",
-      name: "Cell 1",
-      accuracy: "23%",
-      model: "turbo",
-      date: "27/01/2023",
-      status: "pass",
-    },
-    {
-      Id: " 5",
-      name: "Cell 1",
-      accuracy: "23%",
-      model: "turbo",
-      date: "27/01/2023",
-      status: "pass",
-    },
-    {
-      Id: " 6",
-      name: "Cell 1",
-      accuracy: "23%",
-      model: "turbo",
-      date: "27/01/2023",
-      status: "pass",
-    },
-  ];
+  
+  const {selectedExperimentInfo, setSelectedExperimentInfo} = useExpContext();
+  
+  let {data,loading,error} = useQuery(Queries.promptListByPagination,{
+    variables:{
+      experimentId:selectedExperimentInfo?.id,
+      page:1,
+      limit:6
+    }
+  })
+
+  if(loading){
+    return <EmptyState />
+  }
+  if(error){
+    console.log(error)
+  }
+  
   
   return (
     <div>
-      {ExperimentListData.length === 0 ? (
+      {data && data?.promptListByPagination.totalCount === 0 ? (
         <EmptyState />
       ) : (
         <div className={`${styles.experimentBox}  max-h-[674px] overflow-auto`}>
@@ -103,7 +50,7 @@ function PromptTemplate({setReportId,setShowReport}) {
             </div>
           </div>
           <div className="h-[580px] overflow-auto">
-            {ExperimentListData.map((PromptTemplate, index) => (
+            {data?.promptListByPagination.prompts.map((PromptTemplate, index) => (
               <PromptTemplateCells
                 key={index}
                 PromptTemplate={PromptTemplate}

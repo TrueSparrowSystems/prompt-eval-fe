@@ -33,7 +33,7 @@ function a11yProps(index) {
   };
 }
 
-export default function BasicTabs() {
+export default function BasicTabs({selectTestCase}) {
   const [value, setValue] = React.useState(0);
   const [isClicked, setIsClicked] = useState(false);
 
@@ -61,13 +61,13 @@ export default function BasicTabs() {
       
       
       <TabPanel value={value} index={0}>
-        <TestCaseInfo value={value} isClicked={isClicked}/>
+        <TestCaseInfo value={value} isClicked={isClicked} data={selectTestCase}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <TestCaseInfo value={value} isClicked={isClicked} />
+        <TestCaseInfo value={value} isClicked={isClicked} data={selectTestCase}/>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <TestCaseInfo value={value} isClicked={isClicked}/>
+        <TestCaseInfo value={value} isClicked={isClicked} data={selectTestCase}/>
       </TabPanel>
     </Box>
   );

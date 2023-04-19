@@ -9,8 +9,6 @@ import {useExpContext} from "../../../../context/ExpContext";
 
 function PromptTemplate({setReportId,setShowReport}) {
   
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(2);
   const {selectedExperimentInfo, setSelectedExperimentInfo} = useExpContext();
   
   let {data,loading,error} = useQuery(Queries.promptListByPagination,{

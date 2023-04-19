@@ -6,6 +6,9 @@ import TestCases from "./TestCases/TestCases";
 import AddIcon from "../../../assets/Svg/AddIcon";
 import CreatePromptTemplate from "./PromptTemplate/CreatePromptTemplate";
 import Report from "./Report/Report";
+import { useMutation } from "@apollo/client";
+import Queries from "../../../queries/Queries";
+import { useExpContext } from "../../../context/ExpContext";
 
 function ExperimentsDetails() {
   const experimentTypes = {
@@ -22,6 +25,36 @@ function ExperimentsDetails() {
     if (type != toggleState) {
       setToggleState(type);
     }
+  };
+
+  const [createPromptTemplate, { data, loading, error }] = useMutation(
+    Queries.createPromptTemplate
+  );
+  const [createTestCases, { dataTestCase, loadingTestCase,errorTestCase }] = useMutation(Queries.createTestCases);
+
+
+  const { selectedExperimentInfo } = useExpContext();
+  const handleCreate = () => {
+    if(toggleState === "promptTemplate"){
+    createPromptTemplate({
+      variables: {
+        name: "Untitled Prompt Template",
+        description: "Initial Prompt Template Description",
+        conversation: {role:"system",content:"newone"},
+        experimentId: selectedExperimentInfo?.id,
+      },
+    });
+  }else{
+    createTestCases({
+      variables: {
+        name: "Untitled Test Case",
+        description: "Initial Test Case Description",
+        dynamicVarValues:{key:"hey",value:"value"},
+        expectedResult:["hey","hey10"],
+        experimentId: selectedExperimentInfo?.id,
+      },
+    });
+  }
   };
 
   const getExperimentUi = () => {
@@ -83,6 +116,7 @@ function ExperimentsDetails() {
               style={{ textTransform: "none" }}
               onClick={() => {
                 setAddnewTemplate(true);
+                handleCreate();
               }}
               sx={{ color: "#2196F3" }}
             >
@@ -98,5 +132,3 @@ function ExperimentsDetails() {
 }
 
 export default ExperimentsDetails;
-
-//Notes: 2 Tasks pending..

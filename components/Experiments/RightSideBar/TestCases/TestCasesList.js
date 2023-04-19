@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TestCaseCell from "./TestCaseCell";
+import { useQuery } from "@apollo/client";
+import Queries from "../../../../queries/Queries";
+import { useExpContext } from "../../../../context/ExpContext";
 
-function TestCasesList(props) {
+
+function TestCasesList({data,setSelectTestCase}) {
   const TestCasesListData = [
     { name: "test case 1" },
     { name: "test case 2" },
@@ -11,9 +15,14 @@ function TestCasesList(props) {
     { name: "test case 6" },
   ];
   const [selectedTestCase, setSelectedTestCase] = useState(0);
+  
+  useEffect(() => {
+    setSelectTestCase(data?.testCases[selectedTestCase]);
+  }, [selectedTestCase]);
+
   return (
     <div>
-      {TestCasesListData.map((testCase, index) => (
+      {data?.testCases.map((testCase, index) => (
         <TestCaseCell
           testCaseName={testCase.name}
           key={index}

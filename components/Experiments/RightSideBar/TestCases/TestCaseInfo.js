@@ -2,17 +2,26 @@ import { useEffect, useRef, useState } from "react";
 import Button from "@mui/material/Button";
 import HorizontalLine from "../../../../assets/Svg/HorizontalLine";
 import HorzLineWithAddIcon from "../../../../assets/Svg/HorzLineWithAddIcon";
-export default function TestCaseInfo({
-  value,
-  isClicked,
-
-}) {
-  const [variableName, setVariableName] = useState("Untitled Variable");
-  const [acceptedResult, setAcceptedResult] = useState("Untitled Result");
-  const [testCaseName, setTestCaseName] = useState("Untitled Test Case");
+export default function TestCaseInfo({ value, isClicked, data }) {
+  const [variableName, setVariableName] = useState(
+    data?.dynamicVarValues[0]?.key
+  );
+  const [variableValue, setVariableValue] = useState(
+    data?.dynamicVarValues[0]?.value
+  );
+  const [acceptedResult, setAcceptedResult] = useState(data?.expectedResult[0]);
+  const [testCaseName, setTestCaseName] = useState(data?.name);
+  const [testCaseDescription, setTestCaseDescription] = useState(
+    data?.description
+  );
   const scrollRef = useRef(null);
 
   useEffect(() => {
+    console.log("data", data);
+  },[data]);
+
+  useEffect(() => {
+    
     if (isClicked) {
       moveToTop(value);
     }
@@ -36,7 +45,6 @@ export default function TestCaseInfo({
   }
 
   const handleScroll = async (e) => {
-
     let container = scrollRef.current;
 
     const tabsRect = container.getBoundingClientRect();
@@ -49,18 +57,35 @@ export default function TestCaseInfo({
       const tabRect = tabElement.getBoundingClientRect();
       const tabeTop = tabRect.top;
       const tabeBottom = tabRect.bottom;
-      
-      //Need to solve this problem
-      if (tabsTop <= tabeTop ) {
 
-        console.log("tab", index,tabsTop,tabeTop);
+      //Need to solve this problem
+      if (tabsTop <= tabeTop) {
         // document.getElementById(`tab-${index}`).click();
         // setValue(index);
         return;
-      
+      }
     }
   };
-}
+
+  <textarea className="w-full border rounded-[4px] h-[120px] p-[10px] outline-none my-[30px]" />;
+  const addTextBox = () => {
+    let titleBox = document.createElement("input");
+    titleBox.className="text-[14px] font-[500px] leading-[24px] tracking-[0.17px] text-black/[0.8]";
+    titleBox.placeholder="Untitled Result";
+
+    let textBox = document.createElement("textarea");
+    textBox.className =
+      "w-full border rounded-[4px] h-[120px] p-[10px] outline-none my-[30px]";
+    textBox.placeholder =
+      "Define template variables in {‘variable_name’} format within the prompt.";
+    // textBox.value = variableName;
+    // textBox.onchange = (e) => {
+    //   setVariableName(e.target.value);
+    // };
+
+    document.getElementById("result").appendChild(titleBox);
+    document.getElementById("result").appendChild(textBox);
+  };
 
   return (
     <div
@@ -85,6 +110,10 @@ export default function TestCaseInfo({
         <textarea
           className="w-full border rounded-[4px] h-[120px] p-[10px] outline-none"
           placeholder="Define template variables in {‘variable_name’} format within the prompt."
+          value={testCaseDescription}
+          onChange={(e) => {
+            setTestCaseDescription(e.target.value);
+          }}
         />
       </div>
 
@@ -106,12 +135,17 @@ export default function TestCaseInfo({
         <textarea
           className="w-full border rounded-[4px] h-[120px] p-[10px] outline-none"
           placeholder="Define template variables in {‘variable_name’} format within the prompt."
+          value={variableValue}
+          onChange={(e) => {
+            setVariableValue(e.target.value);
+          }}
+
         />
       </div>
       <div className="py-[30px] tab" id="2">
         <HorizontalLine />
       </div>
-      <div>
+      <div id="result">
         <p className="text-[14px] font-[500px] leading-[24px] tracking-[0.17px] text-black/[0.8]">
           Acceptable Results
         </p>
@@ -130,8 +164,14 @@ export default function TestCaseInfo({
       </div>
       <div className="my-[30px] relative">
         <HorizontalLine />
-
-        <HorzLineWithAddIcon className="z-[2] absolute top-[-11px] left-[50%]" />
+        <button
+          className="z-[0] absolute top-[-11px] left-[50%]"
+          onClick={() => {
+            addTextBox();
+          }}
+        >
+          <HorzLineWithAddIcon />
+        </button>
       </div>
       <div className="relative">
         <Button

@@ -9,7 +9,7 @@ function ReactJoyride() {
       disableBeacon: true,
       content: (
         <div className="text-[#000] text-[13px]">
-          <div className="font-bold opacity-80">Add new experiment</div>{" "}
+          <div className="font-bold opacity-80 mb-[8px]">Add new experiment</div>
           <div className="opacity-40">
             You can create multiple new experiments by clicking here.
           </div>
@@ -21,7 +21,7 @@ function ReactJoyride() {
       placement: "right",
       content: (
         <div className="text-[#000] text-[13px]">
-          <div className="font-bold opacity-80">
+          <div className="font-bold opacity-80 mb-[8px]">
             These are your active experiments
           </div>
           <div className="opacity-40">
@@ -36,7 +36,7 @@ function ReactJoyride() {
       placement: "right",
       content: (
         <div className="text-[#000] text-[13px]">
-          <div className="font-bold opacity-80">Name & description</div>{" "}
+          <div className="font-bold opacity-80 mb-[8px]">Name & description</div>{" "}
           <div className="opacity-40">
             Click to add your experiment name and description here.
           </div>
@@ -47,7 +47,7 @@ function ReactJoyride() {
       target: ".step-four",
       content: (
         <div className="text-[#000] text-[13px]">
-          <div className="font-bold opacity-80">Create prompt template</div>{" "}
+          <div className="font-bold opacity-80 mb-[8px]">Create prompt template</div>{" "}
           <div className="opacity-40">
             Click on + Add new template to get started.
           </div>
@@ -67,11 +67,16 @@ function ReactJoyride() {
           primaryColor: "#2196F3",
           textColor: "#000",
           width: 200,
-          height: 150,
           zIndex: 1000,
+          textAlign: "left",
+          padding:'16px'
         },
         buttonClose: {
           display: "none",
+        },
+        tooltipContent: {
+          padding: '0px',
+          textAlign: "left",
         },
         buttonNext: {
           border: 0,
@@ -81,9 +86,9 @@ function ReactJoyride() {
           color: "#FFF",
           outline: "none",
           lineHeight: 1,
-          marginTop: -10,
-          paddingLeft: 60,
-          paddingRight: 60,
+          marginTop: '5px',
+          paddingLeft: 70,
+          paddingRight: 70,
           paddingTop: 10,
           paddingBottom: 10,
           WebkitAppearance: "none",

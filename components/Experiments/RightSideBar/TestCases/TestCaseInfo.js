@@ -35,7 +35,6 @@ export default function TestCaseInfo({
   }
 
   const handleScroll = async (e) => {
-    console.log("scrolling", isClicked);
 
     let container = scrollRef.current;
 

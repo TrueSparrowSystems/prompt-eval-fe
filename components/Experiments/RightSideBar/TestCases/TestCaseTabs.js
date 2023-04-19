@@ -35,7 +35,12 @@ function a11yProps(index) {
 
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
-  const [testCaseName, setTestCaseName] = useState("Untitled Template");
+  const [isClicked, setIsClicked] = useState(false);
+
+  const clickEvent = () => {
+    setIsClicked(true);
+  };
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -48,27 +53,21 @@ export default function BasicTabs() {
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab label="Details" {...a11yProps(0)} />
-          <Tab label="variable definations" {...a11yProps(1)} />
-          <Tab label="acceptable results" {...a11yProps(2)} />
+          <Tab label="Details" {...a11yProps(0)} id="tab-0" onClick={clickEvent} />
+          <Tab label="variable definations" {...a11yProps(1)} id="tab-1" onClick={clickEvent} />
+          <Tab label="acceptable results" {...a11yProps(2)} id="tab-2" onClick={clickEvent} />
         </Tabs>
       </Box>
-      <input
-        className="text-[15px] font-bold opacity-40 outline-none py-[25px]"
-        type="text"
-        value={testCaseName}
-        onChange={(e) => {
-          setTestCaseName(e.target.value);
-        }}
-      />
+      
+      
       <TabPanel value={value} index={0}>
-        <TestCaseInfo />
+        <TestCaseInfo value={value} isClicked={isClicked}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <TestCaseInfo />
+        <TestCaseInfo value={value} isClicked={isClicked} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <TestCaseInfo />
+        <TestCaseInfo value={value} isClicked={isClicked}/>
       </TabPanel>
     </Box>
   );

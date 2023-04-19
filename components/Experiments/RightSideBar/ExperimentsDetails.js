@@ -87,7 +87,7 @@ function ExperimentsDetails() {
               sx={{ color: "#2196F3" }}
             >
               <AddIcon className="mr-[11px]" />
-              Add new template
+              {toggleState === experimentTypes.promptTemplate?"Add new template":"Add new test case"}
             </Button>
           </div>
         </div>
@@ -98,3 +98,5 @@ function ExperimentsDetails() {
 }
 
 export default ExperimentsDetails;
+
+//Notes: 2 Tasks pending..

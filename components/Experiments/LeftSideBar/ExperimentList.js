@@ -13,7 +13,6 @@ export default function ExperimentList() {
   }
 
   if (error) {
-    console.error(error);
     return null;
   }
   return (

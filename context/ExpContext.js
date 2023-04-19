@@ -11,9 +11,6 @@ export const ExpContext = createContext(
 export function useExpContext() {
   const {selectedExperimentInfo,setSelectedExperimentInfo} = React.useContext(ExpContext);
 
-  // if (context === undefined) {
-  //   throw new Error("useExpContext must be used within a ExpContextProvider");
-  // }
   return {selectedExperimentInfo,setSelectedExperimentInfo} ;
 }
 

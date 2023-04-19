@@ -17,10 +17,6 @@ export default function TestCaseInfo({ value, isClicked, data }) {
   const scrollRef = useRef(null);
 
   useEffect(() => {
-    console.log("data", data);
-  },[data]);
-
-  useEffect(() => {
     
     if (isClicked) {
       moveToTop(value);
@@ -57,11 +53,10 @@ export default function TestCaseInfo({ value, isClicked, data }) {
       const tabRect = tabElement.getBoundingClientRect();
       const tabeTop = tabRect.top;
       const tabeBottom = tabRect.bottom;
-
-      //Need to solve this problem
+      
+      //needs to solve this problem
       if (tabsTop <= tabeTop) {
-        // document.getElementById(`tab-${index}`).click();
-        // setValue(index);
+        
         return;
       }
     }

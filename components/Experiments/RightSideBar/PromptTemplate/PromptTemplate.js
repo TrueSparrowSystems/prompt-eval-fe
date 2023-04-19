@@ -8,81 +8,7 @@ import Queries  from "../../../../queries/Queries";
 import {useExpContext} from "../../../../context/ExpContext";
 
 function PromptTemplate({setReportId,setShowReport}) {
-  const ExperimentListData = [
-    {
-      Id: " 1",
-      name: "Cell 1",
-      accuracy: "23%",
-      model: "turbo",
-      date: "27/01/2023",
-      status: "fail",
-    },
-    {
-      Id: " 2",
-      name: "Cell 1",
-      accuracy: "23%",
-      model: "turbo",
-      date: "27/01/2023",
-      status: "pass",
-    },
-    {
-      Id: " 3",
-      name: "Cell 1",
-      accuracy: "23%",
-      model: "turbo",
-      date: "27/01/2023",
-      status: "pass",
-    },
-    {
-      Id: " 4",
-      name: "Cell 1",
-      accuracy: "23%",
-      model: "turbo",
-      date: "27/01/2023",
-      status: "pass",
-    },
-    {
-      Id: " 2",
-      name: "Cell 1",
-      accuracy: "23%",
-      model: "turbo",
-      date: "27/01/2023",
-      status: "pass",
-    },
-    {
-      Id: " 3",
-      name: "Cell 1",
-      accuracy: "23%",
-      model: "turbo",
-      date: "27/01/2023",
-      status: "pass",
-    },
-    {
-      Id: " 4",
-      name: "Cell 1",
-      accuracy: "23%",
-      model: "turbo",
-      date: "27/01/2023",
-      status: "pass",
-    },
-    {
-      Id: " 5",
-      name: "Cell 1",
-      accuracy: "23%",
-      model: "turbo",
-      date: "27/01/2023",
-      status: "pass",
-    },
-    {
-      Id: " 6",
-      name: "Cell 1",
-      accuracy: "23%",
-      model: "turbo",
-      date: "27/01/2023",
-      status: "pass",
-    },
-  ];
-
+  
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(2);
   const {selectedExperimentInfo, setSelectedExperimentInfo} = useExpContext();
@@ -100,7 +26,6 @@ function PromptTemplate({setReportId,setShowReport}) {
   }
   if(error){
     console.log(error)
-    // return <div>{error}</div>
   }
   
   

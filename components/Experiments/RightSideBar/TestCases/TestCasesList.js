@@ -6,14 +6,7 @@ import { useExpContext } from "../../../../context/ExpContext";
 
 
 function TestCasesList({data,setSelectTestCase}) {
-  const TestCasesListData = [
-    { name: "test case 1" },
-    { name: "test case 2" },
-    { name: "test case 3" },
-    { name: "test case 4" },
-    { name: "test case 5" },
-    { name: "test case 6" },
-  ];
+  
   const [selectedTestCase, setSelectedTestCase] = useState(0);
   
   useEffect(() => {

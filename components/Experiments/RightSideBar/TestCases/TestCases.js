@@ -13,7 +13,7 @@ export default function TestCases(props) {
         <EmptyState />
       ) : (
         <div className={`flex gap-[20px] ${styles.experimentBox}`}>
-          <div className="basis-48 max-h-[674px] overflow-scroll">
+          <div className="basis-48 max-h-[674px] overflow-auto">
             <TestCasesList />
           </div>
           <div className="mt-[13px] w-full">

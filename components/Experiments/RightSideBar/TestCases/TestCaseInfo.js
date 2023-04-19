@@ -65,7 +65,7 @@ export default function TestCaseInfo({
     <div
       ref={scrollRef}
       id="cont"
-      className="overflow-scroll relative max-h-[674px]"
+      className="overflow-auto relative max-h-[674px]"
       onScroll={handleScroll} // this is the problem
     >
       <div id="0" className="tab">

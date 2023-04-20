@@ -6,6 +6,7 @@ import PaginationUI from "./PaginationUI";
 import { useQuery } from "@apollo/client";
 import Queries  from "../../../../queries/Queries";
 import {useExpContext} from "../../../../context/ExpContext";
+import LoadingState from "../../LoadingState";
 
 function PromptTemplate({setReportId,setShowReport}) {
   
@@ -20,7 +21,7 @@ function PromptTemplate({setReportId,setShowReport}) {
   })
 
   if(loading){
-    return <EmptyState />
+    return <LoadingState />
   }
   if(error){
     console.log(error)

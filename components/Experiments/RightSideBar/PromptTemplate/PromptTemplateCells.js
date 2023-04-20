@@ -1,15 +1,11 @@
-import React, {useState} from "react";
+import React from "react";
 import Button from "@mui/material/Button";
-import Pass from "../../../../assets/Svg/Pass";
-import Fail from "../../../../assets/Svg/Fail";
 import ViewReportArrow from "../../../../assets/Svg/ViewReportArrow";
 import Clone from "../../../../assets/Svg/Clone";
 import Edit from "../../../../assets/Svg/Edit";
 import Calendar from "../../../../assets/Svg/Calendar";
-
-
+import { getFormattedDate } from "../../../../utils/DateFormates";
 function PromptTemplateCells({ PromptTemplate, setReportId, setShowReport }) {
-  const [status, setStatus] = useState("pass");
   return (
     <div className={`flex items-center text-[13px] border-b-2`}>
       <div className={`basis-1/5 border-r-2 px-[10px] py-[34px] mr-[10px]`}>
@@ -24,7 +20,10 @@ function PromptTemplateCells({ PromptTemplate, setReportId, setShowReport }) {
       <div className="basis-1/5 px-[10px]">
         <div className="flex items-center gap-[10px]">
           <Calendar />
-          <div>{PromptTemplate.createdAt}</div>
+          <div>
+            {PromptTemplate.createdAt &&
+              getFormattedDate(PromptTemplate.createdAt)}
+          </div>
         </div>
         <div
           className="flex items-center gap-[10px] cursor-pointer"

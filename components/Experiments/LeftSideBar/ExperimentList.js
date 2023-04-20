@@ -48,6 +48,10 @@ export default function ExperimentList() {
           setSelectedExperiment={handleChange}
         />
       ))}
+
+      {error && <div className="text-[#f00] text-[14px] mt-[12px] break-all">
+          {error}
+        </div>}
     </div>
   );
 }

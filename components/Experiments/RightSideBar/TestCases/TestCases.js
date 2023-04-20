@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import EmptyState from "../EmptyState";
 import styles from "../ExperimentsDetails.module.scss";
 import TestCaseTabs from "./TestCaseTabs";
@@ -10,12 +10,16 @@ import LoadingState from "../../LoadingState";
 
 export default function TestCases(props) {
 
-  const { selectedExperimentInfo } = useExpContext();
+  const { selectedExperimentInfo,setSelectedExperimentInfo } = useExpContext();
   const { data, loading, error } = useQuery(Queries.getTestCaseById, {
     variables: { experimentId: selectedExperimentInfo?.id },
   });
 
   const [selectTestCase,setSelectTestCase] = useState(data?.testCases[0]);
+
+  useEffect(() => {
+    console.log("useEffect",selectedExperimentInfo?.testCases);
+  }, [selectedExperimentInfo]);
 
   if (loading) {
     return <LoadingState />
@@ -28,7 +32,6 @@ export default function TestCases(props) {
 
   return (
     <div>
-      {console.log(data)}
       {data===null || data===undefined || data.testCases.length === 0 ? (
         <EmptyState />
       ) : (

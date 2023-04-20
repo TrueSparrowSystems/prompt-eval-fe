@@ -17,9 +17,6 @@ export default function TestCases(props) {
 
   const [selectTestCase,setSelectTestCase] = useState(data?.testCases[0]);
 
-  useEffect(() => {
-    console.log("useEffect",selectedExperimentInfo?.testCases);
-  }, [selectedExperimentInfo]);
 
   if (loading) {
     return <LoadingState />

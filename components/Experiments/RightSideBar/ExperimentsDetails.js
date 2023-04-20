@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import styles from "./ExperimentsDetails.module.scss";
 import PromptTemplate from "./PromptTemplate/PromptTemplate";
@@ -30,31 +30,36 @@ function ExperimentsDetails() {
   const [createPromptTemplate, { data, loading, error }] = useMutation(
     Queries.createPromptTemplate
   );
-  const [createTestCases, { dataTestCase, loadingTestCase,errorTestCase }] = useMutation(Queries.createTestCases);
+  const [createTestCases, { dataTestCase, loadingTestCase, errorTestCase }] =
+    useMutation(Queries.createTestCases);
 
+  const { selectedExperimentInfo, setSelectedExperimentInfo } = useExpContext();
 
-  const { selectedExperimentInfo } = useExpContext();
+  useEffect(() => {
+    
+  }, [data,dataTestCase]);
+
   const handleCreate = () => {
-    if(toggleState === "promptTemplate"){
-    createPromptTemplate({
-      variables: {
-        name: "Untitled Prompt Template",
-        description: "Initial Prompt Template Description",
-        conversation: {role:"system",content:"newone"},
-        experimentId: selectedExperimentInfo?.id,
-      },
-    });
-  }else{
-    createTestCases({
-      variables: {
-        name: "Untitled Test Case",
-        description: "Initial Test Case Description",
-        dynamicVarValues:{key:"hey",value:"value"},
-        expectedResult:["hey","hey10"],
-        experimentId: selectedExperimentInfo?.id,
-      },
-    });
-  }
+    if (toggleState === "promptTemplate") {
+      createPromptTemplate({
+        variables: {
+          name: "Untitled Prompt Template",
+          description: "Initial Prompt Template Description",
+          conversation: { role: "system", content: "newone" },
+          experimentId: selectedExperimentInfo?.id,
+        },
+      });
+    } else {
+      createTestCases({
+        variables: {
+          name: "Untitled Test Case",
+          description: "Initial Test Case Description",
+          dynamicVarValues: { key: "hey", value: "value" },
+          expectedResult: ["hey", "hey10"],
+          experimentId: selectedExperimentInfo?.id,
+        },
+      });
+    }
   };
 
   const getExperimentUi = () => {
@@ -121,7 +126,9 @@ function ExperimentsDetails() {
               sx={{ color: "#2196F3" }}
             >
               <AddIcon className="mr-[11px]" />
-              {toggleState === experimentTypes.promptTemplate?"Add new template":"Add new test case"}
+              {toggleState === experimentTypes.promptTemplate
+                ? "Add new template"
+                : "Add new test case"}
             </Button>
           </div>
         </div>

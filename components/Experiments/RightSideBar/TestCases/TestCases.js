@@ -40,7 +40,7 @@ export default function TestCases(props) {
           <div className="basis-56 max-h-[674px] overflow-auto">
             <TestCasesList data={data} setSelectTestCase={setSelectTestCase}/>
           </div>
-          <div className="mt-[13px] w-full">
+          <div className="mt-md w-full">
             <TestCaseTabs selectTestCase={selectTestCase}/>
           </div>
         </div>

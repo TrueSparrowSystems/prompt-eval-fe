@@ -20,7 +20,7 @@ function StatusBadge({ status }) {
             />
           </svg>
 
-          <span className="text-[13px]">failed</span>
+          <span className="text-md">failed</span>
         </div>
       ) : (
         <div className="border border-[#2E7D32] bg-[#2E7D321A] rounded-[100px] flex items-center px-[15px] py-[2px] gap-[5px]">
@@ -39,7 +39,7 @@ function StatusBadge({ status }) {
               strokeLinejoin="round"
             />
           </svg>
-          <span className="text-[13px]">Passed</span>
+          <span className="text-md">Passed</span>
         </div>
       )}
     </>

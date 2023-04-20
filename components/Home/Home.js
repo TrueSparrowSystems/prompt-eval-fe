@@ -8,7 +8,7 @@ export default function Home() {
       <div className="flex h-[100vh]">
         <div className="basis-2/12 py-[26px] ">
           <div className="px-[14px] bg-[#fff]">
-            <Button fullWidth variant="outlined">
+            <Button fullWidth variant="outlined" sx={{textTransform: "none"}}>
               + Create experiment
             </Button>
             <div
@@ -29,7 +29,7 @@ export default function Home() {
                   strokeLinejoin="round"
                 />
               </svg>
-              <div className="text-[13px] text-[#000]">Untitled 1</div>
+              <div className="text-md text-[#000]">Untitled 1</div>
             </div>
           </div>
         </div>
@@ -61,7 +61,7 @@ export default function Home() {
                 <Button style={{ textTransform: "none", color: "#fff" }} href="/experiments">
                   Quickstart tutorial
                 </Button>
-                <div className="text-[#fff] text-[13px] px-2 pb-[20px]">
+                <div className="text-[#fff] text-md px-2 pb-[20px]">
                   Learn by starting your first experiment
                 </div>
               </div>

@@ -1,33 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import PromptTemplateCells from "./PromptTemplateCells";
 import styles from "../ExperimentsDetails.module.scss";
 import EmptyState from "../EmptyState";
 import PaginationUI from "./PaginationUI";
 import { useQuery } from "@apollo/client";
-import Queries  from "../../../../queries/Queries";
-import {useExpContext} from "../../../../context/ExpContext";
+import Queries from "../../../../queries/Queries";
+import { useExpContext } from "../../../../context/ExpContext";
 import LoadingState from "../../LoadingState";
 
-function PromptTemplate({setReportId,setShowReport}) {
-  
-  const {selectedExperimentInfo, setSelectedExperimentInfo} = useExpContext();
-  
-  const {data,loading,error} = useQuery(Queries.promptListByPagination,{
-    variables:{
-      experimentId:selectedExperimentInfo?.id,
-      page:1,
-      limit:6
-    }
-  })
+function PromptTemplate({ setReportId, setShowReport }) {
+  const { selectedExperimentInfo } = useExpContext();
 
-  if(loading){
-    return <LoadingState />
+  const { data, loading, error, refetch } = useQuery(
+    Queries.promptListByPagination,
+    {
+      variables: {
+        experimentId: selectedExperimentInfo?.id,
+        page: 1,
+        limit: 6,
+      },
+    }
+  );
+
+  useEffect(() => {
+    refetch();
+  }, []);
+
+  if (loading) {
+    return <LoadingState />;
   }
-  if(error){
-    console.log(error)
+  if (error) {
+    console.log(error);
   }
-  
-  
   return (
     <div>
       {loading || error || data?.promptListByPagination.totalCount === 0 ? (
@@ -51,15 +55,16 @@ function PromptTemplate({setReportId,setShowReport}) {
             </div>
           </div>
           <div className="h-[580px] overflow-auto">
-            {data?.promptListByPagination.prompts.map((PromptTemplate, index) => (
-              <PromptTemplateCells
-                key={index}
-                PromptTemplate={PromptTemplate}
-                setShowReport={setShowReport}
-                setReportId={setReportId}
-
-              />
-            ))}
+            {data?.promptListByPagination.prompts.map(
+              (PromptTemplate, index) => (
+                <PromptTemplateCells
+                  key={index}
+                  PromptTemplate={PromptTemplate}
+                  setShowReport={setShowReport}
+                  setReportId={setReportId}
+                />
+              )
+            )}
             <PaginationUI />
           </div>
         </div>

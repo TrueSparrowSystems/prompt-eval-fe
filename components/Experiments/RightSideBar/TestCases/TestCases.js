@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import EmptyState from "../EmptyState";
 import styles from "../ExperimentsDetails.module.scss";
 import TestCaseTabs from "./TestCaseTabs";
@@ -8,21 +8,19 @@ import Queries from "../../../../queries/Queries";
 import { useExpContext } from "../../../../context/ExpContext";
 import LoadingState from "../../LoadingState";
 
-export default function TestCases(props) {
-
-  const { selectedExperimentInfo,setSelectedExperimentInfo } = useExpContext();
-  const { data, loading, error } = useQuery(Queries.getTestCaseById, {
+export default function TestCases() {
+  const { selectedExperimentInfo } = useExpContext();
+  const { data, loading, error, refetch } = useQuery(Queries.getTestCaseById, {
     variables: { experimentId: selectedExperimentInfo?.id },
   });
 
-  const [selectTestCase,setSelectTestCase] = useState(data?.testCases[0]);
+  const [selectTestCase, setSelectTestCase] = useState(data?.testCases[0]);
 
   useEffect(() => {
-    console.log("useEffect",selectedExperimentInfo?.testCases);
-  }, [selectedExperimentInfo]);
-
+    refetch();
+  }, []);
   if (loading) {
-    return <LoadingState />
+    return <LoadingState />;
   }
 
   if (error) {
@@ -32,19 +30,17 @@ export default function TestCases(props) {
 
   return (
     <div>
-      {data===null || data===undefined || data.testCases.length === 0 ? (
+      {data === null || data === undefined || data.testCases.length === 0 ? (
         <EmptyState />
       ) : (
-        
         <div className={`flex gap-[20px] ${styles.experimentBox}`}>
           <div className="basis-56 max-h-[674px] overflow-auto">
-            <TestCasesList data={data} setSelectTestCase={setSelectTestCase}/>
+            <TestCasesList data={data} setSelectTestCase={setSelectTestCase} />
           </div>
           <div className="mt-[13px] w-full">
-            <TestCaseTabs selectTestCase={selectTestCase}/>
+            <TestCaseTabs selectTestCase={selectTestCase} />
           </div>
         </div>
-        
       )}
     </div>
   );

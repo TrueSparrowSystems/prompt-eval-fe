@@ -10,7 +10,7 @@ function NewChat({ prompt, remove }) {
       onMouseLeave={() => setIsHover(false)}
     >
       <div
-        className="uppercase cursor-pointer text-[13px] hover:bg-[#fff] p-[10px] h-[40px] basis-20"
+        className="uppercase cursor-pointer text-md hover:bg-[#fff] p-[10px] h-[40px] basis-20"
         onClick={() => {
           setRole(role === "system" ? "user" : "system");
         }}

@@ -172,6 +172,7 @@ export default function TestCaseInfo({ value, isClicked, data }) {
         <Button
           variant="contained"
           className="my-[40px] bg-[#2196F3] absolute left-0  top-0"
+          sx={{textTransform: 'none',}}
         >
           SAVE
         </Button>

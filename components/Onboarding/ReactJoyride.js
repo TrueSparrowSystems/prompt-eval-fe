@@ -8,7 +8,7 @@ function ReactJoyride() {
       placement: "right",
       disableBeacon: true,
       content: (
-        <div className="text-[#000] text-[13px]">
+        <div className="text-[#000] text-md">
           <div className="font-bold opacity-80 mb-[8px]">Add new experiment</div>
           <div className="opacity-40">
             You can create multiple new experiments by clicking here.
@@ -20,7 +20,7 @@ function ReactJoyride() {
       target: ".second-step",
       placement: "right",
       content: (
-        <div className="text-[#000] text-[13px]">
+        <div className="text-[#000] text-md">
           <div className="font-bold opacity-80 mb-[8px]">
             These are your active experiments
           </div>
@@ -35,7 +35,7 @@ function ReactJoyride() {
       target: ".step-three",
       placement: "right",
       content: (
-        <div className="text-[#000] text-[13px]">
+        <div className="text-[#000] text-md">
           <div className="font-bold opacity-80 mb-[8px]">Name & description</div>{" "}
           <div className="opacity-40">
             Click to add your experiment name and description here.
@@ -46,7 +46,7 @@ function ReactJoyride() {
     {
       target: ".step-four",
       content: (
-        <div className="text-[#000] text-[13px]">
+        <div className="text-[#000] text-md">
           <div className="font-bold opacity-80 mb-[8px]">Create prompt template</div>{" "}
           <div className="opacity-40">
             Click on + Add new template to get started.
@@ -93,6 +93,9 @@ function ReactJoyride() {
           paddingBottom: 10,
           WebkitAppearance: "none",
         },
+        tooltip: {
+          borderRadius: 8,
+        }
       }}
     />
   );

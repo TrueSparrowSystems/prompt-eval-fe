@@ -30,7 +30,7 @@ function TestCaseCell({
           />
         </svg>
       </div>
-      <div className="text-[13px] text-[#000]">{testCaseName}</div>
+      <div className="text-md text-[#000]">{testCaseName}</div>
     </div>
   );
 }

@@ -18,13 +18,9 @@ function LeftSideBar(props) {
   const { dataList, loadingList, errorList, refetch } = useQuery(
     Queries.experimentList
   );
-  const { selectedExperimentInfo, setSelectedExperimentInfo } = useExpContext();
 
   useEffect(() => {
     refetch();
-    if (dataList) {
-      setSelectedExperimentInfo(dataList.experiments[0])
-    }
   }, [data]);
 
   const handleClick = () => {
@@ -43,13 +39,15 @@ function LeftSideBar(props) {
       '&:hover': {
         bgcolor:'#2196F3',
       },
+      transform: 'none',
     }),
     color:'#2196F3',
   };
 
   return (
-    <div className="px-[14px] bg-[#fff]">
-      <div className="first-step pt-[5px] relative">
+    <div className="px-[14px] bg-[#fff] ">
+      <div className="second-step">
+      <div className="first-step pt-[5px] relative ">
       <Box sx={{ m: 1, position: 'relative' }}>
         <Button
         fullWidth
@@ -58,7 +56,7 @@ function LeftSideBar(props) {
           disabled={(loading || loadingList)}
           onClick={handleClick}
         >
-          <AddIcon className={`mr-[12px]`} style={{fill:(loading || loadingList)?'#999999':'#2196F3'}}/> Create experiment{" "}
+          <AddIcon className={`mr-[12px]`} style={{fill:(loading || loadingList)?'#999999':'#2196F3'}}/> <span className="whitespace-nowrap">Create experiment{" "}</span>
         </Button>
         {(loading || loadingList) && (
           <CircularProgress
@@ -78,6 +76,7 @@ function LeftSideBar(props) {
       </div>
       <ExperimentList />
       {showLanding && <ReactJoyride />}
+    </div>
     </div>
   );
 }

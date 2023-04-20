@@ -16,12 +16,12 @@ function EmptyState() {
           <div className="flex justify-center">
             <Button
               variant="outlined"
-              sx={{ color: "#2196F3" }}
+              sx={{ color: "#2196F3",textTransform: "none" }}
               onClick={() => {
                 setCreateNewTemplate(true);
               }}
             >
-              <AddIcon className="mr-[11px]" /> new template
+              <AddIcon className="mr-[11px]" /> Add new template
             </Button>
           </div>
         </div>

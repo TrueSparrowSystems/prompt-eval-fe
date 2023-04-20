@@ -75,7 +75,7 @@ function Report(props) {
         <BackArrow />
         <div className="text-[14px] opacity-60 py-[25px]">View Report</div>
       </div>
-      <div className={`flex items-center text-[13px] font-bold border-t`}>
+      <div className={`flex items-center text-md font-bold border-t`}>
         <div className="w-1/6 py-[34px] px-[10px]">Test Case Name</div>
         <div className="w-4/6 pr-[10px] pl-[20px] py-[34px] border-l-2">
           Description

@@ -18,7 +18,7 @@ function ReportCell({ report, index, setExpanded, expanded }) {
           aria-controls={`panel${index}d-content`}
           id={`panel${index}d-header`}
         >
-          <div className={`flex items-center text-[13px] cursor-pointer`}>
+          <div className={`flex items-center text-md cursor-pointer`}>
             <div className="w-1/6 px-[10px] py-[34px]">Name</div>
             <div className="pr-[10px] pl-[20px] py-[34px] w-4/6 border-l-2">
               {report.desc}

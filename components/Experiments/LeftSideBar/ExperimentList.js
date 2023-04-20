@@ -23,13 +23,6 @@ export default function ExperimentList() {
     return <ExperimentListSkeleton />;
   }
 
-  if (error) {
-    return null;
-  }
-  if (data?.experimentList.length !== 0) {
-    setSelectedExperimentInfo(data?.experimentList[0]);
-  }
-
   return (
     <div
       className="mt-[20px] second-step"

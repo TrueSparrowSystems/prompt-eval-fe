@@ -35,10 +35,6 @@ function ExperimentsDetails() {
 
   const { selectedExperimentInfo, setSelectedExperimentInfo } = useExpContext();
 
-  useEffect(() => {
-    
-  }, [data,dataTestCase]);
-
   const handleCreate = () => {
     if (toggleState === "promptTemplate") {
       createPromptTemplate({
@@ -91,7 +87,7 @@ function ExperimentsDetails() {
                   ? `${styles.selectedTab} text-[#2196F3] z-10`
                   : `${styles.notSelectedtab}`
               }
-              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative`}
+              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
               onClick={() => {
                 setShowReport(false);
                 setAddnewTemplate(false);
@@ -106,7 +102,7 @@ function ExperimentsDetails() {
                   ? `${styles.selectedTab} text-[#2196F3] ml-[-20px]`
                   : `${styles.notSelectedtab} ml-[-15px]`
               }
-              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative`}
+              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
               onClick={() => {
                 setAddnewTemplate(false);
                 toggleTab(experimentTypes.testCases);

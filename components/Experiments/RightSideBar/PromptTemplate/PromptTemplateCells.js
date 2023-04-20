@@ -7,7 +7,7 @@ import Calendar from "../../../../assets/Svg/Calendar";
 import { getFormattedDate } from "../../../../utils/DateFormates";
 function PromptTemplateCells({ PromptTemplate, setReportId, setShowReport }) {
   return (
-    <div className={`flex items-center text-[13px] border-b-2`}>
+    <div className={`flex items-center text-md border-b-2`}>
       <div className={`basis-1/5 border-r-2 px-[10px] py-[34px] mr-[10px]`}>
         {PromptTemplate.name}
       </div>
@@ -25,6 +25,10 @@ function PromptTemplateCells({ PromptTemplate, setReportId, setShowReport }) {
               getFormattedDate(PromptTemplate.createdAt)}
           </div>
         </div>
+        <div className="flex items-center gap-[10px]">
+          <div>{status === "pass" ? <Pass /> : <Fail />}</div>
+          <div>{status}</div>
+        </div>
         <div
           className="flex items-center gap-[10px] cursor-pointer"
           onClick={() => {
@@ -32,7 +36,7 @@ function PromptTemplateCells({ PromptTemplate, setReportId, setShowReport }) {
             setReportId(PromptTemplate.Id);
           }}
         >
-          <div className="underline">view report</div>
+          <div className="underline">View Report</div>
           <div>
             <ViewReportArrow />
           </div>
@@ -41,7 +45,7 @@ function PromptTemplateCells({ PromptTemplate, setReportId, setShowReport }) {
 
       <div className="basis-1/5 flex items-center justify-around px-[10px]">
         <div>
-          <Button variant="outlined">run</Button>
+          <Button variant="outlined" sx={{textTransform: "none"}}>Run</Button>
         </div>
         <div className="flex items-center gap-[20px]">
           <Clone />

@@ -22,10 +22,6 @@ function ExperimentCell({
     Queries.updateExperiment
   );
 
-  useEffect(() => {
-    setNewExperimentName(experimentName);
-  }, [selectedExperimentInfo]);
-
   const handleUpdate = () => {
     setSelectedExperimentInfo((prevState) => ({
       ...prevState,
@@ -58,7 +54,7 @@ function ExperimentCell({
           <input
             type="text"
             value={newExperimentName}
-            className="text-[13px] text-[#000] focus:outline-none outline-none"
+            className="text-md text-[#000] focus:outline-none outline-none"
             onChange={(e) => setNewExperimentName(e.target.value)}
             onBlur={() => {
               setEditable(false);
@@ -66,7 +62,7 @@ function ExperimentCell({
             }}
           />
         ) : (
-          <div className="text-[13px] text-[#000]">{newExperimentName}</div>
+          <div className="text-md text-[#000]">{newExperimentName}</div>
         )}
         <button
           className={`ml-auto hover:bg-[#0000001A] p-[5px] ${

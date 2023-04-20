@@ -14,7 +14,7 @@ function PaginationUI() {
   
   return (
     <div className="flex justify-end px-[20px] py-[15px] border-b-2">
-      <div className="flex items-center text-[13px] text-[#000]">
+      <div className="flex items-center text-md text-[#000]">
         <div className="opacity-60 mr-[20px]">Rows per page:</div>
         <Box
           sx={{

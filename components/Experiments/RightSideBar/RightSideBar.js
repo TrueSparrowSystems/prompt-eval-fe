@@ -51,7 +51,7 @@ function RightSideBar() {
   
   return (
     <div>
-      <div className="step-three">
+      <div className="w-[80%] step-three">
         <div>
           <input
             value={experimentName}
@@ -68,13 +68,13 @@ function RightSideBar() {
       )}
         </div>
         <div>
-          <input
+          <textarea
             value={experimentDescription}
             onChange={(e) => {
               setExperimentDescription(e.target.value);
             }}
             onBlur={() => handleUpdate(false)}
-            className="text-[13px] opacity-60 pt-[5px] bg-transparent outline-none w-full"
+            className="text-md opacity-60 pt-[5px] bg-transparent outline-none break-words resize-none w-full"
           />
           {error && (
           <div className="text-[#f00] text-[14px] mt-[2px] break-all">

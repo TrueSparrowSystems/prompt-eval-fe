@@ -6,7 +6,7 @@ import TestCasesList from "./TestCasesList";
 import { useQuery } from "@apollo/client";
 import Queries from "../../../../queries/Queries";
 import { useExpContext } from "../../../../context/ExpContext";
-
+import LoadingState from "../../LoadingState";
 
 export default function TestCases(props) {
 
@@ -18,8 +18,7 @@ export default function TestCases(props) {
   const [selectTestCase,setSelectTestCase] = useState(data?.testCases[0]);
 
   if (loading) {
-    console.log("loading");
-    return null;
+    return <LoadingState />
   }
 
   if (error) {

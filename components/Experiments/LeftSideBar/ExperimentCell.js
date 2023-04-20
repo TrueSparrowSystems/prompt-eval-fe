@@ -22,7 +22,16 @@ function ExperimentCell({
     Queries.updateExperiment
   );
 
+  useEffect(() => {
+    if(Object.keys(selectedExperimentInfo).length!==0 && selectedExperimentInfo?.id===id)
+    setNewExperimentName(selectedExperimentInfo?.name)
+  }, [selectedExperimentInfo]);
+
   const handleUpdate = () => {
+    if(newExperimentName.length===0){
+      setNewExperimentName(selectedExperimentInfo?.name);
+      return;
+    }
     setSelectedExperimentInfo((prevState) => ({
       ...prevState,
       name: newExperimentName,

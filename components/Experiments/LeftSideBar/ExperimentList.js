@@ -8,17 +8,13 @@ import { useExpContext } from "../../../context/ExpContext";
 export default function ExperimentList() {
   const [selectedExperiment, setSelectedExperiment] = useState(0);
   const { data, loading, error } = useQuery(Queries.experimentList);
-  const { setSelectedExperimentInfo } = useExpContext();
+  const { selectedExperimentInfo,setSelectedExperimentInfo  } = useExpContext();
 
   const handleChange = (index) => {
     setSelectedExperiment(index);
     setSelectedExperimentInfo(data?.experimentList[index]);
   };
-
-  useEffect(() => {
-    handleChange(selectedExperiment);
-  }, []);
-
+  
   if (loading) {
     return <ExperimentListSkeleton />;
   }
@@ -48,6 +44,10 @@ export default function ExperimentList() {
           setSelectedExperiment={handleChange}
         />
       ))}
+
+      {error && <div className="text-[#f00] text-[14px] mt-[12px] break-all">
+          {error}
+        </div>}
     </div>
   );
 }

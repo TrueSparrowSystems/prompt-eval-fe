@@ -12,7 +12,7 @@ function PromptTemplate({setReportId,setShowReport}) {
   
   const {selectedExperimentInfo, setSelectedExperimentInfo} = useExpContext();
   
-  let {data,loading,error} = useQuery(Queries.promptListByPagination,{
+  const {data,loading,error} = useQuery(Queries.promptListByPagination,{
     variables:{
       experimentId:selectedExperimentInfo?.id,
       page:1,
@@ -30,7 +30,7 @@ function PromptTemplate({setReportId,setShowReport}) {
   
   return (
     <div>
-      {data && data?.promptListByPagination.totalCount === 0 ? (
+      {loading || error || data?.promptListByPagination.totalCount === 0 ? (
         <EmptyState />
       ) : (
         <div className={`${styles.experimentBox}  max-h-[674px] overflow-auto`}>

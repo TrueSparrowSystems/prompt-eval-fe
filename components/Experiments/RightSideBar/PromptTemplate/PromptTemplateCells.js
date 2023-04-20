@@ -45,9 +45,8 @@ function PromptTemplateCells({ PromptTemplate, setReportId, setShowReport }) {
           <Button variant="outlined">run</Button>
         </div>
         <div className="flex items-center gap-[20px]">
-          
-            <Clone />
-            <Edit />  
+          <div className="hover:bg-[#0000001A] p-[4px]"><Clone /></div>
+          <div className="hover:bg-[#0000001A] p-[4px]"> <Edit />  </div>
         </div>
       </div>
     </div>

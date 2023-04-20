@@ -6,7 +6,6 @@ import ViewReportArrow from "../../../../assets/Svg/ViewReportArrow";
 import Clone from "../../../../assets/Svg/Clone";
 import Edit from "../../../../assets/Svg/Edit";
 import Calendar from "../../../../assets/Svg/Calendar";
-import getDDMMYYYFormat from '../../../../config/DateFormats'
 
 
 function PromptTemplateCells({ PromptTemplate, setReportId, setShowReport }) {

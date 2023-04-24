@@ -1,8 +1,8 @@
 import React from "react";
-import LeftSideBar from "../components/Experiments/LeftSideBar/LeftSideBar";
-import RightSideBar from "../components/Experiments/RightSideBar/RightSideBar";
+import LeftSideBar from "../../components/Experiments/LeftSideBar/LeftSideBar";
+import RightSideBar from "../../components/Experiments/RightSideBar/RightSideBar";
 
-function Experiments(props) {
+function Experiments() {
   return (
     <div className="flex h-[100vh]">
       <div className="basis-2/12 py-[26px] ">

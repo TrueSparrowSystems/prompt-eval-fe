@@ -11,7 +11,7 @@ import Box from "@mui/material/Box";
 import Select from "@mui/material/Select";
 import Pagination from "../../../Pagination/Pagination";
 
-function PromptTemplate({ setReportId, setShowReport }) {
+function PromptTemplate({ setShowReport }) {
   const { selectedExperimentInfo } = useExpContext();
   const [recordPerPage, setRecordPerPage] = useState(6);
   const [currentPage, setCurrentPage] = useState(1);
@@ -79,7 +79,6 @@ function PromptTemplate({ setReportId, setShowReport }) {
                   key={index}
                   PromptTemplate={PromptTemplate}
                   setShowReport={setShowReport}
-                  setReportId={setReportId}
                 />
               )
             )}

@@ -17,7 +17,6 @@ function ExperimentsDetails() {
   };
   const [addNewTemplate, setAddnewTemplate] = useState(false);
   const [showReport, setShowReport] = useState(false);
-  const [reportId, setReportId] = useState(null);
   const [toggleState, setToggleState] = useState(
     experimentTypes.promptTemplate
   );
@@ -68,7 +67,6 @@ function ExperimentsDetails() {
       return (
         <PromptTemplate
           setShowReport={setShowReport}
-          setReportId={setReportId}
         />
       );
     } else {

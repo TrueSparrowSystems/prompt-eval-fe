@@ -5,7 +5,11 @@ import Clone from "../../../../assets/Svg/Clone";
 import Edit from "../../../../assets/Svg/Edit";
 import Calendar from "../../../../assets/Svg/Calendar";
 import { getFormattedDate } from "../../../../utils/DateFormates";
-function PromptTemplateCells({ PromptTemplate, setReportId, setShowReport }) {
+import { useExpContext } from "../../../../context/ExpContext";
+
+function PromptTemplateCells({ PromptTemplate, setShowReport }) {
+  const { setReportId } = useExpContext();
+
   return (
     <div className={`flex items-center text-md border-b-2`}>
       <div className={`basis-1/5 border-r-2 px-[10px] py-[34px] mr-[10px]`}>
@@ -30,9 +34,13 @@ function PromptTemplateCells({ PromptTemplate, setReportId, setShowReport }) {
           </div>
         </div>
         <div
-          className={`flex items-center gap-[10px] ${PromptTemplate.latestEvaluationReport[0] !== null ? "cursor-pointer" : ''}`}
+          className={`flex items-center gap-[10px] ${
+            PromptTemplate.latestEvaluationReport[0] !== null
+              ? "cursor-pointer"
+              : ""
+          }`}
           onClick={() => {
-            if(PromptTemplate.latestEvaluationReport[0] !== null){
+            if (PromptTemplate.latestEvaluationReport[0] !== null) {
               setShowReport(true);
               setReportId(PromptTemplate.latestEvaluationReport[0].id);
             }

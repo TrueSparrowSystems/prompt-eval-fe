@@ -19,7 +19,7 @@ export default function TestCases() {
   useEffect(() => {
     refetch();
   }, []);
-  
+
   if (loading) {
     return <LoadingState />;
   }
@@ -31,7 +31,7 @@ export default function TestCases() {
 
   return (
     <div>
-      {data === null || data === undefined || data.testCases.length === 0 ? (
+      {data === null || data === undefined || data.testCases.length === 0 || error ? (
         <EmptyState />
       ) : (
         <div className={`flex gap-[20px] ${styles.experimentBox}`}>

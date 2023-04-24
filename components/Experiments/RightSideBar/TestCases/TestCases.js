@@ -19,6 +19,7 @@ export default function TestCases() {
   useEffect(() => {
     refetch();
   }, []);
+  
   if (loading) {
     return <LoadingState />;
   }

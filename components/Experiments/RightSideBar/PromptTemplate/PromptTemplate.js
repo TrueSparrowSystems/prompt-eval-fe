@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PromptTemplateCells from "./PromptTemplateCells";
 import styles from "../ExperimentsDetails.module.scss";
 import EmptyState from "../EmptyState";
@@ -17,8 +17,8 @@ function PromptTemplate({ setReportId, setShowReport }) {
   const [currentPage, setCurrentPage] = useState(1);
   const totalCount = useRef(0);
 
-  const startCount = (currentPage - 1 ) * recordPerPage + 1;
-  const endCount = startCount + recordPerPage - 1;
+  const startCount = (currentPage - 1) * recordPerPage + 1;
+  const endCount = (totalCount.current < (startCount + recordPerPage - 1)) ? totalCount.current : startCount + recordPerPage - 1;
 
   const handleChange = (event) => {
     setRecordPerPage(event.target.value);
@@ -43,7 +43,7 @@ function PromptTemplate({ setReportId, setShowReport }) {
     refetch();
   }, []);
 
-  if(data?.promptListByPagination.totalCount){
+  if (data?.promptListByPagination.totalCount) {
     totalCount.current = data?.promptListByPagination.totalCount;
   }
 
@@ -99,19 +99,18 @@ function PromptTemplate({ setReportId, setShowReport }) {
                     <MenuItem value={6}>6</MenuItem>
                     <MenuItem value={10}>10</MenuItem>
                     <MenuItem value={20}>20</MenuItem>
-                    <MenuItem value={10}>30</MenuItem>
-                    <MenuItem value={20}>40</MenuItem>
+                    <MenuItem value={30}>30</MenuItem>
+                    <MenuItem value={40}>40</MenuItem>
                   </Select>
                 </Box>
                 <div className="mx-[25px]">
-                  {startCount}-{endCount} of{" "}
-                  {totalCount.current}
+                  {startCount}-{endCount} of {totalCount.current}
                 </div>
 
                 <Pagination
                   handlePaginationChange={handlePaginationChange}
-                  pageCount={Math.ceil( totalCount.current && 
-                    totalCount.current / recordPerPage
+                  pageCount={Math.ceil(
+                    totalCount.current && totalCount.current / recordPerPage
                   )}
                   initialPage={currentPage - 1}
                 />

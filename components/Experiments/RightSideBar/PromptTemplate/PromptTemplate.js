@@ -52,7 +52,7 @@ function PromptTemplate({ setReportId, setShowReport }) {
   }
   return (
     <div>
-      {loading || error || totalCount.current === 0 ? (
+      {loading || error || data?.promptListByPagination.prompts.length === 0 ? (
         <EmptyState />
       ) : (
         <div className={`${styles.experimentBox}  max-h-[674px] overflow-auto`}>

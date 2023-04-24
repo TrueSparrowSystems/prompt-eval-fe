@@ -8,7 +8,6 @@ import { useExpContext } from "../../../context/ExpContext";
 function ExperimentCell({
   id,
   experimentName,
-  key,
   index,
   selectedExperiment,
   setSelectedExperiment,
@@ -23,7 +22,7 @@ function ExperimentCell({
   );
 
   useEffect(() => {
-    if(Object.keys(selectedExperimentInfo).length!==0 && selectedExperimentInfo?.id===id)
+    if(selectedExperimentInfo && Object.keys(selectedExperimentInfo).length!==0 && selectedExperimentInfo?.id===id)
     setNewExperimentName(selectedExperimentInfo?.name)
   }, [selectedExperimentInfo]);
 

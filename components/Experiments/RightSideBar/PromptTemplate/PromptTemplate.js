@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import PromptTemplateCells from "./PromptTemplateCells";
 import styles from "../ExperimentsDetails.module.scss";
 import EmptyState from "../EmptyState";
-import PaginationUI from "./PaginationUI";
 import { useQuery } from "@apollo/client";
 import Queries from "../../../../queries/Queries";
 import { useExpContext } from "../../../../context/ExpContext";
@@ -15,9 +14,10 @@ import Pagination from "../../../Pagination/Pagination";
 function PromptTemplate({ setReportId, setShowReport }) {
   const { selectedExperimentInfo } = useExpContext();
   const [recordPerPage, setRecordPerPage] = useState(6);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalCount = useRef(0);
 
-  const startCount = currentPage * recordPerPage + 1;
+  const startCount = (currentPage - 1 ) * recordPerPage + 1;
   const endCount = startCount + recordPerPage - 1;
 
   const handleChange = (event) => {
@@ -43,12 +43,16 @@ function PromptTemplate({ setReportId, setShowReport }) {
     refetch();
   }, []);
 
+  if(data?.promptListByPagination.totalCount){
+    totalCount.current = data?.promptListByPagination.totalCount;
+  }
+
   if (loading) {
     return <LoadingState />;
   }
   return (
     <div>
-      {loading || error || data?.promptListByPagination.totalCount === 0 ? (
+      {loading || error || totalCount.current === 0 ? (
         <EmptyState />
       ) : (
         <div className={`${styles.experimentBox}  max-h-[674px] overflow-auto`}>
@@ -101,15 +105,15 @@ function PromptTemplate({ setReportId, setShowReport }) {
                 </Box>
                 <div className="mx-[25px]">
                   {startCount}-{endCount} of{" "}
-                  {data?.promptListByPagination.totalCount}
+                  {totalCount.current}
                 </div>
 
                 <Pagination
                   handlePaginationChange={handlePaginationChange}
-                  pageCount={Math.ceil(
-                    data?.promptListByPagination.totalCount / recordPerPage
+                  pageCount={Math.ceil( totalCount.current && 
+                    totalCount.current / recordPerPage
                   )}
-                  initialPage={currentPage}
+                  initialPage={currentPage - 1}
                 />
               </div>
             </div>

@@ -25,10 +25,6 @@ function PromptTemplateCells({ PromptTemplate, setReportId, setShowReport }) {
               getFormattedDate(PromptTemplate.createdAt)}
           </div>
         </div>
-        <div className="flex items-center gap-[10px]">
-          <div>{status === "pass" ? <Pass /> : <Fail />}</div>
-          <div>{status}</div>
-        </div>
         <div
           className="flex items-center gap-[10px] cursor-pointer"
           onClick={() => {

@@ -12,10 +12,14 @@ function PromptTemplateCells({ PromptTemplate, setReportId, setShowReport }) {
         {PromptTemplate.name}
       </div>
       <div className="basis-1/5 px-[10px]">
-        {PromptTemplate.accuracy ? PromptTemplate.accuracy : "--"}
+        {PromptTemplate.latestEvaluationReport[0] !== null
+          ? PromptTemplate.latestEvaluationReport[0].accuracy
+          : "--"}
       </div>
       <div className="basis-1/5 px-[10px]">
-        {PromptTemplate.model ? PromptTemplate.model : "--"}
+        {PromptTemplate.latestEvaluationReport[0] !== null
+          ? PromptTemplate.latestEvaluationReport[0].model
+          : "--"}
       </div>
       <div className="basis-1/5 px-[10px]">
         <div className="flex items-center gap-[10px]">
@@ -26,10 +30,12 @@ function PromptTemplateCells({ PromptTemplate, setReportId, setShowReport }) {
           </div>
         </div>
         <div
-          className="flex items-center gap-[10px] cursor-pointer"
+          className={`flex items-center gap-[10px] ${PromptTemplate.latestEvaluationReport[0] !== null ? "cursor-pointer" : ''}`}
           onClick={() => {
-            setShowReport(true);
-            setReportId(PromptTemplate.Id);
+            if(PromptTemplate.latestEvaluationReport[0] !== null){
+              setShowReport(true);
+              setReportId(PromptTemplate.latestEvaluationReport[0].id);
+            }
           }}
         >
           <div className="underline">View Report</div>
@@ -41,7 +47,9 @@ function PromptTemplateCells({ PromptTemplate, setReportId, setShowReport }) {
 
       <div className="basis-1/5 flex items-center justify-around px-[10px]">
         <div>
-          <Button variant="outlined" sx={{textTransform: "none"}}>Run</Button>
+          <Button variant="outlined" sx={{ textTransform: "none" }}>
+            Run
+          </Button>
         </div>
         <div className="flex items-center gap-[20px]">
           <Clone />

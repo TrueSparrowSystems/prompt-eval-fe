@@ -83,6 +83,17 @@ class Queries {
               role
               content
             }
+            latestEvaluationReport{
+              id
+              model
+              eval
+              accuracy
+              status
+              initiatedAt
+              completedAt
+              createdAt
+              updatedAt
+            }
             createdAt
             updatedAt
             experimentId

@@ -17,9 +17,6 @@ function EmptyState() {
             <Button
               variant="outlined"
               sx={{ color: "#2196F3",textTransform: "none" }}
-              onClick={() => {
-                setCreateNewTemplate(true);
-              }}
             >
               <AddIcon className="mr-[11px]" /> Add new template
             </Button>

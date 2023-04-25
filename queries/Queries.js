@@ -83,6 +83,17 @@ class Queries {
               role
               content
             }
+            latestEvaluationReport {
+              id
+              model
+              eval
+              accuracy
+              status
+              initiatedAt
+              completedAt
+              createdAt
+              updatedAt
+            }
             createdAt
             updatedAt
             experimentId
@@ -163,21 +174,52 @@ class Queries {
   get getTestCaseById() {
     return gql`
       query getTestCaseById($experimentId: String!) {
-          testCases(experimentId: $experimentId) {
-            id
-            name
-            description
-            dynamicVarValues{
-              key
-              value
-            }
-            experimentId
-            expectedResult
-            updatedAt
-            createdAt
+        testCases(experimentId: $experimentId) {
+          id
+          name
+          description
+          dynamicVarValues {
+            key
+            value
           }
-        }`
+          experimentId
+          expectedResult
+          updatedAt
+          createdAt
+        }
+      }
+    `;
+  }
+  get getReportByReportId() {
+    return gql`
+      query getReport($reportId: String!, $limit: Int!, $page: Int!) {
+        getReport(reportId: $reportId, limit: $limit, page: $page) {
+          id
+          model
+          eval
+          accuracy
+          promptTemplateId
+          runId
+          status
+          initiatedAt
+          completedAt
+          createdAt
+          updatedAt
+          testCaseEvaluationReport {
+            id
+            evaluationResultId
+            prompt
+            testCaseId
+            testCaseName
+            testCaseDescription
+            actualResult
+            acceptableResult
+            accuracy
+          }
+        }
+      }
+    `;
+  }
 }
-};
 
 module.exports = new Queries();

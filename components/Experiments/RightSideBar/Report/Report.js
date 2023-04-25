@@ -12,7 +12,7 @@ import Select from "@mui/material/Select";
 function Report() {
   const { reportId } = useExpContext();
 
-  const [recordPerPage, setRecordPerPage] = useState(2);
+  const [recordPerPage, setRecordPerPage] = useState(6);
   const [currentPage, setCurrentPage] = useState(1);
   const totalCount = useRef(0);
 

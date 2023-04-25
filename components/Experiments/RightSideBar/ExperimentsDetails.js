@@ -17,6 +17,7 @@ function ExperimentsDetails() {
   };
   const [addNewTemplate, setAddnewTemplate] = useState(false);
   const [showReport, setShowReport] = useState(false);
+  const [reportData,setReportData] = useState(null);
   const [toggleState, setToggleState] = useState(
     experimentTypes.promptTemplate
   );
@@ -34,8 +35,8 @@ function ExperimentsDetails() {
 
   const { selectedExperimentInfo, setSelectedExperimentInfo } = useExpContext();
 
-  const handleCreate = () => {
-    if (toggleState === "promptTemplate") {
+  const handleCreate = (tab) => {
+    if (tab === experimentTypes.promptTemplate) {
       createPromptTemplate({
         variables: {
           name: "Untitled Prompt Template",
@@ -60,17 +61,23 @@ function ExperimentsDetails() {
   const getExperimentUi = () => {
     if (showReport) {
       toggleTab(experimentTypes.testCases);
-      return <Report />;
+      return <Report reportData={reportData} setShowReport={setShowReport} toggleTab={toggleTab} experimentTypes={experimentTypes}/>;
     } else if (addNewTemplate) {
-      return <CreatePromptTemplate />;
+      return <CreatePromptTemplate setAddnewTemplate={setAddnewTemplate}/>;
     } else if (toggleState === experimentTypes.promptTemplate) {
       return (
         <PromptTemplate
           setShowReport={setShowReport}
+          setReportData={setReportData}
+          setAddnewTemplate={setAddnewTemplate}
+          handleCreate={handleCreate}
         />
       );
     } else {
-      return <TestCases />;
+      return <TestCases
+      setAddnewTemplate={setAddnewTemplate}
+      handleCreate={handleCreate}
+       />;
     }
   };
 
@@ -82,10 +89,10 @@ function ExperimentsDetails() {
             <div
               className={`${
                 toggleState === experimentTypes.promptTemplate
-                  ? `${styles.selectedTab} text-[#2196F3] z-10`
+                  ? `${styles.selectedTab} text-[#2196F3] z-[2]`
                   : `${styles.notSelectedtab}`
               }
-              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
+              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap h-[119px]`}
               onClick={() => {
                 setShowReport(false);
                 setAddnewTemplate(false);
@@ -100,7 +107,7 @@ function ExperimentsDetails() {
                   ? `${styles.selectedTab} text-[#2196F3] ml-[-20px]`
                   : `${styles.notSelectedtab} ml-[-15px]`
               }
-              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
+              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap h-[119px]`}
               onClick={() => {
                 setAddnewTemplate(false);
                 toggleTab(experimentTypes.testCases);
@@ -114,10 +121,11 @@ function ExperimentsDetails() {
               size="large"
               style={{ textTransform: "none" }}
               onClick={() => {
+                if(experimentTypes.promptTemplate == toggleState)
                 setAddnewTemplate(true);
-                handleCreate();
+                handleCreate(toggleState);
               }}
-              sx={{ color: "#2196F3" }}
+              sx={{ color: "#2196F3",top:"-25px" }}
             >
               <AddIcon className="mr-[11px]" />
               {toggleState === experimentTypes.promptTemplate

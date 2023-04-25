@@ -3,10 +3,10 @@ import styles from "./ExperimentsDetails.module.scss";
 import { Button } from "@mui/material";
 import AddIcon from "../../../assets/Svg/AddIcon";
 
-function EmptyState() {
+function EmptyState({setAddnewTemplate,handleCreate}) {
   return (
     <div
-      className={`relative w-full ${styles.emptyState} flex justify-center items-center`}
+      className={`relative ${styles.emptyState} flex justify-center items-center top-[-48px]`}
     >
       <div className={`flex justify-center items-center flex-col`}>
         <div className="step-four p-[20px]">
@@ -17,6 +17,10 @@ function EmptyState() {
             <Button
               variant="outlined"
               sx={{ color: "#2196F3",textTransform: "none" }}
+              onClick={() => {
+                setAddnewTemplate(true);
+                handleCreate("promptTemplate");
+              }}
             >
               <AddIcon className="mr-[11px]" /> Add new template
             </Button>

@@ -48,10 +48,15 @@ function Report() {
         background: " #ffffff",
         boxShadow:
           "0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.14),0px 2px 1px -1px rgba(0, 0, 0, 0.2)",
-        " borderRadius": "8px",
+        borderRadius: "8px;",
+        position: "absolute",
+        zIndex: "100",
+        top: "90px",
+        width: "100%",
+        height: "674px",
       }}
     >
-      <div className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60 px-[30px]">
+      <div className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60 px-[30px]"  onClick={()=>{setShowReport(false);toggleTab(experimentTypes.promptTemplate)}}>
         <BackArrow />
         <div className="text-[14px] opacity-60 py-[25px]">View Report</div>
       </div>

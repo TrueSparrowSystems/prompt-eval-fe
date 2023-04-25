@@ -8,7 +8,7 @@ import Queries from "../../../../queries/Queries";
 import { useExpContext } from "../../../../context/ExpContext";
 import LoadingState from "../../LoadingState";
 
-export default function TestCases() {
+export default function TestCases({ setAddnewTemplate, handleCreate}) {
   const { selectedExperimentInfo } = useExpContext();
   const { data, loading, error, refetch } = useQuery(Queries.getTestCaseById, {
     variables: { experimentId: selectedExperimentInfo?.id },
@@ -24,21 +24,16 @@ export default function TestCases() {
     return <LoadingState />;
   }
 
-  if (error) {
-    console.error(error);
-    return null;
-  }
-
   return (
     <div>
-      {data === null || data === undefined || data.testCases.length === 0 || error ? (
-        <EmptyState />
+      {data===null || error || data===undefined || data?.testCases.length === 0 ? (
+        <EmptyState setAddnewTemplate={setAddnewTemplate} handleCreate={handleCreate}/>
       ) : (
         <div className={`flex gap-[20px] ${styles.experimentBox}`}>
           <div className="basis-56 max-h-[674px] overflow-auto">
             <TestCasesList data={data} setSelectTestCase={setSelectTestCase} />
           </div>
-          <div className="mt-[13px] w-full">
+          <div className="mt-[13px] w-full overflow-auto">
             <TestCaseTabs selectTestCase={selectTestCase} />
           </div>
         </div>

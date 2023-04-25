@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import Button from "@mui/material/Button";
 import HorizontalLine from "../../../../assets/Svg/HorizontalLine";
 import HorzLineWithAddIcon from "../../../../assets/Svg/HorzLineWithAddIcon";
+import styles from "./TestCaseInfo.module.scss";
+
 export default function TestCaseInfo({ value, isClicked, data }) {
   const [variableName, setVariableName] = useState(
     data?.dynamicVarValues[0]?.key
@@ -14,6 +16,7 @@ export default function TestCaseInfo({ value, isClicked, data }) {
   const [testCaseDescription, setTestCaseDescription] = useState(
     data?.description
   );
+  const [opacity,setOpacity] = useState("40");
   const scrollRef = useRef(null);
 
   useEffect(() => {
@@ -62,22 +65,16 @@ export default function TestCaseInfo({ value, isClicked, data }) {
     }
   };
 
-  <textarea className="w-full border rounded-[4px] h-[120px] p-[10px] outline-none my-[30px]" />;
   const addTextBox = () => {
     let titleBox = document.createElement("input");
-    titleBox.className="text-[14px] font-[500px] leading-[24px] tracking-[0.17px] text-black/[0.8]";
+    titleBox.className=`${styles.inputStyle}`;
     titleBox.placeholder="Untitled Result";
 
     let textBox = document.createElement("textarea");
-    textBox.className =
-      "w-full border rounded-[4px] h-[120px] p-[10px] outline-none my-[30px]";
+    textBox.className =`${styles.textareaStyle}`;
     textBox.placeholder =
       "Define template variables in {‘variable_name’} format within the prompt.";
-    // textBox.value = variableName;
-    // textBox.onchange = (e) => {
-    //   setVariableName(e.target.value);
-    // };
-
+    
     document.getElementById("result").appendChild(titleBox);
     document.getElementById("result").appendChild(textBox);
   };
@@ -86,24 +83,27 @@ export default function TestCaseInfo({ value, isClicked, data }) {
     <div
       ref={scrollRef}
       id="cont"
-      className="overflow-auto relative max-h-[674px]"
+      className="overflow-auto relative mb-[30px]"
       onScroll={handleScroll} // this is the problem
     >
       <div id="0" className="tab">
         <input
-          className="text-[15px] font-bold opacity-40 outline-none py-[25px]"
+          className={`text-[15px] font-bold opacity-${opacity} outline-none pt-[27px]`}
           type="text"
           value={testCaseName}
           onChange={(e) => {
+            setOpacity("80")
             setTestCaseName(e.target.value);
           }}
+          // on={(e) => setOpacity("80")}
+          onBlur={(e) => setOpacity("40")}
         />
 
-        <p className="text-[14px] font-[500px] leading-[24px] tracking-[0.17px] text-black/[0.8] my-[6px]">
+        <p className="text-[14px] font-[500px] leading-[24px] tracking-[0.17px] text-black/[0.8] pt-[12px] pb-[6px]">
           Description
         </p>
         <textarea
-          className="w-full border rounded-[4px] h-[120px] p-[10px] outline-none"
+          className={`${styles.textareaStyle}`}
           placeholder="Define template variables in {‘variable_name’} format within the prompt."
           value={testCaseDescription}
           onChange={(e) => {
@@ -120,7 +120,7 @@ export default function TestCaseInfo({ value, isClicked, data }) {
           Variable Definitions
         </p>
         <input
-          className="text-[15px] font-bold opacity-40 outline-none py-[25px]"
+          className={`${styles.inputStyle} opacity-40`}
           type="text"
           value={variableName}
           onChange={(e) => {
@@ -128,7 +128,7 @@ export default function TestCaseInfo({ value, isClicked, data }) {
           }}
         />
         <textarea
-          className="w-full border rounded-[4px] h-[120px] p-[10px] outline-none"
+          className={`${styles.textareaStyle}`}
           placeholder="Define template variables in {‘variable_name’} format within the prompt."
           value={variableValue}
           onChange={(e) => {
@@ -145,7 +145,7 @@ export default function TestCaseInfo({ value, isClicked, data }) {
           Acceptable Results
         </p>
         <input
-          className="text-[15px] font-bold opacity-40 outline-none py-[25px]"
+          className={`${styles.inputStyle} opacity-40`}
           type="text"
           value={acceptedResult}
           onChange={(e) => {
@@ -153,7 +153,7 @@ export default function TestCaseInfo({ value, isClicked, data }) {
           }}
         />
         <textarea
-          className="w-full border rounded-[4px] h-[120px] p-[10px] outline-none my-[30px]"
+          className={`${styles.textareaStyle}`}
           placeholder="Define template variables in {‘variable_name’} format within the prompt."
         />
       </div>
@@ -171,7 +171,7 @@ export default function TestCaseInfo({ value, isClicked, data }) {
       <div className="relative">
         <Button
           variant="contained"
-          className="my-[40px] bg-[#2196F3] absolute left-0  top-0"
+          className=" bg-[#2196F3] absolute left-0  top-0 "
           sx={{textTransform: 'none',}}
         >
           SAVE

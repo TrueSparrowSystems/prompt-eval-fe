@@ -51,7 +51,7 @@ export default function ExperimentList() {
       ))}
 
       {error && <div className="text-[#f00] text-[14px] mt-[12px] break-all">
-          {error}
+          {JSON.stringify(error)}
         </div>}
     </div>
   );

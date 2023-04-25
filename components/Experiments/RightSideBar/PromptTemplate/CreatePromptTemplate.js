@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import { v4 as uuid } from "uuid";
 import BackArrow from "../../../../assets/Svg/BackArrow";
 
-function CreatePromptTemplate() {
+function CreatePromptTemplate({setAddnewTemplate,handleCreate}) {
   const [templateName, setTemplateName] = useState("Untitled Template");
   const [prompts, setPrompts] = useState([{ id: uuid(), role: "system" }]);
   const [prevRole, setPrevRole] = useState("system");
@@ -28,9 +28,9 @@ function CreatePromptTemplate() {
 
   return (
     <div className={`${styles.experimentBox}`}>
-      <div className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60">
+      <div className="flex items-center gap-[10px] cursor-pointer hover:opacity-100 opacity-80" onClick={()=>{setAddnewTemplate(false)}}>
         <BackArrow />
-        <div className="text-[14px] opacity-60 py-[25px]">Cellular exp 1</div>
+        <div className="text-[14px] opacity-80 py-[25px]">Cellular exp 1</div>
       </div>
       <input
         className="text-[20px] font-bold opacity-60 outline-none pb-[25px]"
@@ -47,7 +47,7 @@ function CreatePromptTemplate() {
           <div>
             <Button
               size="large"
-              style={{ textTransform: "none", color: "#000" }}
+              style={{ textTransform: "none", color: "#000",fontSize:"14px",opacity:"0.8" }}
               onClick={(e) => {
                 addNewPrompt(e);
               }}

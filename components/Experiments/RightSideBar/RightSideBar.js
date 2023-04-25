@@ -63,7 +63,7 @@ function RightSideBar() {
           />
           {error && (
         <div className="text-[#f00] text-[14px] mt-[2px] break-all">
-          {error}
+          {JSON.stringify(error)}
         </div>
       )}
         </div>
@@ -78,7 +78,7 @@ function RightSideBar() {
           />
           {error && (
           <div className="text-[#f00] text-[14px] mt-[2px] break-all">
-          {error}
+          {JSON.stringify(error)}
         </div>)}
         </div>
       </div>

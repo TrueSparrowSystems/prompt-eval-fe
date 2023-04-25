@@ -97,6 +97,30 @@ class Queries {
             createdAt
             updatedAt
             experimentId
+            latestEvaluationReport {
+              id
+              model
+              eval
+              accuracy
+              promptTemplateId
+              runId
+              status
+              initiatedAt
+              completedAt
+              createdAt
+              updatedAt
+              testCaseEvaluationReport {
+                id
+                evaluationResultId
+                prompt
+                testCaseId
+                testCaseName
+                testCaseDescription
+                actualResult
+                acceptableResult
+                accuracy
+              }
+            }
           }
         }
       }
@@ -126,6 +150,31 @@ class Queries {
             conversation {
               role
               content
+            }
+            experimentId
+            latestEvaluationReport {
+              id
+              model
+              eval
+              accuracy
+              promptTemplateId
+              runId
+              status
+              initiatedAt
+              completedAt
+              createdAt
+              updatedAt
+              testCaseEvaluationReport {
+                id
+                evaluationResultId
+                prompt
+                testCaseId
+                testCaseName
+                testCaseDescription
+                actualResult
+                acceptableResult
+                accuracy
+              }
             }
             createdAt
             updatedAt

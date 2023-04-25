@@ -1,14 +1,14 @@
 import Onboarding from "../Onboarding/Onboarding";
 import styles from "./Home.module.scss";
 import Button from "@mui/material/Button";
-
+import Link from "next/link";
 export default function Home() {
   return (
     <>
       <div className="flex h-[100vh]">
         <div className="basis-2/12 py-[26px] ">
           <div className="px-[14px] bg-[#fff]">
-            <Button fullWidth variant="outlined" sx={{textTransform: "none"}}>
+            <Button fullWidth variant="outlined" sx={{ textTransform: "none" }}>
               + Create experiment
             </Button>
             <div
@@ -57,14 +57,16 @@ export default function Home() {
             <div
               className={`${styles.gradientBox} px-2 flex items-end mt-[38px]`}
             >
-              <div>
-                <Button style={{ textTransform: "none", color: "#fff" }} href="/experiments">
-                  Quickstart tutorial
-                </Button>
-                <div className="text-[#fff] text-md px-2 pb-[20px]">
-                  Learn by starting your first experiment
+              <Link href="/experiments/1">
+                <div>
+                  <Button style={{ textTransform: "none", color: "#fff" }}>
+                    Quickstart tutorial
+                  </Button>
+                  <div className="text-[#fff] text-md px-2 pb-[20px]">
+                    Learn by starting your first experiment
+                  </div>
                 </div>
-              </div>
+              </Link>
             </div>
             <div className="my-[46px] text-[20px] font-bold flex justify-center">
               Evaluate your prompt accuracy

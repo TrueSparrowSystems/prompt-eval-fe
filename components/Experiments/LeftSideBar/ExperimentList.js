@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import ExperimentCell from "./ExperimentCell";
 import { useQuery } from "@apollo/client";
 import Queries from "../../../queries/Queries";
@@ -6,14 +6,26 @@ import ExperimentListSkeleton from "../../Skeletons/ExperimentListSkeleton";
 import { useExpContext } from "../../../context/ExpContext";
 
 export default function ExperimentList() {
+  const experimentDetailsFetched = useRef(false);
   const [selectedExperiment, setSelectedExperiment] = useState(0);
   const { data, loading, error } = useQuery(Queries.experimentList);
-  const { selectedExperimentInfo,setSelectedExperimentInfo  } = useExpContext();
+  const { setSelectedExperimentInfo } = useExpContext();
 
   const handleChange = (index) => {
     setSelectedExperiment(index);
     setSelectedExperimentInfo(data?.experimentList[index]);
   };
+
+  useEffect(() => {
+    handleChange(selectedExperiment);
+  }, []);
+
+  useEffect(() => {
+    if (!experimentDetailsFetched.current && data?.experimentList.length) {
+      experimentDetailsFetched.current = true;
+      setSelectedExperimentInfo(data.experimentList[0]);
+    }
+  }, [data]);
   
   if (loading) {
     return <ExperimentListSkeleton />;

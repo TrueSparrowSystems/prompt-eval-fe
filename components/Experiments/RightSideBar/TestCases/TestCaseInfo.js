@@ -96,7 +96,7 @@ export default function TestCaseInfo({ value, isClicked, data }) {
           onChange={(e) => {
             setTestCaseName(e.target.value);
           }}
-          // on={(e) => setOpacity("80")}
+        
           onBlur={(e) => setOpacity("40")}
         />
 

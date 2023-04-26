@@ -7,23 +7,27 @@ import styles from "./TestCaseInfo.module.scss";
 export default function TestCaseInfo({ value, isClicked, data }) {
   const [variableName, setVariableName] = useState("Untitled Variable");
   const [variableValue, setVariableValue] = useState(
-    JSON.stringify(JSON.parse(data?.dynamicVarValues))
+    data?.dynamicVarValues
+      ? JSON.stringify(JSON.parse(data?.dynamicVarValues))
+      : ""
   );
   const [acceptedResult, setAcceptedResult] = useState(["Untitled Result"]);
-  const [acceptedResultValue, setAcceptedResultValue] = useState([data?.expectedResult]);
+  const [acceptedResultValue, setAcceptedResultValue] = useState([
+    data?.expectedResult,
+  ]);
 
   const [testCaseName, setTestCaseName] = useState(data?.name);
   const [testCaseDescription, setTestCaseDescription] = useState(
     data?.description
   );
-  const [opacity,setOpacity] = useState("40");
+  const [opacity, setOpacity] = useState("40");
   const scrollRef = useRef(null);
 
   useEffect(() => {
     if (isClicked) {
       moveToTop(value);
     }
-  }, [isClicked,data]);
+  }, [isClicked, data]);
 
   async function moveToTop(Id) {
     const element = document.getElementById(Id);
@@ -55,10 +59,9 @@ export default function TestCaseInfo({ value, isClicked, data }) {
       const tabRect = tabElement.getBoundingClientRect();
       const tabeTop = tabRect.top;
       const tabeBottom = tabRect.bottom;
-      
+
       //needs to solve this problem
       if (tabsTop <= tabeTop) {
-        
         return;
       }
     }
@@ -66,15 +69,14 @@ export default function TestCaseInfo({ value, isClicked, data }) {
 
   const addTextBox = () => {
     let titleBox = document.createElement("input");
-    titleBox.className=`${styles.inputStyle}`;
-    titleBox.placeholder="Untitled Result";
+    titleBox.className = `${styles.inputStyle}`;
+    titleBox.placeholder = "Untitled Result";
 
     let textBox = document.createElement("textarea");
-    textBox.className =`${styles.textareaStyle}`;
+    textBox.className = `${styles.textareaStyle}`;
     textBox.placeholder =
       "Define template variables in {‘variable_name’} format within the prompt.";
-    
-      
+
     document.getElementById("result").appendChild(titleBox);
     document.getElementById("result").appendChild(textBox);
   };
@@ -92,10 +94,9 @@ export default function TestCaseInfo({ value, isClicked, data }) {
           type="text"
           value={testCaseName}
           onChange={(e) => {
-            setOpacity("80")
             setTestCaseName(e.target.value);
           }}
-          // on={(e) => setOpacity("80")}
+        
           onBlur={(e) => setOpacity("40")}
         />
 
@@ -134,7 +135,6 @@ export default function TestCaseInfo({ value, isClicked, data }) {
           onChange={(e) => {
             setVariableValue(e.target.value);
           }}
-
         />
       </div>
       <div className="py-[30px] tab" id="2">
@@ -147,9 +147,9 @@ export default function TestCaseInfo({ value, isClicked, data }) {
         <input
           className={`${styles.inputStyle} opacity-40`}
           type="text"
-          value={acceptedResult[0]}
+          value={acceptedResult[0][0]}
           onChange={(e) => {
-            setAcceptedResult({ ...acceptedResult, 0: e.target.value});
+            setAcceptedResult({ ...acceptedResult, 0: e.target.value });
           }}
         />
         <textarea
@@ -157,7 +157,10 @@ export default function TestCaseInfo({ value, isClicked, data }) {
           placeholder="Define template variables in {‘variable_name’} format within the prompt."
           value={acceptedResultValue[0]}
           onChange={(e) => {
-            setAcceptedResultValue({ ...acceptedResultValue, 0: e.target.value });
+            setAcceptedResultValue({
+              ...acceptedResultValue,
+              0: e.target.value,
+            });
           }}
         />
       </div>
@@ -176,7 +179,7 @@ export default function TestCaseInfo({ value, isClicked, data }) {
         <Button
           variant="contained"
           className=" bg-[#2196F3] absolute left-0  top-0 "
-          sx={{textTransform: 'none',}}
+          sx={{ textTransform: "none" }}
         >
           SAVE
         </Button>

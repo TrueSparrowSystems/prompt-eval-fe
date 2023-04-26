@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "../ExperimentsDetails.module.scss";
 import NewChat from "./NewChat";
 import Button from "@mui/material/Button";
@@ -6,13 +6,23 @@ import { v4 as uuid } from "uuid";
 import BackArrow from "../../../../assets/Svg/BackArrow";
 import { useCompSelectorContext } from "../../../../context/compSelectorContext";
 import { TabNames } from "../../../../constants/TabNames";
+import { useMutation } from "@apollo/client";
+import Queries from "../../../../queries/Queries";
+import { useExpContext } from "../../../../context/ExpContext";
 
 function CreatePromptTemplate() {
   const [templateName, setTemplateName] = useState("Untitled Template");
   const [prompts, setPrompts] = useState([{ id: uuid(), role: "system" }]);
   const [prevRole, setPrevRole] = useState("system");
 
-  const {setCurrTab,setShowAdd} = useCompSelectorContext();
+  const { setCurrTab, setShowAdd } = useCompSelectorContext();
+  const { selectedExperimentInfo } = useExpContext();
+
+  const [createPromptTemplate, { data, loading, error }] = useMutation(
+    Queries.createPromptTemplate
+  );
+
+  const isCreated = useRef(false);
 
   const addNewPrompt = (e) => {
     e.preventDefault();
@@ -29,6 +39,28 @@ function CreatePromptTemplate() {
   const promptsList = prompts.map((prompt) => (
     <NewChat remove={removePrompt} prompt={prompt} key={prompt.id} />
   ));
+
+  const handleCreate = async () => {
+    try {
+      await createPromptTemplate({
+        variables: {
+          name: templateName,
+          description: "Initial Prompt Template Description",
+          conversation: { role: "system", content: "newone" },
+          experimentId: selectedExperimentInfo?.id,
+        },
+      });
+    } catch (err) {
+      return err;
+    }
+  };
+
+  useEffect(() => {
+    if (!isCreated.current) {
+      handleCreate();
+    }
+    isCreated.current = true;
+  }, []);
 
   return (
     <div className={`${styles.experimentBox}`}>
@@ -78,7 +110,7 @@ function CreatePromptTemplate() {
             }}
             sx={{ ml: "10px", textTransform: "none" }}
           >
-            Save
+            Run Now
           </Button>
         </div>
       </div>

@@ -4,8 +4,8 @@ import { Button } from "@mui/material";
 import AddIcon from "../../../assets/Svg/AddIcon";
 import { useCompSelectorContext } from "../../../context/compSelectorContext";
 
-function EmptyState({handleCreate}) {
-  const {setShowAdd,showEmpty, setShowEmpty} = useCompSelectorContext();
+function EmptyState() {
+  const { setShowAdd, showEmpty, setShowEmpty } = useCompSelectorContext();
 
   useEffect(() => {
     setShowEmpty(true);
@@ -23,11 +23,9 @@ function EmptyState({handleCreate}) {
           <div className="flex justify-center">
             <Button
               variant="outlined"
-              sx={{ color: "#2196F3",textTransform: "none" }}
+              sx={{ color: "#2196F3", textTransform: "none" }}
               onClick={() => {
                 setShowAdd(true);
-                handleCreate();
-                
               }}
             >
               <AddIcon className="mr-[11px]" /> Add new template

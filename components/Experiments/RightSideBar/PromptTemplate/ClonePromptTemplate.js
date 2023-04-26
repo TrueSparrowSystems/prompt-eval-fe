@@ -24,16 +24,20 @@ function ClonePromptTemplate() {
     Queries.createPromptTemplate
   );
 
-  useEffect(() => {
+  useEffect(async () => {
     if (!isCloned.current) {
-      createPromptTemplate({
-        variables: {
-          name: "Untitled Prompt Template",
-          description: "Initial Prompt Template Description",
-          conversation: { role: "system", content: "newone" },
-          experimentId: selectedExperimentInfo?.id,
-        },
-      });
+      try {
+        await createPromptTemplate({
+          variables: {
+            name: "Untitled Prompt Template",
+            description: "Initial Prompt Template Description",
+            conversation: { role: "system", content: "newone" },
+            experimentId: selectedExperimentInfo?.id,
+          },
+        });
+      } catch (err) {
+        return err;
+      }
     }
     isCloned.current = true;
   }, []);

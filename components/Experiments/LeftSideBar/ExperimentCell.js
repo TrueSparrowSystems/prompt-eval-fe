@@ -20,6 +20,7 @@ function ExperimentCell({
   const { selectedExperimentInfo, setSelectedExperimentInfo } = useExpContext();
   const { setShowReport, setShowAdd, setShowClone, setShowEdit } =
     useCompSelectorContext();
+
   const [updateExperiment, { data, loading, error }] = useMutation(
     Queries.updateExperiment
   );
@@ -33,7 +34,7 @@ function ExperimentCell({
       setNewExperimentName(selectedExperimentInfo?.name);
   }, [selectedExperimentInfo]);
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     if (newExperimentName.length === 0) {
       setNewExperimentName(selectedExperimentInfo?.name);
       return;
@@ -42,12 +43,17 @@ function ExperimentCell({
       ...prevState,
       name: newExperimentName,
     }));
-    updateExperiment({
-      variables: {
-        documentId: id,
-        name: newExperimentName,
-      },
-    });
+
+    try {
+      await updateExperiment({
+        variables: {
+          documentId: id,
+          name: newExperimentName,
+        },
+      });
+    } catch (err) {
+      return err;
+    }
   };
 
   return (

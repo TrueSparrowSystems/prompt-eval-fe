@@ -54,7 +54,7 @@ export default function BasicTabs({selectTestCase}) {
           aria-label="basic tabs example"
         >
           <Tab label="Details" {...a11yProps(0)} id="tab-0" onClick={clickEvent} sx={{opacity:"60%"}}/>
-          <Tab label="variable definations" {...a11yProps(1)} id="tab-1" onClick={clickEvent} sx={{opacity:"60%"}} />
+          <Tab label="variable definitions" {...a11yProps(1)} id="tab-1" onClick={clickEvent} sx={{opacity:"60%"}} />
           <Tab label="acceptable results" {...a11yProps(2)} id="tab-2" onClick={clickEvent} sx={{opacity:"60%"}} />
         </Tabs>
       </Box>

@@ -17,7 +17,6 @@ function ExperimentsDetails() {
   };
   const [addNewTemplate, setAddnewTemplate] = useState(false);
   const [showReport, setShowReport] = useState(false);
-  const [reportData,setReportData] = useState(null);
   const [toggleState, setToggleState] = useState(
     experimentTypes.promptTemplate
   );
@@ -61,14 +60,13 @@ function ExperimentsDetails() {
   const getExperimentUi = () => {
     if (showReport) {
       toggleTab(experimentTypes.testCases);
-      return <Report reportData={reportData} setShowReport={setShowReport} toggleTab={toggleTab} experimentTypes={experimentTypes}/>;
+      return <Report setShowReport={setShowReport} toggleTab={toggleTab} experimentTypes={experimentTypes}/>;
     } else if (addNewTemplate) {
       return <CreatePromptTemplate setAddnewTemplate={setAddnewTemplate}/>;
     } else if (toggleState === experimentTypes.promptTemplate) {
       return (
         <PromptTemplate
           setShowReport={setShowReport}
-          setReportData={setReportData}
           setAddnewTemplate={setAddnewTemplate}
           handleCreate={handleCreate}
         />

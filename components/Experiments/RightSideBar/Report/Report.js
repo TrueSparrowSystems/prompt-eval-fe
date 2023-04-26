@@ -9,7 +9,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 import Select from "@mui/material/Select";
 
-function Report() {
+function Report({setShowReport,toggleTab,experimentTypes}) {
   const { reportId } = useExpContext();
 
   const [recordPerPage, setRecordPerPage] = useState(6);

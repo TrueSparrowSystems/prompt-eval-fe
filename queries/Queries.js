@@ -141,7 +141,7 @@ class Queries {
         $experimentId: ID!
         $name: String!
         $description: String
-        $dynamicVarValues: [InputDynamicVarType]
+        $dynamicVarValues: JSONString
         $expectedResult: [String]
       ) {
         createTestCases(
@@ -158,10 +158,7 @@ class Queries {
             name
             description
             expectedResult
-            dynamicVarValues {
-              key
-              value
-            }
+            dynamicVarValues 
             createdAt
             updatedAt
             experimentId
@@ -178,10 +175,7 @@ class Queries {
           id
           name
           description
-          dynamicVarValues {
-            key
-            value
-          }
+          dynamicVarValues
           experimentId
           expectedResult
           updatedAt

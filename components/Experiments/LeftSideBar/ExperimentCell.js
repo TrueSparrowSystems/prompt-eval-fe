@@ -101,7 +101,7 @@ function ExperimentCell({
       </Link>
       {error && (
         <div className="text-[#f00] text-[14px] mt-[12px] break-all">
-          {error}
+          {error.message}
         </div>
       )}
     </>

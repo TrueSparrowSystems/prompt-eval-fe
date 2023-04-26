@@ -11,7 +11,7 @@ import Box from "@mui/material/Box";
 import Select from "@mui/material/Select";
 import Pagination from "../../../Pagination/Pagination";
 
-function PromptTemplate() {
+function PromptTemplate({handleCreate}) {
   const { selectedExperimentInfo } = useExpContext();
   const [recordPerPage, setRecordPerPage] = useState(6);
   const [currentPage, setCurrentPage] = useState(1);
@@ -52,8 +52,8 @@ function PromptTemplate() {
   }
   return (
     <div>
-      {loading || error || data?.promptListByPagination.prompts.length === 0 ? (
-        <EmptyState />
+      {error || data?.promptListByPagination.prompts.length === 0 ? (
+        <EmptyState handleCreate={handleCreate}/>
       ) : (
         <div className={`${styles.experimentBox}  max-h-[674px] overflow-auto`}>
           <div className={`flex items-center text-md font-bold border-b-2`}>

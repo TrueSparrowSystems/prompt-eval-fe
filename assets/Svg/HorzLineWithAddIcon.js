@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 
 const HorzLineWithAddIcon = (props) => (
   <svg width={24} height={24} {...props}>

@@ -8,7 +8,7 @@ function TestCaseCell({
 }) {
   return (
     <div
-      className={`flex items-center gap-[10px] py-[20px] px-[18px] cursor-pointer hover:bg-[#F0F0F0] border-b border-r  border-[F8FAFB] ${
+      className={`flex items-center gap-[10px] py-[20px] px-[18px] cursor-pointer hover:bg-[#F0F0F0] border-r  border-[F8FAFB] ${
         selectedTestCase == index ? "bg-[#F8FAFB] rounded-[4px]" : "opacity-60"
       }`}
       onClick={() => {

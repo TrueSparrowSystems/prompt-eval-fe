@@ -12,6 +12,7 @@ import { useExpContext } from "../../../context/ExpContext";
 import ClonePromptTemplate from "./PromptTemplate/ClonePromptTemplate";
 import { useCompSelectorContext } from "../../../context/compSelectorContext";
 import EditePromptTemplate from "./PromptTemplate/EditPromptTemplate";
+import {TabNames} from "../../../constants/TabNames";
 
 function ExperimentsDetails() {
   const {
@@ -21,17 +22,15 @@ function ExperimentsDetails() {
     setShowAdd,
     showClone,
     showEdit,
+    showEmpty,
+    setShowEmpty,
+    currTab,
+    setCurrTab
   } = useCompSelectorContext();
-  const experimentTypes = {
-    promptTemplate: "promptTemplate",
-    testCases: "testCases",
-  };
-  const [toggleState, setToggleState] = useState(
-    experimentTypes.promptTemplate
-  );
+ 
   const toggleTab = (type) => {
-    if (type != toggleState) {
-      setToggleState(type);
+    if (type != currTab) {
+      setCurrTab(type);
     }
   };
 
@@ -44,7 +43,7 @@ function ExperimentsDetails() {
   const { selectedExperimentInfo } = useExpContext();
 
   const handleCreate = () => {
-    if (toggleState === "promptTemplate") {
+    if (showEmpty || currTab === TabNames.PROMPTTEMPLATE) {
       createPromptTemplate({
         variables: {
           name: "Untitled Prompt Template",
@@ -58,7 +57,7 @@ function ExperimentsDetails() {
         variables: {
           name: "Untitled Test Case",
           description: "Initial Test Case Description",
-          dynamicVarValues: { key: "hey", value: "value" },
+          dynamicVarValues: JSON.stringify({ "key":"hey","value":"value" }),
           expectedResult: ["hey", "hey10"],
           experimentId: selectedExperimentInfo?.id,
         },
@@ -67,7 +66,11 @@ function ExperimentsDetails() {
   };
 
   const getExperimentUi = () => {
+
+    setShowEmpty(false);
+
     if (showReport) {
+      toggleTab(TabNames.TESTCASES);
       return <Report />;
     } else if (showAdd) {
       return <CreatePromptTemplate />;
@@ -75,10 +78,10 @@ function ExperimentsDetails() {
       return <ClonePromptTemplate />;
     } else if (showEdit) {
       return <EditePromptTemplate />;
-    } else if (toggleState === experimentTypes.promptTemplate) {
-      return <PromptTemplate />;
+    } else if (currTab === TabNames.PROMPTTEMPLATE) {
+      return <PromptTemplate handleCreate={handleCreate}/>;
     } else {
-      return <TestCases />;
+      return <TestCases handleCreate={handleCreate}/>;
     }
   };
 
@@ -89,49 +92,51 @@ function ExperimentsDetails() {
           <div className="flex items-center uppercase border-b relative">
             <div
               className={`${
-                toggleState === experimentTypes.promptTemplate
-                  ? `${styles.selectedTab} text-[#2196F3] z-10`
+                currTab === TabNames.PROMPTTEMPLATE
+                  ? `${styles.selectedTab} text-[#2196F3] z-[2]`
                   : `${styles.notSelectedtab}`
               }
-              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
+              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap h-[119px]`}
               onClick={() => {
                 setShowReport(false);
                 setShowAdd(false);
-                toggleTab(experimentTypes.promptTemplate);
+                toggleTab(TabNames.PROMPTTEMPLATE);
               }}
             >
               Prompt Template
             </div>
             <div
               className={`${
-                toggleState === experimentTypes.testCases
+                currTab === TabNames.TESTCASES
                   ? `${styles.selectedTab} text-[#2196F3] ml-[-20px]`
                   : `${styles.notSelectedtab} ml-[-15px]`
               }
-              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
+              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap h-[119px]`}
               onClick={() => {
                 setShowAdd(false);
-                toggleTab(experimentTypes.testCases);
+                toggleTab(TabNames.TESTCASES);
               }}
             >
               Test Cases
             </div>
           </div>
-          <div>
+          <div>{!showEmpty && 
             <Button
               size="large"
               style={{ textTransform: "none" }}
               onClick={() => {
+                if(currTab ===TabNames.PROMPTTEMPLATE)
                 setShowAdd(true);
+
                 handleCreate();
               }}
-              sx={{ color: "#2196F3" }}
+              sx={{ color: "#2196F3",top:"-25px" }}
             >
               <AddIcon className="mr-[11px]" />
-              {toggleState === experimentTypes.promptTemplate
+              {currTab === TabNames.PROMPTTEMPLATE
                 ? "Add new template"
                 : "Add new test case"}
-            </Button>
+            </Button>}
           </div>
         </div>
       </div>

@@ -12,7 +12,7 @@ function ClonePromptTemplate() {
   const isCloned = useRef(false);
   const { promptTemplate, selectedExperimentInfo } = useExpContext();
   const { setShowClone } = useCompSelectorContext();
-  const [templateName, setTemplateName] = useState("Untitled Cloned Template");
+  const [templateName, setTemplateName] = useState("Untitled Template copy");
 
   const [createPromptTemplate, { data, loading, error }] = useMutation(
     Queries.createPromptTemplate
@@ -77,7 +77,7 @@ function ClonePromptTemplate() {
               }}
               sx={{ ml: "10px", textTransform: "none" }}
             >
-              Run Now
+              Save
             </Button>
           </div>
         </div>

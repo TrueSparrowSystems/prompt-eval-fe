@@ -7,6 +7,8 @@ export const CompSelectorContext = createContext({
   setShowAdd: () => {},
   showClone: {},
   setShowClone: () => {},
+  showEdit: {},
+  setShowEdit: () => {},
 });
 
 export function useCompSelectorContext() {
@@ -17,6 +19,8 @@ export function useCompSelectorContext() {
     setShowAdd,
     showClone,
     setShowClone,
+    showEdit,
+    setShowEdit,
   } = useContext(CompSelectorContext);
 
   return {
@@ -26,6 +30,8 @@ export function useCompSelectorContext() {
     setShowAdd,
     showClone,
     setShowClone,
+    showEdit,
+    setShowEdit,
   };
 }
 
@@ -33,7 +39,8 @@ export const CompSelectorProvider = ({ children }) => {
   const [showReport, setShowReport] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
   const [showClone, setShowClone] = useState(false);
-
+  const [showEdit, setShowEdit] = useState(false);
+  
   return (
     <CompSelectorContext.Provider
       value={{
@@ -43,6 +50,8 @@ export const CompSelectorProvider = ({ children }) => {
         setShowAdd,
         showClone,
         setShowClone,
+        showEdit,
+        setShowEdit,
       }}
     >
       {children}

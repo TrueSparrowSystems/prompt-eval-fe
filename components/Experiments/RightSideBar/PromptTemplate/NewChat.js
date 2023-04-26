@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import RemoveIcon from "../../../../assets/Svg/RemoveIcon";
+import { useCompSelectorContext } from "../../../../context/compSelectorContext";
 
 function NewChat({ prompt, remove }) {
   const [role, setRole] = useState(prompt.role);
   const [isHover, setIsHover] = useState(false);
+  const [ptomptMessage, setPromptMessage] = useState(prompt.content);
   return (
     <li
       className="flex hover:bg-[#F8FAFB] p-2"
@@ -22,6 +24,8 @@ function NewChat({ prompt, remove }) {
         className={`w-full border rounded-[4px] h-[120px] p-[10px] ml-[40px] mr-[10px] outline-none ${
           isHover ? "border-[#2196F380] bg-[#F8FAFB]" : ""
         }`}
+        value={ptomptMessage}
+        onChange={(e) => {setPromptMessage(e.target.value)}}
         placeholder="Define template variables in {‘variable_name’} format within the prompt."
       />
       <div

@@ -10,7 +10,7 @@ import { useCompSelectorContext } from "../../../../context/compSelectorContext"
 
 function PromptTemplateCells({ PromptTemplate }) {
   const { setReportId, setPromptTemplate } = useExpContext();
-  const { setShowClone, setShowReport } = useCompSelectorContext();
+  const { setShowClone, setShowReport, setShowEdit } = useCompSelectorContext();
 
   return (
     <div className={`flex items-center text-md border-b-2`}>
@@ -64,13 +64,20 @@ function PromptTemplateCells({ PromptTemplate }) {
         <div className="flex items-center gap-[20px]">
           <div
             onClick={() => {
-              setPromptTemplate(PromptTemplate)
+              setPromptTemplate(PromptTemplate);
               setShowClone(true);
             }}
           >
             <Clone />
           </div>
-          <Edit />
+          <div
+            onClick={() => {
+              setPromptTemplate(PromptTemplate);
+              setShowEdit(true);
+            }}
+          >
+            <Edit />
+          </div>
         </div>
       </div>
     </div>

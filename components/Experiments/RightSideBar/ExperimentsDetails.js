@@ -9,11 +9,19 @@ import Report from "./Report/Report";
 import { useMutation } from "@apollo/client";
 import Queries from "../../../queries/Queries";
 import { useExpContext } from "../../../context/ExpContext";
-import UpdatePromptTemplate from "./PromptTemplate/ClonePromptTemplate";
+import ClonePromptTemplate from "./PromptTemplate/ClonePromptTemplate";
 import { useCompSelectorContext } from "../../../context/compSelectorContext";
+import EditePromptTemplate from "./PromptTemplate/EditPromptTemplate";
 
 function ExperimentsDetails() {
-  const {showReport, setShowReport, showAdd, setShowAdd, showClone} = useCompSelectorContext();
+  const {
+    showReport,
+    setShowReport,
+    showAdd,
+    setShowAdd,
+    showClone,
+    showEdit,
+  } = useCompSelectorContext();
   const experimentTypes = {
     promptTemplate: "promptTemplate",
     testCases: "testCases",
@@ -65,9 +73,11 @@ function ExperimentsDetails() {
     } else if (showAdd) {
       return <CreatePromptTemplate />;
     } else if (showClone) {
-      return <UpdatePromptTemplate />;
+      return <ClonePromptTemplate />;
+    } else if (showEdit) {
+      return <EditePromptTemplate />;
     } else if (toggleState === experimentTypes.promptTemplate) {
-      return <PromptTemplate/>;
+      return <PromptTemplate />;
     } else {
       return <TestCases />;
     }

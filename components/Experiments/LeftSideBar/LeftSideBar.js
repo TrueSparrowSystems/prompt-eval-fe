@@ -71,7 +71,7 @@ function LeftSideBar(props) {
             }}
           />
         )}
-        {error && <div className="text-[#f00] text-[14px] mt-[12px] break-all">{JSON.stringify(error)}</div>}
+        {error && <div className="text-[#f00] text-[14px] mt-[12px] break-all">{error.message}</div>}
       </Box>
       </div>
       <ExperimentList />

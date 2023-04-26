@@ -68,7 +68,6 @@ function ExperimentsDetails() {
 
   const getExperimentUi = () => {
     if (showReport) {
-      toggleTab(experimentTypes.testCases);
       return <Report />;
     } else if (showAdd) {
       return <CreatePromptTemplate />;

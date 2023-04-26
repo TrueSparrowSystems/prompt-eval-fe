@@ -4,6 +4,7 @@ import Rename from "../../../assets/Svg/Rename";
 import { useMutation } from "@apollo/client";
 import Queries from "../../../queries/Queries";
 import { useExpContext } from "../../../context/ExpContext";
+import { useCompSelectorContext } from "../../../context/compSelectorContext";
 import Link from "next/link";
 
 function ExperimentCell({
@@ -17,7 +18,8 @@ function ExperimentCell({
   const [editable, setEditable] = useState(false);
   const [newExperimentName, setNewExperimentName] = useState(experimentName);
   const { selectedExperimentInfo, setSelectedExperimentInfo } = useExpContext();
-
+  const { setShowReport, setShowAdd, setShowClone, setShowEdit } =
+    useCompSelectorContext();
   const [updateExperiment, { data, loading, error }] = useMutation(
     Queries.updateExperiment
   );
@@ -60,6 +62,10 @@ function ExperimentCell({
             }`}
             onClick={() => {
               setSelectedExperiment(index);
+              setShowReport(false);
+              setShowAdd(false);
+              setShowClone(false);
+              setShowEdit(false);
             }}
             onMouseEnter={() => setShowEditIcon(true)}
             onMouseLeave={() => setShowEditIcon(false)}

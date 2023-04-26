@@ -8,7 +8,7 @@ function Experiments() {
       <div className="basis-2/12 py-[26px] ">
         <LeftSideBar />
       </div>
-      <div className="bg-[#F3F4F6] w-full px-[35px] py-[26px]">
+      <div className="bg-[#F3F4F6] w-full md:px-[20px] lg:px-[35px] py-[26px]">
         <RightSideBar />
       </div>
     </div>

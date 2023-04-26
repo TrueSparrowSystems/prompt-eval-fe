@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
+import { TabNames } from "../constants/TabNames";
 
 export const CompSelectorContext = createContext({
   showReport: {},
@@ -9,6 +10,10 @@ export const CompSelectorContext = createContext({
   setShowClone: () => {},
   showEdit: {},
   setShowEdit: () => {},
+  showEmpty: {},
+  setShowEmpty: () => {},
+  currTab: {},
+  setCurrTab: () => {},
 });
 
 export function useCompSelectorContext() {
@@ -21,6 +26,10 @@ export function useCompSelectorContext() {
     setShowClone,
     showEdit,
     setShowEdit,
+    showEmpty,
+    setShowEmpty,
+    currTab,
+    setCurrTab,
   } = useContext(CompSelectorContext);
 
   return {
@@ -32,6 +41,10 @@ export function useCompSelectorContext() {
     setShowClone,
     showEdit,
     setShowEdit,
+    showEmpty,
+    setShowEmpty,
+    currTab,
+    setCurrTab,
   };
 }
 
@@ -40,7 +53,9 @@ export const CompSelectorProvider = ({ children }) => {
   const [showAdd, setShowAdd] = useState(false);
   const [showClone, setShowClone] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  
+  const [showEmpty, setShowEmpty] = useState(false);
+  const [currTab, setCurrTab] = useState(TabNames.PROMPTTEMPLATE);
+
   return (
     <CompSelectorContext.Provider
       value={{
@@ -52,6 +67,10 @@ export const CompSelectorProvider = ({ children }) => {
         setShowClone,
         showEdit,
         setShowEdit,
+        showEmpty,
+        setShowEmpty,
+        currTab,
+        setCurrTab,
       }}
     >
       {children}

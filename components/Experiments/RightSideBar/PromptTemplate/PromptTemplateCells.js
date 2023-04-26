@@ -8,9 +8,9 @@ import { getFormattedDate } from "../../../../utils/DateFormates";
 import { useExpContext } from "../../../../context/ExpContext";
 import { useCompSelectorContext } from "../../../../context/compSelectorContext";
 
-function PromptTemplateCells({ PromptTemplate, setShowReport }) {
+function PromptTemplateCells({ PromptTemplate }) {
   const { setReportId, setPromptTemplate } = useExpContext();
-  const { setShowClone } = useCompSelectorContext();
+  const { setShowClone, setShowReport } = useCompSelectorContext();
 
   return (
     <div className={`flex items-center text-md border-b-2`}>

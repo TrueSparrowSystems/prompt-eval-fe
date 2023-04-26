@@ -4,7 +4,6 @@ import NewChat from "./NewChat";
 import Button from "@mui/material/Button";
 import { v4 as uuid } from "uuid";
 import BackArrow from "../../../../assets/Svg/BackArrow";
-import LoadingState from "../../LoadingState";
 
 function CreatePromptTemplate() {
   const [templateName, setTemplateName] = useState("Untitled Template");

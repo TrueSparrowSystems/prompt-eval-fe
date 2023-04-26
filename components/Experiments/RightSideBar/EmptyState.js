@@ -1,9 +1,16 @@
-import { React } from "react";
+import { React, useEffect } from "react";
 import styles from "./ExperimentsDetails.module.scss";
 import { Button } from "@mui/material";
 import AddIcon from "../../../assets/Svg/AddIcon";
+import { useCompSelectorContext } from "../../../context/compSelectorContext";
 
-function EmptyState({setAddnewTemplate,handleCreate}) {
+function EmptyState({handleCreate}) {
+  const {setShowAdd,setShowEmpty} = useCompSelectorContext();
+
+  useEffect(() => {
+    setShowEmpty(true);
+  }, []);
+
   return (
     <div
       className={`relative ${styles.emptyState} flex justify-center items-center top-[-48px]`}
@@ -18,8 +25,8 @@ function EmptyState({setAddnewTemplate,handleCreate}) {
               variant="outlined"
               sx={{ color: "#2196F3",textTransform: "none" }}
               onClick={() => {
-                setAddnewTemplate(true);
-                handleCreate("promptTemplate");
+                setShowAdd(true);
+                handleCreate();
               }}
             >
               <AddIcon className="mr-[11px]" /> Add new template

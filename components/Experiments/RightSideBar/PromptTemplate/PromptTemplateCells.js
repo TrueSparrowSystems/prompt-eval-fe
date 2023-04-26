@@ -12,6 +12,7 @@ import { useCompSelectorContext } from "../../../../context/compSelectorContext"
 function PromptTemplateCells({ PromptTemplate }) {
   const { setReportId, setPromptTemplate } = useExpContext();
   const { setShowClone, setShowReport, setShowEdit } = useCompSelectorContext();
+  const [showRunModal, setShowRunModal] = useState(false);
 
   return (
     <div className={`flex items-center text-md border-b-2`}>

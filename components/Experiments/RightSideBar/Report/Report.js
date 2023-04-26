@@ -8,9 +8,13 @@ import Pagination from "../../../Pagination/Pagination";
 import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 import Select from "@mui/material/Select";
+import {useCompSelectorContext} from "../../../../context/compSelectorContext";
+import { TabNames } from "../../../../constants/TabNames";
 
-function Report({setShowReport,toggleTab,experimentTypes}) {
+function Report() {
   const { reportId } = useExpContext();
+
+  const { setShowReport, setCurrTab } = useCompSelectorContext();
 
   const [recordPerPage, setRecordPerPage] = useState(6);
   const [currentPage, setCurrentPage] = useState(1);
@@ -56,7 +60,13 @@ function Report({setShowReport,toggleTab,experimentTypes}) {
         height: "674px",
       }}
     >
-      <div className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60 px-[30px]"  onClick={()=>{setShowReport(false);toggleTab(experimentTypes.promptTemplate)}}>
+      <div
+        className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60 px-[30px]"
+        onClick={() => {
+          setShowReport(false)
+          setCurrTab(TabNames.PROMPTTEMPLATE)
+        }}
+      >
         <BackArrow />
         <div className="text-[14px] opacity-60 py-[25px]">View Report</div>
       </div>

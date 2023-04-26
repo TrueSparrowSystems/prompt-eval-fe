@@ -12,7 +12,7 @@ function CreatePromptTemplate() {
   const [prompts, setPrompts] = useState([{ id: uuid(), role: "system" }]);
   const [prevRole, setPrevRole] = useState("system");
 
-  const {setCurrTab,setShowEmpty,setShowAdd} = useCompSelectorContext();
+  const {setCurrTab,setShowAdd} = useCompSelectorContext();
 
   const addNewPrompt = (e) => {
     e.preventDefault();
@@ -29,10 +29,6 @@ function CreatePromptTemplate() {
   const promptsList = prompts.map((prompt) => (
     <NewChat remove={removePrompt} prompt={prompt} key={prompt.id} />
   ));
-
-  useEffect(() => {
-    setShowEmpty(false);
-  }, []);
 
   return (
     <div className={`${styles.experimentBox}`}>

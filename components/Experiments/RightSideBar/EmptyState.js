@@ -5,7 +5,7 @@ import AddIcon from "../../../assets/Svg/AddIcon";
 import { useCompSelectorContext } from "../../../context/compSelectorContext";
 
 function EmptyState({handleCreate}) {
-  const {setShowAdd,setShowEmpty} = useCompSelectorContext();
+  const {setShowAdd,showEmpty, setShowEmpty} = useCompSelectorContext();
 
   useEffect(() => {
     setShowEmpty(true);
@@ -13,7 +13,7 @@ function EmptyState({handleCreate}) {
 
   return (
     <div
-      className={`relative ${styles.emptyState} flex justify-center items-center top-[-48px]`}
+      className={`relative ${styles.emptyState} flex justify-center items-center top-[-63px]`}
     >
       <div className={`flex justify-center items-center flex-col`}>
         <div className="step-four p-[20px]">
@@ -27,6 +27,7 @@ function EmptyState({handleCreate}) {
               onClick={() => {
                 setShowAdd(true);
                 handleCreate();
+                
               }}
             >
               <AddIcon className="mr-[11px]" /> Add new template

@@ -23,6 +23,7 @@ function ExperimentsDetails() {
     showClone,
     showEdit,
     showEmpty,
+    setShowEmpty,
     currTab,
     setCurrTab
   } = useCompSelectorContext();
@@ -56,7 +57,7 @@ function ExperimentsDetails() {
         variables: {
           name: "Untitled Test Case",
           description: "Initial Test Case Description",
-          dynamicVarValues: { key: "hey", value: "value" },
+          dynamicVarValues: JSON.stringify({ "key":"hey","value":"value" }),
           expectedResult: ["hey", "hey10"],
           experimentId: selectedExperimentInfo?.id,
         },
@@ -65,6 +66,9 @@ function ExperimentsDetails() {
   };
 
   const getExperimentUi = () => {
+
+    setShowEmpty(false);
+
     if (showReport) {
       toggleTab(TabNames.TESTCASES);
       return <Report />;
@@ -116,7 +120,7 @@ function ExperimentsDetails() {
               Test Cases
             </div>
           </div>
-          <div>
+          <div>{!showEmpty && 
             <Button
               size="large"
               style={{ textTransform: "none" }}
@@ -132,7 +136,7 @@ function ExperimentsDetails() {
               {currTab === TabNames.PROMPTTEMPLATE
                 ? "Add new template"
                 : "Add new test case"}
-            </Button>
+            </Button>}
           </div>
         </div>
       </div>

@@ -21,7 +21,7 @@ function PromptTemplateCells({ PromptTemplate }) {
       </div>
       <div className="basis-1/5 px-[10px]">
         {PromptTemplate.latestEvaluationReport[0] !== null
-          ? PromptTemplate.latestEvaluationReport[0].accuracy
+          ? PromptTemplate.latestEvaluationReport[0].accuracy+"%"
           : "--"}
       </div>
       <div className="basis-1/5 px-[10px]">

@@ -5,13 +5,13 @@ import HorzLineWithAddIcon from "../../../../assets/Svg/HorzLineWithAddIcon";
 import styles from "./TestCaseInfo.module.scss";
 
 export default function TestCaseInfo({ value, isClicked, data }) {
-  const [variableName, setVariableName] = useState(
-    data?.dynamicVarValues[0]?.key
-  );
+  const [variableName, setVariableName] = useState("Untitled Variable");
   const [variableValue, setVariableValue] = useState(
-    data?.dynamicVarValues[0]?.value
+    JSON.stringify(JSON.parse(data?.dynamicVarValues))
   );
-  const [acceptedResult, setAcceptedResult] = useState(data?.expectedResult[0]);
+  const [acceptedResult, setAcceptedResult] = useState(["Untitled Result"]);
+  const [acceptedResultValue, setAcceptedResultValue] = useState([data?.expectedResult]);
+
   const [testCaseName, setTestCaseName] = useState(data?.name);
   const [testCaseDescription, setTestCaseDescription] = useState(
     data?.description
@@ -20,11 +20,11 @@ export default function TestCaseInfo({ value, isClicked, data }) {
   const scrollRef = useRef(null);
 
   useEffect(() => {
-    
+    console.log("data", data);
     if (isClicked) {
       moveToTop(value);
     }
-  }, [isClicked]);
+  }, [isClicked,data]);
 
   async function moveToTop(Id) {
     const element = document.getElementById(Id);
@@ -75,6 +75,7 @@ export default function TestCaseInfo({ value, isClicked, data }) {
     textBox.placeholder =
       "Define template variables in {‘variable_name’} format within the prompt.";
     
+      
     document.getElementById("result").appendChild(titleBox);
     document.getElementById("result").appendChild(textBox);
   };
@@ -83,7 +84,7 @@ export default function TestCaseInfo({ value, isClicked, data }) {
     <div
       ref={scrollRef}
       id="cont"
-      className="overflow-auto relative mb-[30px]"
+      className="overflow-auto relative mb-[30px] max-h-[570px]"
       onScroll={handleScroll} // this is the problem
     >
       <div id="0" className="tab">
@@ -147,14 +148,18 @@ export default function TestCaseInfo({ value, isClicked, data }) {
         <input
           className={`${styles.inputStyle} opacity-40`}
           type="text"
-          value={acceptedResult}
+          value={acceptedResult[0]}
           onChange={(e) => {
-            setAcceptedResult(e.target.value);
+            setAcceptedResult({ ...acceptedResult, 0: e.target.value});
           }}
         />
         <textarea
           className={`${styles.textareaStyle}`}
           placeholder="Define template variables in {‘variable_name’} format within the prompt."
+          value={acceptedResultValue[0]}
+          onChange={(e) => {
+            setAcceptedResultValue({ ...acceptedResultValue, 0: e.target.value });
+          }}
         />
       </div>
       <div className="my-[30px] relative">

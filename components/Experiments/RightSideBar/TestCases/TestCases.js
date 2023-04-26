@@ -33,7 +33,7 @@ export default function TestCases({handleCreate}) {
           <div className="basis-56 max-h-[674px] overflow-auto">
             <TestCasesList data={data} setSelectTestCase={setSelectTestCase} />
           </div>
-          <div className="mt-[13px] w-full overflow-auto">
+          <div className="mt-[13px] w-full">
             <TestCaseTabs selectTestCase={selectTestCase} />
           </div>
         </div>

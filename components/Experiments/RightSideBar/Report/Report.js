@@ -55,7 +55,7 @@ function Report() {
         borderRadius: "8px;",
         position: "absolute",
         zIndex: "100",
-        top: "90px",
+        top: "85px",
         width: "100%",
         height: "674px",
       }}

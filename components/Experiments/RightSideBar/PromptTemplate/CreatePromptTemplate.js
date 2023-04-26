@@ -78,7 +78,7 @@ function CreatePromptTemplate() {
             }}
             sx={{ ml: "10px", textTransform: "none" }}
           >
-            Run Now
+            Save
           </Button>
         </div>
       </div>

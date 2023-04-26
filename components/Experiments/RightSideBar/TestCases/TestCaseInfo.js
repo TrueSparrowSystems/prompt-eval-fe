@@ -4,8 +4,6 @@ import HorizontalLine from "../../../../assets/Svg/HorizontalLine";
 import HorzLineWithAddIcon from "../../../../assets/Svg/HorzLineWithAddIcon";
 import styles from "./TestCaseInfo.module.scss";
 
-import styles from "./TestCaseInfo.module.scss";
-
 export default function TestCaseInfo({ value, isClicked, data }) {
   const [variableName, setVariableName] = useState("Untitled Variable");
   const [variableValue, setVariableValue] = useState(
@@ -78,9 +76,7 @@ export default function TestCaseInfo({ value, isClicked, data }) {
     textBox.className = `${styles.textareaStyle}`;
     textBox.placeholder =
       "Define template variables in {‘variable_name’} format within the prompt.";
-    
-      
->>>>>>> upstream/prompt-eval-v1
+
     document.getElementById("result").appendChild(titleBox);
     document.getElementById("result").appendChild(textBox);
   };

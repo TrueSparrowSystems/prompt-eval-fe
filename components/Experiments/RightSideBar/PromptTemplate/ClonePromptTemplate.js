@@ -8,7 +8,7 @@ import { useMutation } from "@apollo/client";
 import Queries from "../../../../queries/Queries";
 import UpdateTemplateSkeleton from "../../../Skeletons/UpdateTemplateSkeleton";
 
-function UpdatePromptTemplate() {
+function ClonePromptTemplate() {
   const isCloned = useRef(false);
   const { promptTemplate, selectedExperimentInfo } = useExpContext();
   const { setShowClone } = useCompSelectorContext();
@@ -86,4 +86,4 @@ function UpdatePromptTemplate() {
   );
 }
 
-export default UpdatePromptTemplate;
+export default ClonePromptTemplate;

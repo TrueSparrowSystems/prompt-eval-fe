@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 const HorizontalLine = (props) => (
   <svg width={"100%"} height={1} {...props}>
     <line

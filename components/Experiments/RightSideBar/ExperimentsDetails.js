@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import styles from "./ExperimentsDetails.module.scss";
 import PromptTemplate from "./PromptTemplate/PromptTemplate";
@@ -9,14 +9,23 @@ import Report from "./Report/Report";
 import { useMutation } from "@apollo/client";
 import Queries from "../../../queries/Queries";
 import { useExpContext } from "../../../context/ExpContext";
+import ClonePromptTemplate from "./PromptTemplate/ClonePromptTemplate";
+import { useCompSelectorContext } from "../../../context/compSelectorContext";
+import EditePromptTemplate from "./PromptTemplate/EditPromptTemplate";
 
 function ExperimentsDetails() {
+  const {
+    showReport,
+    setShowReport,
+    showAdd,
+    setShowAdd,
+    showClone,
+    showEdit,
+  } = useCompSelectorContext();
   const experimentTypes = {
     promptTemplate: "promptTemplate",
     testCases: "testCases",
   };
-  const [addNewTemplate, setAddnewTemplate] = useState(false);
-  const [showReport, setShowReport] = useState(false);
   const [toggleState, setToggleState] = useState(
     experimentTypes.promptTemplate
   );
@@ -32,7 +41,7 @@ function ExperimentsDetails() {
   const [createTestCases, { dataTestCase, loadingTestCase, errorTestCase }] =
     useMutation(Queries.createTestCases);
 
-  const { selectedExperimentInfo, setSelectedExperimentInfo } = useExpContext();
+  const { selectedExperimentInfo } = useExpContext();
 
   const handleCreate = () => {
     if (toggleState === "promptTemplate") {
@@ -61,14 +70,14 @@ function ExperimentsDetails() {
     if (showReport) {
       toggleTab(experimentTypes.testCases);
       return <Report />;
-    } else if (addNewTemplate) {
+    } else if (showAdd) {
       return <CreatePromptTemplate />;
+    } else if (showClone) {
+      return <ClonePromptTemplate />;
+    } else if (showEdit) {
+      return <EditePromptTemplate />;
     } else if (toggleState === experimentTypes.promptTemplate) {
-      return (
-        <PromptTemplate
-          setShowReport={setShowReport}
-        />
-      );
+      return <PromptTemplate />;
     } else {
       return <TestCases />;
     }
@@ -88,7 +97,7 @@ function ExperimentsDetails() {
               px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
               onClick={() => {
                 setShowReport(false);
-                setAddnewTemplate(false);
+                setShowAdd(false);
                 toggleTab(experimentTypes.promptTemplate);
               }}
             >
@@ -102,7 +111,7 @@ function ExperimentsDetails() {
               }
               px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
               onClick={() => {
-                setAddnewTemplate(false);
+                setShowAdd(false);
                 toggleTab(experimentTypes.testCases);
               }}
             >
@@ -114,7 +123,7 @@ function ExperimentsDetails() {
               size="large"
               style={{ textTransform: "none" }}
               onClick={() => {
-                setAddnewTemplate(true);
+                setShowAdd(true);
                 handleCreate();
               }}
               sx={{ color: "#2196F3" }}

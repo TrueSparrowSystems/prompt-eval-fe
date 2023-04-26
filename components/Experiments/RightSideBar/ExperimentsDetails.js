@@ -9,12 +9,15 @@ import Report from "./Report/Report";
 import { useMutation } from "@apollo/client";
 import Queries from "../../../queries/Queries";
 import { useExpContext } from "../../../context/ExpContext";
+import UpdatePromptTemplate from "./PromptTemplate/UpdatePromptTemplate";
+import { useCompSelectorContext } from "../../../context/compSelectorContext";
 
 function ExperimentsDetails() {
   const experimentTypes = {
     promptTemplate: "promptTemplate",
     testCases: "testCases",
   };
+  const { showClone } = useCompSelectorContext();
   const [addNewTemplate, setAddnewTemplate] = useState(false);
   const [showReport, setShowReport] = useState(false);
   const [toggleState, setToggleState] = useState(
@@ -32,7 +35,7 @@ function ExperimentsDetails() {
   const [createTestCases, { dataTestCase, loadingTestCase, errorTestCase }] =
     useMutation(Queries.createTestCases);
 
-  const { selectedExperimentInfo, setSelectedExperimentInfo } = useExpContext();
+  const { selectedExperimentInfo } = useExpContext();
 
   const handleCreate = () => {
     if (toggleState === "promptTemplate") {
@@ -63,12 +66,10 @@ function ExperimentsDetails() {
       return <Report />;
     } else if (addNewTemplate) {
       return <CreatePromptTemplate />;
+    } else if (showClone) {
+      return <UpdatePromptTemplate />;
     } else if (toggleState === experimentTypes.promptTemplate) {
-      return (
-        <PromptTemplate
-          setShowReport={setShowReport}
-        />
-      );
+      return <PromptTemplate setShowReport={setShowReport} />;
     } else {
       return <TestCases />;
     }

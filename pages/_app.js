@@ -6,16 +6,19 @@ import client from "../apollo-client";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "../theme";
 import { ExpContextProvider } from "../context/ExpContext";
+import { CompSelectorProvider } from "../context/compSelectorContext";
 
 function MyApp({ Component, pageProps }) {
   return (
     <ThemeProvider theme={theme}>
       <ApolloProvider client={client}>
         <Provider store={store}>
-          <ExpContextProvider>
-        <Component {...pageProps} />
-          </ExpContextProvider>
-      </Provider>
+          <CompSelectorProvider>
+            <ExpContextProvider>
+              <Component {...pageProps} />
+            </ExpContextProvider>
+          </CompSelectorProvider>
+        </Provider>
       </ApolloProvider>
     </ThemeProvider>
   );

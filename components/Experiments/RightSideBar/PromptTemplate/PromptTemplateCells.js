@@ -6,9 +6,11 @@ import Edit from "../../../../assets/Svg/Edit";
 import Calendar from "../../../../assets/Svg/Calendar";
 import { getFormattedDate } from "../../../../utils/DateFormates";
 import { useExpContext } from "../../../../context/ExpContext";
+import { useCompSelectorContext } from "../../../../context/compSelectorContext";
 
 function PromptTemplateCells({ PromptTemplate, setShowReport }) {
-  const { setReportId } = useExpContext();
+  const { setReportId, setPromptTemplate } = useExpContext();
+  const { setShowClone } = useCompSelectorContext();
 
   return (
     <div className={`flex items-center text-md border-b-2`}>
@@ -60,7 +62,14 @@ function PromptTemplateCells({ PromptTemplate, setShowReport }) {
           </Button>
         </div>
         <div className="flex items-center gap-[20px]">
-          <Clone />
+          <div
+            onClick={() => {
+              setPromptTemplate(PromptTemplate)
+              setShowClone(true);
+            }}
+          >
+            <Clone />
+          </div>
           <Edit />
         </div>
       </div>

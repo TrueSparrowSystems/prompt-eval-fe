@@ -20,7 +20,6 @@ export default function TestCaseInfo({ value, isClicked, data }) {
   const scrollRef = useRef(null);
 
   useEffect(() => {
-    console.log("data", data);
     if (isClicked) {
       moveToTop(value);
     }

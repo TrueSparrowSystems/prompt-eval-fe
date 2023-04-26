@@ -13,7 +13,7 @@ function EmptyState({handleCreate}) {
 
   return (
     <div
-      className={`relative ${styles.emptyState} flex justify-center items-center top-[-63px]`}
+      className={`relative ${styles.emptyState} flex justify-center items-center`}
     >
       <div className={`flex justify-center items-center flex-col`}>
         <div className="step-four p-[20px]">

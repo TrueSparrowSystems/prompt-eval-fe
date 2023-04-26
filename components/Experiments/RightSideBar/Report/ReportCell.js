@@ -19,7 +19,6 @@ function ReportCell({ report, index, setExpanded, expanded }) {
         <AccordionSummary
           aria-controls={`panel${index}d-content`}
           id={`panel${index}d-header`}
-          sx={{paddingLeft:"16px"}}
         >
           <div className={`flex items-center text-md cursor-pointer w-full`}>
             <div className="w-1/6 px-[10px] py-[34px]">

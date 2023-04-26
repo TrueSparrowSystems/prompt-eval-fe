@@ -26,7 +26,7 @@ export default function TestCases({ setAddnewTemplate, handleCreate}) {
 
   return (
     <div>
-      {data===null || error || data===undefined || data?.testCases.length === 0 ? (
+      {data === null || data === undefined || data.testCases.length === 0 || error ? (
         <EmptyState setAddnewTemplate={setAddnewTemplate} handleCreate={handleCreate}/>
       ) : (
         <div className={`flex gap-[20px] ${styles.experimentBox}`}>

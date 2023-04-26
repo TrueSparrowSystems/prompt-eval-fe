@@ -4,6 +4,8 @@ import HorizontalLine from "../../../../assets/Svg/HorizontalLine";
 import HorzLineWithAddIcon from "../../../../assets/Svg/HorzLineWithAddIcon";
 import styles from "./TestCaseInfo.module.scss";
 
+import styles from "./TestCaseInfo.module.scss";
+
 export default function TestCaseInfo({ value, isClicked, data }) {
   const [variableName, setVariableName] = useState("Untitled Variable");
   const [variableValue, setVariableValue] = useState(
@@ -76,7 +78,9 @@ export default function TestCaseInfo({ value, isClicked, data }) {
     textBox.className = `${styles.textareaStyle}`;
     textBox.placeholder =
       "Define template variables in {‘variable_name’} format within the prompt.";
-
+    
+      
+>>>>>>> upstream/prompt-eval-v1
     document.getElementById("result").appendChild(titleBox);
     document.getElementById("result").appendChild(textBox);
   };
@@ -94,7 +98,6 @@ export default function TestCaseInfo({ value, isClicked, data }) {
           type="text"
           value={testCaseName}
           onChange={(e) => {
-            setOpacity("80");
             setTestCaseName(e.target.value);
           }}
           // on={(e) => setOpacity("80")}
@@ -148,7 +151,7 @@ export default function TestCaseInfo({ value, isClicked, data }) {
         <input
           className={`${styles.inputStyle} opacity-40`}
           type="text"
-          value={acceptedResult[0]}
+          value={acceptedResult[0][0]}
           onChange={(e) => {
             setAcceptedResult({ ...acceptedResult, 0: e.target.value });
           }}

@@ -63,8 +63,6 @@ function ExperimentsDetails() {
       return <Report />;
     } else if (showAdd) {
       return <CreatePromptTemplate />;
-    } else if (showClone) {
-      return <ClonePromptTemplate />;
     } else if (showEdit) {
       return <EditePromptTemplate />;
     } else if (currTab === TabNames.PROMPTTEMPLATE) {

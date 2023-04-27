@@ -13,8 +13,8 @@ import Toast from "../../../ToastMessage/Toast";
 import { MESSAGES } from "../../../../constants/Messages";
 
 function EditePromptTemplate() {
-  const { promptTemplate, selectedExperimentInfo } = useExpContext();
-  const { showAdd, setShowEdit, setCurrTab } = useCompSelectorContext();
+  const { promptTemplate } = useExpContext();
+  const { showAdd, setShowEdit, setCurrTab, showClone } = useCompSelectorContext();
   const isTemplatedRead = useRef(false);
   const [templateName, setTemplateName] = useState(promptTemplate.name);
 
@@ -93,7 +93,7 @@ function EditePromptTemplate() {
 
   return (
     <>
-      {data && <Toast msg={MESSAGES.PROMPT_TEMPLATE_UPDATED} />}
+      {data && <Toast msg={showClone ? MESSAGES.PROMPT_TEMPLATE_CLONED  : MESSAGES.PROMPT_TEMPLATE_UPDATED} />}
       <div className={`${styles.experimentBox}`}>
         {error ?
           <div className="flex items-center justify-center text-[20px] text-[#ff0000] tracking-[0.2px] h-[400px]">

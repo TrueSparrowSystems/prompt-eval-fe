@@ -34,9 +34,6 @@ function ExperimentsDetails() {
     }
   };
 
-  const [createPromptTemplate, { data, loading, error }] = useMutation(
-    Queries.createPromptTemplate
-  );
   const [createTestCases, { dataTestCase, loadingTestCase, errorTestCase }] =
     useMutation(Queries.createTestCases);
 
@@ -44,14 +41,6 @@ function ExperimentsDetails() {
 
   const handleCreate = () => {
     if (showEmpty || currTab === TabNames.PROMPTTEMPLATE) {
-      createPromptTemplate({
-        variables: {
-          name: "Untitled Prompt Template",
-          description: "Initial Prompt Template Description",
-          conversation: { role: "system", content: "newone" },
-          experimentId: selectedExperimentInfo?.id,
-        },
-      });
     } else {
       createTestCases({
         variables: {

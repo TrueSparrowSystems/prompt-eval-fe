@@ -46,7 +46,7 @@ export default function BasicTabs({ selectTestCase }) {
   };
 
   return (
-    <Box sx={{ width: "100%",marginTop:"-18px" }}>
+    <Box sx={{ width: "100%",marginTop:"-20px" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}

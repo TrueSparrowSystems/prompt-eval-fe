@@ -8,7 +8,7 @@ import Pagination from "../../../Pagination/Pagination";
 import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 import Select from "@mui/material/Select";
-import {useCompSelectorContext} from "../../../../context/compSelectorContext";
+import { useCompSelectorContext } from "../../../../context/compSelectorContext";
 import { TabNames } from "../../../../constants/TabNames";
 
 function Report() {
@@ -63,14 +63,16 @@ function Report() {
       <div
         className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60 px-[30px]"
         onClick={() => {
-          setShowReport(false)
-          setCurrTab(TabNames.PROMPTTEMPLATE)
+          setShowReport(false);
+          setCurrTab(TabNames.PROMPTTEMPLATE);
         }}
       >
         <BackArrow />
         <div className="text-[14px] opacity-60 py-[25px]">View Report</div>
       </div>
-      <div className={`flex items-center text-md font-bold border-t`}>
+      <div
+        className={`flex items-center text-[15px] tracking-[0.2px] font-semibold border-t`}
+      >
         <div className="w-1/6 py-[34px] px-[10px]">Test Case Name</div>
         <div className="w-4/6 pr-[10px] pl-[20px] py-[34px] border-l-2">
           Description

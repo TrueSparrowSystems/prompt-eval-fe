@@ -33,15 +33,19 @@ function CreatePromptTemplate() {
     return conversation;
   };
 
-  const createNewPromptTemplate = () => {
-    createPromptTemplate({
-      variables: {
-        name: templateName,
-        description: "Initial Prompt Template Description",
-        conversation: getConversation(),
-        experimentId: selectedExperimentInfo?.id,
-      },
-    });
+  const createNewPromptTemplate = async () => {
+    try {
+      await createPromptTemplate({
+        variables: {
+          name: templateName,
+          description: "Initial Prompt Template Description",
+          conversation: getConversation(),
+          experimentId: selectedExperimentInfo?.id,
+        },
+      });
+    } catch (err) {
+      return err;
+    }
   };
   if (data) {
     setTimeout(() => {

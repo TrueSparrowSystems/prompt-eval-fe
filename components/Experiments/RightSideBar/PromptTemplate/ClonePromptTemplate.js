@@ -26,10 +26,10 @@ function ClonePromptTemplate() {
     return conversation;
   };
 
-  useEffect(async () => {
+  useEffect(() => {
     if (!isCloned.current && promptTemplate) {
       try {
-        await createPromptTemplate({
+        createPromptTemplate({
           variables: {
             name: "Untitled Template copy",
             description: promptTemplate?.description,

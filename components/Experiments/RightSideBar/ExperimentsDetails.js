@@ -6,10 +6,6 @@ import TestCases from "./TestCases/TestCases";
 import AddIcon from "../../../assets/Svg/AddIcon";
 import CreatePromptTemplate from "./PromptTemplate/CreatePromptTemplate";
 import Report from "./Report/Report";
-import { useMutation } from "@apollo/client";
-import Queries from "../../../queries/Queries";
-import { useExpContext } from "../../../context/ExpContext";
-import ClonePromptTemplate from "./PromptTemplate/ClonePromptTemplate";
 import { useCompSelectorContext } from "../../../context/compSelectorContext";
 import EditePromptTemplate from "./PromptTemplate/EditPromptTemplate";
 import { TabNames } from "../../../constants/TabNames";
@@ -20,7 +16,6 @@ function ExperimentsDetails() {
     setShowReport,
     showAdd,
     setShowAdd,
-    showClone,
     showEdit,
     showEmpty,
     setShowEmpty,
@@ -34,14 +29,6 @@ function ExperimentsDetails() {
       setCurrTab(type);
     }
   };
-
-  const [createPromptTemplate, { data, loading, error }] = useMutation(
-    Queries.createPromptTemplate
-  );
-  const [createTestCases, { dataTestCase, loadingTestCase, errorTestCase }] =
-    useMutation(Queries.createTestCases);
-
-  const { selectedExperimentInfo } = useExpContext();
 
   const getExperimentUi = () => {
     setShowEmpty(false);

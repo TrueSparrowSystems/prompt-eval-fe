@@ -5,7 +5,7 @@ import AddIcon from "../../../assets/Svg/AddIcon";
 import { useCompSelectorContext } from "../../../context/compSelectorContext";
 
 function EmptyState({handleCreate}) {
-  const {setShowAdd,showEmpty, setShowEmpty} = useCompSelectorContext();
+  const {setShowAdd, setShowEmpty} = useCompSelectorContext();
 
   useEffect(() => {
     setShowEmpty(true);
@@ -26,7 +26,6 @@ function EmptyState({handleCreate}) {
               sx={{ color: "#2196F3",textTransform: "none" }}
               onClick={() => {
                 setShowAdd(true);
-                handleCreate();
                 
               }}
             >

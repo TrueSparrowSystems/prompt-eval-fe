@@ -158,7 +158,7 @@ class Queries {
             name
             description
             expectedResult
-            dynamicVarValues 
+            dynamicVarValues
             createdAt
             updatedAt
             experimentId
@@ -209,6 +209,39 @@ class Queries {
             actualResult
             acceptableResult
             accuracy
+          }
+        }
+      }
+    `;
+  }
+
+  get updatePromptTemplate() {
+    return gql`
+      mutation updatePromptTemplate(
+        $name: String
+        $description: String
+        $id: String!
+        $conversation: [InputConversationType]
+      ) {
+        updatePromptTemplate(
+          updatePromptTemplateData: {
+            id: $id
+            conversation: $conversation
+            name: $name
+            description: $description
+          }
+        ) {
+          promptTemplate {
+            id
+            name
+            description
+            conversation {
+              role
+              content
+            }
+            experimentId
+            createdAt
+            updatedAt
           }
         }
       }

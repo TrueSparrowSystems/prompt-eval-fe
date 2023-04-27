@@ -61,7 +61,9 @@ function PromptTemplate() {
         <EmptyState />
       ) : (
         <div className={`${styles.experimentBox}  max-h-[674px] overflow-auto`}>
-          <div className={`flex items-center text-md font-bold border-b-2`}>
+          <div
+            className={`flex items-center text-[15px] tracking-[0.2px] font-semibold border-b-2`}
+          >
             <div
               className={`basis-1/5 border-r-2 px-[10px] py-[34px] mr-[10px]`}
             >

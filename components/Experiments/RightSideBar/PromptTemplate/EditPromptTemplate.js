@@ -6,14 +6,23 @@ import { v4 as uuid } from "uuid";
 import BackArrow from "../../../../assets/Svg/BackArrow";
 import { useExpContext } from "../../../../context/ExpContext";
 import { useCompSelectorContext } from "../../../../context/compSelectorContext";
+import { TabNames } from "../../../../constants/TabNames";
+import { useMutation } from "@apollo/client";
+import Queries from "../../../../queries/Queries";
+import Toast from "../../../ToastMessage/Toast";
+import { MESSAGES } from "../../../../constants/Messages";
 
 function EditePromptTemplate() {
   const { promptTemplate } = useExpContext();
-  const { showAdd, setShowEdit, setShowAdd } = useCompSelectorContext();
+  const { showAdd, setShowEdit, setCurrTab, showClone } = useCompSelectorContext();
   const isTemplatedRead = useRef(false);
-  const [templateName, setTemplateName] = useState("Untitled Template");
+  const [templateName, setTemplateName] = useState(promptTemplate.name);
 
   const initialPrompts = [];
+
+  const [updateTemplate, { data, loading, error }] = useMutation(
+    Queries.updatePromptTemplate
+  );
 
   if (showAdd) {
     initialPrompts.push({ id: uuid(), role: "system" });
@@ -40,10 +49,40 @@ function EditePromptTemplate() {
 
   const readPromptTemplate = () => {
     promptTemplate.conversation.map((prompt) => {
-      const newPrompt = { role: prompt.role, content: prompt.content };
+      const newPrompt = {
+        role: prompt.role,
+        content: prompt.content,
+        id: uuid(),
+      };
       setPrompts((prompts) => [...prompts, newPrompt]);
     });
   };
+
+  const getConversation = () => {
+    const conversation = [];
+    prompts.forEach((prompt) => {
+      conversation.push({ role: prompt.role, content: prompt.content });
+    });
+    return conversation;
+  };
+
+  const updatePromptTemplate = () => {
+    updateTemplate({
+      variables: {
+        name: templateName,
+        description: promptTemplate.description,
+        conversation: getConversation(),
+        id: promptTemplate?.id,
+      },
+    });
+  };
+  
+  if (data) {
+    setTimeout(() => {
+      setShowEdit(false);
+      setCurrTab(TabNames.PROMPTTEMPLATE);
+    }, 5000);
+  }
 
   useEffect(() => {
     if (!isTemplatedRead.current) {
@@ -53,55 +92,67 @@ function EditePromptTemplate() {
   }, []);
 
   return (
-    <div className={`${styles.experimentBox}`}>
-      <div
-        className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60"
-        onClick={() => {
-          setShowEdit(false);
-          setShowAdd(false);
-        }}
-      >
-        <BackArrow />
-        <div className="text-[14px] opacity-60 py-[25px]">
-          {promptTemplate.name}
+    <>
+      {data && <Toast msg={showClone ? MESSAGES.PROMPT_TEMPLATE_CLONED  : MESSAGES.PROMPT_TEMPLATE_UPDATED} />}
+      <div className={`${styles.experimentBox}`}>
+        {error ?
+          <div className="flex items-center justify-center text-[20px] text-[#ff0000] tracking-[0.2px] h-[400px]">
+            {error.message}
+          </div>
+         : 
+        <>
+        <div
+          className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60"
+          onClick={() => {
+            setShowEdit(false);
+          }}
+        >
+          <BackArrow />
+          <div className="text-[14px] opacity-60 py-[25px]">
+            Back to all prompt templates
+          </div>
         </div>
-      </div>
-      <input
-        className="text-[20px] font-bold opacity-60 outline-none pb-[25px]"
-        type="text"
-        value={templateName}
-        onChange={(e) => {
-          setTemplateName(e.target.value);
-        }}
-      />
-      <ul>{promptsList}</ul>
-      <div className="flex gap-[25px]">
-        <div className="basis-20"></div>
-        <div>
+        <input
+          className="text-[20px] font-bold opacity-60 outline-none pb-[25px] w-full"
+          type="text"
+          value={templateName}
+          onChange={(e) => {
+            setTemplateName(e.target.value);
+          }}
+        />
+        <ul>{promptsList}</ul>
+        <div className="flex gap-[25px]">
+          <div className="basis-20"></div>
           <div>
+            <div>
+              <Button
+                size="large"
+                style={{ textTransform: "none", color: "#000" }}
+                onClick={(e) => {
+                  addNewPrompt(e);
+                }}
+              >
+                + Add message
+              </Button>
+            </div>
             <Button
-              size="large"
-              style={{ textTransform: "none", color: "#000" }}
-              onClick={(e) => {
-                addNewPrompt(e);
+              onClick={() => {
+                updatePromptTemplate();
               }}
+              variant="contained"
+              style={{
+                background: "#2196F3",
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+              }}
+              sx={{ ml: "10px", textTransform: "none" }}
             >
-              + Add message
+              Save
             </Button>
           </div>
-          <Button
-            variant="contained"
-            style={{
-              background: "#2196F3",
-              border: "1px solid rgba(0, 0, 0, 0.23)",
-            }}
-            sx={{ ml: "10px", textTransform: "none" }}
-          >
-            Save
-          </Button>
         </div>
+        </>}
       </div>
-    </div>
+    </>
   );
 }
 

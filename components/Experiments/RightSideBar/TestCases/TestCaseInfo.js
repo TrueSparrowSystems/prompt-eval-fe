@@ -147,7 +147,7 @@ export default function TestCaseInfo({ value, isClicked, data }) {
         <input
           className={`${styles.inputStyle} opacity-40`}
           type="text"
-          value={acceptedResult[0]}
+          value={acceptedResult[0][0]}
           onChange={(e) => {
             setAcceptedResult({ ...acceptedResult, 0: e.target.value });
           }}

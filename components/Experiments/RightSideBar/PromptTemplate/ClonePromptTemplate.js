@@ -1,37 +1,39 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "../ExperimentsDetails.module.scss";
-import Button from "@mui/material/Button";
 import BackArrow from "../../../../assets/Svg/BackArrow";
 import { useCompSelectorContext } from "../../../../context/compSelectorContext";
 import { useExpContext } from "../../../../context/ExpContext";
 import { useMutation } from "@apollo/client";
 import Queries from "../../../../queries/Queries";
 import UpdateTemplateSkeleton from "../../../Skeletons/UpdateTemplateSkeleton";
-import MuiAlert from "@mui/material/Alert";
-import Snackbar from "@mui/material/Snackbar";
-
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+import Toast from "../../../ToastMessage/Toast";
+import { MESSAGES } from "../../../../constants/Messages";
 
 function ClonePromptTemplate() {
   const isCloned = useRef(false);
   const { promptTemplate, selectedExperimentInfo } = useExpContext();
   const { setShowClone } = useCompSelectorContext();
-  const [templateName, setTemplateName] = useState("Untitled Template copy");
 
   const [createPromptTemplate, { data, loading, error }] = useMutation(
     Queries.createPromptTemplate
   );
 
+  const getConversation = (prompts) => {
+    const conversation = [];
+    prompts.forEach((prompt) => {
+      conversation.push({ role: prompt.role, content: prompt.content });
+    });
+    return conversation;
+  };
+
   useEffect(async () => {
-    if (!isCloned.current) {
+    if (!isCloned.current && promptTemplate) {
       try {
         await createPromptTemplate({
           variables: {
-            name: "Untitled Prompt Template",
-            description: "Initial Prompt Template Description",
-            conversation: { role: "system", content: "newone" },
+            name: "Untitled Template copy",
+            description: promptTemplate?.description,
+            conversation: getConversation(promptTemplate?.conversation),
             experimentId: selectedExperimentInfo?.id,
           },
         });
@@ -48,18 +50,7 @@ function ClonePromptTemplate() {
         <UpdateTemplateSkeleton />
       ) : (
         <>
-          <Snackbar
-            open={open}
-            autoHideDuration={5000}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "center",
-            }}
-          >
-            <Alert severity="success" sx={{ width: "100%" }}>
-              {promptTemplate.name} has beed cloned successfully.
-            </Alert>
-          </Snackbar>
+          <Toast msg={MESSAGES.PROMPT_TEMPLATE_CLONED} />
           <div className={`${styles.experimentBox}`}>
             <div
               className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60"
@@ -69,19 +60,14 @@ function ClonePromptTemplate() {
             >
               <BackArrow />
               <div className="text-[14px] opacity-60 py-[25px]">
-                {promptTemplate.name}
+                Back to prompt templates
               </div>
             </div>
-            <input
-              className="text-[20px] font-bold opacity-60 outline-none pb-[25px] w-1/3"
-              type="text"
-              value={templateName}
-              onChange={(e) => {
-                setTemplateName(e.target.value);
-              }}
-            />
-            {promptTemplate.conversation.map((chat) => (
-              <div className="flex p-2">
+            <div className="text-[20px] font-bold opacity-60 outline-none pb-[25px] w-1/3">
+              Untitled Template copy
+            </div>
+            {promptTemplate.conversation.map((chat, index) => (
+              <div className="flex p-2" key={index}>
                 <div className="uppercase cursor-pointer text-md hover:bg-[#fff] p-[10px] h-[40px] basis-20">
                   {chat.role}
                 </div>
@@ -91,18 +77,6 @@ function ClonePromptTemplate() {
                 />
               </div>
             ))}
-            <div>
-              <Button
-                variant="contained"
-                style={{
-                  background: "#2196F3",
-                  border: "1px solid rgba(0, 0, 0, 0.23)",
-                }}
-                sx={{ ml: "10px", textTransform: "none" }}
-              >
-                Save
-              </Button>
-            </div>
           </div>
         </>
       )}

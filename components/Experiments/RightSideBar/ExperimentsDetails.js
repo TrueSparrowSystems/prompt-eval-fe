@@ -35,6 +35,12 @@ function ExperimentsDetails() {
     }
   };
 
+  const [createPromptTemplate, { data, loading, error }] = useMutation(
+    Queries.createPromptTemplate
+  );
+  const [createTestCases, { dataTestCase, loadingTestCase, errorTestCase }] =
+    useMutation(Queries.createTestCases);
+
   const { selectedExperimentInfo } = useExpContext();
 
   const getExperimentUi = () => {
@@ -45,8 +51,6 @@ function ExperimentsDetails() {
       return <Report />;
     } else if (showAdd) {
       return <CreatePromptTemplate />;
-    } else if (showClone) {
-      return <ClonePromptTemplate />;
     } else if (showEdit) {
       return <EditePromptTemplate />;
     } else if (currTab === TabNames.PROMPTTEMPLATE) {

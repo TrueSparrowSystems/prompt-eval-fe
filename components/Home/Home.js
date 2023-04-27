@@ -7,8 +7,8 @@ export default function Home() {
     <>
       <div className="flex h-[100vh]">
         <div className="basis-2/12 py-[26px] ">
-          <div className="px-[14px] bg-[#fff] normal-case">
-            <Button fullWidth variant="outlined" sx={{ textTransform: "none" }}>
+          <div className="px-[14px] bg-[#fff]">
+            <Button fullWidth variant="outlined" sx={{ textTransform: "none",whiteSpace:"nowrap"}}>
               + Create Experiment
             </Button>
             <div

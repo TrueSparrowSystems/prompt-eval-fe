@@ -1,15 +1,11 @@
-import { React, useEffect } from "react";
+import { React } from "react";
 import styles from "./ExperimentsDetails.module.scss";
 import { Button } from "@mui/material";
 import AddIcon from "../../../assets/Svg/AddIcon";
 import { useCompSelectorContext } from "../../../context/compSelectorContext";
 
 function EmptyState() {
-  const { setShowAdd, showEmpty, setShowEmpty } = useCompSelectorContext();
-
-  useEffect(() => {
-    setShowEmpty(true);
-  }, []);
+  const { setShowAdd } = useCompSelectorContext();
 
   return (
     <div

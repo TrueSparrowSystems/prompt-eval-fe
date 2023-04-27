@@ -17,8 +17,6 @@ function ExperimentsDetails() {
     showAdd,
     setShowAdd,
     showEdit,
-    showEmpty,
-    setShowEmpty,
     currTab,
     setCurrTab,
     setAddTestCase,
@@ -31,8 +29,6 @@ function ExperimentsDetails() {
   };
 
   const getExperimentUi = () => {
-    setShowEmpty(false);
-
     if (showReport) {
       toggleTab(TabNames.TESTCASES);
       return <Report />;
@@ -58,7 +54,7 @@ function ExperimentsDetails() {
                   ? `${styles.selectedTab} text-[#2196F3] z-[2]`
                   : `${styles.notSelectedtab}`
               }
-              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
+              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap h-[119px]`}
               onClick={() => {
                 setShowReport(false);
                 setShowAdd(false);
@@ -73,7 +69,7 @@ function ExperimentsDetails() {
                   ? `${styles.selectedTab} text-[#2196F3] ml-[-20px]`
                   : `${styles.notSelectedtab} ml-[-15px]`
               }
-              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
+              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap h-[119px]`}
               onClick={() => {
                 setShowAdd(false);
                 toggleTab(TabNames.TESTCASES);
@@ -82,27 +78,22 @@ function ExperimentsDetails() {
               Test Cases
             </div>
           </div>
-          <div>
-            {!showEmpty && (
-              <Button
-                size="large"
-                style={{ textTransform: "none" }}
-                onClick={() => {
-                  if (currTab === TabNames.PROMPTTEMPLATE) setShowAdd(true);
-                  else {
-                    setAddTestCase(true);
-                    setShowReport(false);
-                  }
-                }}
-                sx={{ color: "#2196F3" }}
-              >
-                <AddIcon className="mr-[11px]" />
-                {currTab === TabNames.PROMPTTEMPLATE
-                  ? "Add new template"
-                  : "Add new test case"}
-              </Button>
-            )}
-          </div>
+          <Button
+            size="large"
+            style={{ textTransform: "none", top: "-25px" }}
+            onClick={() => {
+              if (currTab === TabNames.PROMPTTEMPLATE) setShowAdd(true);
+              else {
+                setAddTestCase(true);
+              }
+            }}
+            sx={{ color: "#2196F3" }}
+          >
+            <AddIcon className="mr-[11px]" />
+            {currTab === TabNames.PROMPTTEMPLATE
+              ? "Add new template"
+              : "Add new test case"}
+          </Button>
         </div>
       </div>
       <div className="w-full">{getExperimentUi()}</div>

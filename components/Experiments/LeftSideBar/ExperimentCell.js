@@ -61,7 +61,7 @@ function ExperimentCell({
       <Link href={`/experiments/${id}`}>
         <a>
           <div
-            className={`flex items-center gap-[10px] p-[10px] cursor-pointer hover:bg-[#F0F0F0] ${
+            className={`flex items-center gap-[10px] p-[12px] cursor-pointer hover:bg-[#F0F0F0] ${
               selectedExperiment == index
                 ? "bg-[#F8FAFB] rounded-[4px]"
                 : "opacity-60"
@@ -76,7 +76,9 @@ function ExperimentCell({
             onMouseEnter={() => setShowEditIcon(true)}
             onMouseLeave={() => setShowEditIcon(false)}
           >
-            <ExperimentsIcon />
+            <div>
+              <ExperimentsIcon />
+            </div>
             {editable ? (
               <input
                 type="text"
@@ -89,7 +91,9 @@ function ExperimentCell({
                 }}
               />
             ) : (
-              <div className="text-md text-[#000]">{newExperimentName}</div>
+              <div className="text-md text-[#000] text-ellipsis line-clamp-2">
+                {newExperimentName}
+              </div>
             )}
             <button
               className={`ml-auto hover:bg-[#0000001A] p-[5px] ${

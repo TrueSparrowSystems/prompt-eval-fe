@@ -29,7 +29,7 @@ function LeftSideBar(props) {
         variables: {
           name: "Untitled Experiment",
           description:
-            "Use this template to track your experiments. Add your experiment description here. Click + Add new template to create a new prompt template on this board.",
+            "Use this template to track your experiments. Add your experiment description here. \nClick + Add new template to create a new prompt template on this board.",
         },
       });
     } catch (err) {
@@ -43,9 +43,9 @@ function LeftSideBar(props) {
       "&:hover": {
         bgcolor: "#2196F3",
       },
-      transform: "none",
     }),
     color: "#2196F3",
+    textTransform: "none",
   };
 
   return (

@@ -55,7 +55,9 @@ export default function TestCases() {
       {data == null || data.testCases.length === 0 || error ? (
         <EmptyState />
       ) : (
-        <div className={`flex gap-[20px] ${styles.experimentBox}`}>
+        <div
+          className={`flex gap-[20px] ${styles.experimentBox}`}
+        >
           <div className="basis-56 max-h-[674px] overflow-auto">
             <TestCasesList data={data} setSelectTestCase={setSelectTestCase} />
           </div>

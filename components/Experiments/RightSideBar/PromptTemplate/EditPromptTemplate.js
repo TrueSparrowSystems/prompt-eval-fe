@@ -66,15 +66,19 @@ function EditePromptTemplate() {
     return conversation;
   };
 
-  const updatePromptTemplate = () => {
-    updateTemplate({
-      variables: {
-        name: templateName,
-        description: promptTemplate.description,
-        conversation: getConversation(),
-        id: promptTemplate?.id,
-      },
-    });
+  const updatePromptTemplate = async () => {
+    try{
+      await updateTemplate({
+        variables: {
+          name: templateName,
+          description: promptTemplate.description,
+          conversation: getConversation(),
+          id: promptTemplate?.id,
+        },
+      });
+    } catch (err) {
+      return err;
+    }
   };
   
   if (data) {
@@ -108,7 +112,7 @@ function EditePromptTemplate() {
           }}
         >
           <BackArrow />
-          <div className="text-[14px] opacity-60 py-[25px]">
+          <div className="text-[15px] opacity-60 py-[25px]">
             Back to all prompt templates
           </div>
         </div>

@@ -68,7 +68,7 @@ function Report() {
         }}
       >
         <BackArrow />
-        <div className="text-[14px] opacity-60 py-[25px]">View Report</div>
+        <div className="text-[15px] opacity-60 py-[25px]">View Report</div>
       </div>
       <div
         className={`flex items-center text-[15px] tracking-[0.2px] font-semibold border-t`}

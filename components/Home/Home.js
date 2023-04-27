@@ -7,9 +7,9 @@ export default function Home() {
     <>
       <div className="flex h-[100vh]">
         <div className="basis-2/12 py-[26px] ">
-          <div className="px-[14px] bg-[#fff]">
+          <div className="px-[14px] bg-[#fff] normal-case">
             <Button fullWidth variant="outlined" sx={{ textTransform: "none" }}>
-              + Create experiment
+              + Create Experiment
             </Button>
             <div
               className={`flex items-center gap-[10px] cursor-pointer pt-[20px] opacity-60`}

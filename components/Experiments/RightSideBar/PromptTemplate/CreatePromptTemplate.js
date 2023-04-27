@@ -89,7 +89,7 @@ function CreatePromptTemplate() {
               }}
             >
               <BackArrow />
-              <div className="text-[14px] opacity-80 py-[25px]">
+              <div className="text-[15px] opacity-80 py-[25px]">
                 Back to all Template
               </div>
             </div>

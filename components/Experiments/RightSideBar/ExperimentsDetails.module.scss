@@ -18,10 +18,22 @@
   border-radius: 8px;
   padding: 25px;
   z-index: 10;
-  top:85px;
   width:100%;
+  border: 1px solid white;
+  position: relative;
+  margin-top: -52px;
+  height: 674px;
 }
 
+.experimentBox:after {
+  content:"";
+  position: absolute;
+  width: 470px;
+  top: 0px;
+  left: 36px;
+  border: 1px solid #0000001A;
+  }
+  
 .emptyState{
   background-image: url("../../../assets/Svg/EmptyPage.svg");
   background-size: cover;
@@ -31,4 +43,15 @@
   min-height: 70vh;
   height:674px;
   z-index: 10;
+  margin-top: -52px;
+  border: 1px solid white;
+}
+
+.emptyState::after{
+  content:"";
+  position: absolute;
+  width: 470px;
+  top: -2px;
+  left: 36px;
+  border: 1px solid #0000001A;
 }

@@ -33,7 +33,7 @@ function a11yProps(index) {
   };
 }
 
-export default function BasicTabs({selectTestCase}) {
+export default function BasicTabs({ selectTestCase }) {
   const [value, setValue] = React.useState(0);
   const [isClicked, setIsClicked] = useState(false);
 
@@ -46,28 +46,57 @@ export default function BasicTabs({selectTestCase}) {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%",marginTop:"-18px" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab label="Details" {...a11yProps(0)} id="tab-0" onClick={clickEvent} sx={{opacity:"60%"}}/>
-          <Tab label="variable definitions" {...a11yProps(1)} id="tab-1" onClick={clickEvent} sx={{opacity:"60%"}} />
-          <Tab label="acceptable results" {...a11yProps(2)} id="tab-2" onClick={clickEvent} sx={{opacity:"60%"}} />
+          <Tab
+            label="Details"
+            {...a11yProps(0)}
+            id="tab-0"
+            onClick={clickEvent}
+            sx={{ opacity: "60%" }}
+          />
+          <Tab
+            label="variable definitions"
+            {...a11yProps(1)}
+            id="tab-1"
+            onClick={clickEvent}
+            sx={{ opacity: "60%" }}
+          />
+          <Tab
+            label="acceptable results"
+            {...a11yProps(2)}
+            id="tab-2"
+            onClick={clickEvent}
+            sx={{ opacity: "60%" }}
+          />
         </Tabs>
       </Box>
-      
-      
+
       <TabPanel value={value} index={0}>
-        <TestCaseInfo value={value} isClicked={isClicked} data={selectTestCase}/>
+        <TestCaseInfo
+          value={value}
+          isClicked={isClicked}
+          data={selectTestCase}
+        />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <TestCaseInfo value={value} isClicked={isClicked} data={selectTestCase}/>
+        <TestCaseInfo
+          value={value}
+          isClicked={isClicked}
+          data={selectTestCase}
+        />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <TestCaseInfo value={value} isClicked={isClicked} data={selectTestCase}/>
+        <TestCaseInfo
+          value={value}
+          isClicked={isClicked}
+          data={selectTestCase}
+        />
       </TabPanel>
     </Box>
   );

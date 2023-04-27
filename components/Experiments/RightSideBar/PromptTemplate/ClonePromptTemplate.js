@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import styles from "../ExperimentsDetails.module.scss";
 import BackArrow from "../../../../assets/Svg/BackArrow";
 import { useCompSelectorContext } from "../../../../context/compSelectorContext";
@@ -59,7 +59,7 @@ function ClonePromptTemplate() {
               }}
             >
               <BackArrow />
-              <div className="text-[14px] opacity-60 py-[25px]">
+              <div className="text-[15px] opacity-60 py-[25px]">
                 Back to prompt templates
               </div>
             </div>

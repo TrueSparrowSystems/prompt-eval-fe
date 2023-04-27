@@ -17,7 +17,6 @@ function PromptTemplate() {
   const [recordPerPage, setRecordPerPage] = useState(6);
   const [currentPage, setCurrentPage] = useState(1);
   const totalCount = useRef(0);
-  const { showEmptyState } = useCompSelectorContext();
 
   const startCount = (currentPage - 1) * recordPerPage + 1;
   const endCount =

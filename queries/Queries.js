@@ -218,9 +218,9 @@ class Queries {
   get updatePromptTemplate() {
     return gql`
       mutation updatePromptTemplate(
-        $name: String!
+        $name: String
         $description: String
-        $id: ID!
+        $id: String!
         $conversation: [InputConversationType]
       ) {
         updatePromptTemplate(

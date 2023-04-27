@@ -21,7 +21,7 @@ function EditePromptTemplate() {
   const initialPrompts = [];
 
   const [updateTemplate, { data, loading, error }] = useMutation(
-    Queries.createPromptTemplate
+    Queries.updatePromptTemplate
   );
 
   if (showAdd) {
@@ -72,10 +72,11 @@ function EditePromptTemplate() {
         name: templateName,
         description: promptTemplate.description,
         conversation: getConversation(),
-        experimentId: selectedExperimentInfo?.id,
+        id: promptTemplate?.id,
       },
     });
   };
+  
   if (data) {
     setTimeout(() => {
       setShowEdit(false);
@@ -94,11 +95,12 @@ function EditePromptTemplate() {
     <>
       {data && <Toast msg={MESSAGES.PROMPT_TEMPLATE_UPDATED} />}
       <div className={`${styles.experimentBox}`}>
-        {error && (
+        {error ?
           <div className="flex items-center justify-center text-[20px] text-[#ff0000] tracking-[0.2px] h-[400px]">
             {error.message}
           </div>
-        )}
+         : 
+        <>
         <div
           className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60"
           onClick={() => {
@@ -111,7 +113,7 @@ function EditePromptTemplate() {
           </div>
         </div>
         <input
-          className="text-[20px] font-bold opacity-60 outline-none pb-[25px]"
+          className="text-[20px] font-bold opacity-60 outline-none pb-[25px] w-full"
           type="text"
           value={templateName}
           onChange={(e) => {
@@ -148,6 +150,7 @@ function EditePromptTemplate() {
             </Button>
           </div>
         </div>
+        </>}
       </div>
     </>
   );

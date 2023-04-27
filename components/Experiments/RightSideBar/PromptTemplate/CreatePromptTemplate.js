@@ -71,68 +71,69 @@ function CreatePromptTemplate() {
       {data && <Toast msg={MESSAGES.PROMPT_TEMPLATE_CREATED} />}
 
       <div className={`${styles.experimentBox}`}>
-        {error && (
+        {error ? (
           <div className="flex items-center justify-center text-[20px] text-[#ff0000] tracking-[0.2px] h-[400px]">
             {error.message}
           </div>
-        )}
-        <>
-          <div
-            className="flex items-center gap-[10px] cursor-pointer hover:opacity-100 opacity-80"
-            onClick={() => {
-              setShowAdd(false);
-              setCurrTab(TabNames.PROMPTTEMPLATE);
-            }}
-          >
-            <BackArrow />
-            <div className="text-[14px] opacity-80 py-[25px]">
-              Back to all Template
+        ) : (
+          <>
+            <div
+              className="flex items-center gap-[10px] cursor-pointer hover:opacity-100 opacity-80"
+              onClick={() => {
+                setShowAdd(false);
+                setCurrTab(TabNames.PROMPTTEMPLATE);
+              }}
+            >
+              <BackArrow />
+              <div className="text-[14px] opacity-80 py-[25px]">
+                Back to all Template
+              </div>
             </div>
-          </div>
-          <input
-            className="text-[20px] font-bold opacity-60 outline-none pb-[25px]"
-            type="text"
-            value={templateName}
-            onChange={(e) => {
-              setTemplateName(e.target.value);
-            }}
-          />
-          <ul>{promptsList}</ul>
-          <div className="flex gap-[25px]">
-            <div className="basis-20"></div>
-            <div>
+            <input
+              className="text-[20px] font-bold opacity-60 outline-none pb-[25px]"
+              type="text"
+              value={templateName}
+              onChange={(e) => {
+                setTemplateName(e.target.value);
+              }}
+            />
+            <ul>{promptsList}</ul>
+            <div className="flex gap-[25px]">
+              <div className="basis-20"></div>
               <div>
+                <div>
+                  <Button
+                    size="large"
+                    style={{
+                      textTransform: "none",
+                      color: "#000",
+                      fontSize: "14px",
+                      opacity: "0.8",
+                    }}
+                    onClick={(e) => {
+                      addNewPrompt(e);
+                    }}
+                  >
+                    + Add message
+                  </Button>
+                </div>
                 <Button
-                  size="large"
+                  variant="contained"
+                  onClick={() => {
+                    createNewPromptTemplate();
+                  }}
                   style={{
-                    textTransform: "none",
-                    color: "#000",
-                    fontSize: "14px",
-                    opacity: "0.8",
+                    background: "#2196F3",
+                    border: "1px solid rgba(0, 0, 0, 0.23)",
                   }}
-                  onClick={(e) => {
-                    addNewPrompt(e);
-                  }}
+                  sx={{ ml: "10px", textTransform: "none" }}
                 >
-                  + Add message
+                  Save
                 </Button>
               </div>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  createNewPromptTemplate();
-                }}
-                style={{
-                  background: "#2196F3",
-                  border: "1px solid rgba(0, 0, 0, 0.23)",
-                }}
-                sx={{ ml: "10px", textTransform: "none" }}
-              >
-                Save
-              </Button>
             </div>
-          </div>
-        </>
+          </>
+        )}
       </div>
     </>
   );

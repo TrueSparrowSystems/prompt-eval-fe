@@ -13,19 +13,26 @@ function ClonePromptTemplate() {
   const isCloned = useRef(false);
   const { promptTemplate, selectedExperimentInfo } = useExpContext();
   const { setShowClone } = useCompSelectorContext();
-  const [templateName, setTemplateName] = useState("Untitled Template copy");
 
   const [createPromptTemplate, { data, loading, error }] = useMutation(
     Queries.createPromptTemplate
   );
 
+  const getConversation = (prompts) => {
+    const conversation = [];
+    prompts.forEach((prompt) => {
+      conversation.push({ role: prompt.role, content: prompt.content });
+    });
+    return conversation;
+  };
+
   useEffect(() => {
-    if (!isCloned.current) {
+    if (!isCloned.current && promptTemplate) {
       createPromptTemplate({
         variables: {
-          name: "Untitled Prompt Template",
-          description: "Initial Prompt Template Description",
-          conversation: { role: "system", content: "newone" },
+          name: "Untitled Template copy",
+          description: promptTemplate?.description,
+          conversation: getConversation(promptTemplate?.conversation),
           experimentId: selectedExperimentInfo?.id,
         },
       });
@@ -52,16 +59,9 @@ function ClonePromptTemplate() {
                 Back to prompt templates
               </div>
             </div>
-            <input
-              className="text-[20px] font-bold opacity-60 outline-none pb-[25px] w-1/3"
-              type="text"
-              value={templateName}
-              onChange={(e) => {
-                setTemplateName(e.target.value);
-              }}
-            />
-            {promptTemplate.conversation.map((chat) => (
-              <div className="flex p-2">
+            <div  className="text-[20px] font-bold opacity-60 outline-none pb-[25px] w-1/3">Untitled Template copy</div>
+            {promptTemplate.conversation.map((chat,index) => (
+              <div className="flex p-2" key={index}>
                 <div className="uppercase cursor-pointer text-md hover:bg-[#fff] p-[10px] h-[40px] basis-20">
                   {chat.role}
                 </div>

@@ -16,7 +16,7 @@ function PromptTemplateCells({ PromptTemplate }) {
 
   return (
     <div className={`flex items-center text-md border-b-2`}>
-      <div className={`basis-1/5 border-r-2 px-[10px] py-[34px] mr-[10px]`}>
+      <div className={`basis-1/5 border-r-2 px-[10px] py-[44px] mr-[10px]`}>
         {PromptTemplate.name}
       </div>
       <div className="basis-1/5 px-[10px]">
@@ -38,7 +38,7 @@ function PromptTemplateCells({ PromptTemplate }) {
           </div>
         </div>
         <div
-          className={`flex items-center gap-[10px] ${
+          className={`flex items-center gap-[10px] mt-[10px] ${
             PromptTemplate.latestEvaluationReport[0] !== null
               ? "cursor-pointer"
               : ""

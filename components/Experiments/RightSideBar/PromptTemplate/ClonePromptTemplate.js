@@ -1,18 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "../ExperimentsDetails.module.scss";
-import Button from "@mui/material/Button";
 import BackArrow from "../../../../assets/Svg/BackArrow";
 import { useCompSelectorContext } from "../../../../context/compSelectorContext";
 import { useExpContext } from "../../../../context/ExpContext";
 import { useMutation } from "@apollo/client";
 import Queries from "../../../../queries/Queries";
 import UpdateTemplateSkeleton from "../../../Skeletons/UpdateTemplateSkeleton";
-import MuiAlert from "@mui/material/Alert";
-import Snackbar from "@mui/material/Snackbar";
-
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+import Toast from "../../../ToastMessage/Toast";
+import { MESSAGES } from "../../../../constants/Messages";
 
 function ClonePromptTemplate() {
   const isCloned = useRef(false);
@@ -44,18 +39,7 @@ function ClonePromptTemplate() {
         <UpdateTemplateSkeleton />
       ) : (
         <>
-          <Snackbar
-            open={open}
-            autoHideDuration={5000}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "center",
-            }}
-          >
-            <Alert severity="success" sx={{ width: "100%" }}>
-              {promptTemplate.name} has beed cloned successfully.
-            </Alert>
-          </Snackbar>
+          <Toast msg={MESSAGES.PROMPT_TEMPLATE_CLONED}/>
           <div className={`${styles.experimentBox}`}>
             <div
               className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60"
@@ -65,7 +49,7 @@ function ClonePromptTemplate() {
             >
               <BackArrow />
               <div className="text-[14px] opacity-60 py-[25px]">
-                {promptTemplate.name}
+                Back to prompt templates
               </div>
             </div>
             <input

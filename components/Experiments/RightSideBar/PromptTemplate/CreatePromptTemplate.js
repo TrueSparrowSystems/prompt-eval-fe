@@ -68,7 +68,7 @@ function CreatePromptTemplate() {
 
   return (
     <>
-      {data && <Toast msg={MESSAGES.NEW_TEMPLATED_CREATED} />}
+      {data && <Toast msg={MESSAGES.PROMPT_TEMPLATE_CREATED} />}
 
       <div className={`${styles.experimentBox}`}>
         {error && (

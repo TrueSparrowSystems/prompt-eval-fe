@@ -34,9 +34,6 @@ function ExperimentsDetails() {
     }
   };
 
-  const [createPromptTemplate, { data, loading, error }] = useMutation(
-    Queries.createPromptTemplate
-  );
   const [createTestCases, { dataTestCase, loadingTestCase, errorTestCase }] =
     useMutation(Queries.createTestCases);
 
@@ -44,14 +41,6 @@ function ExperimentsDetails() {
 
   const handleCreate = () => {
     if (showEmpty || currTab === TabNames.PROMPTTEMPLATE) {
-      createPromptTemplate({
-        variables: {
-          name: "Untitled Prompt Template",
-          description: "Initial Prompt Template Description",
-          conversation: { role: "system", content: "newone" },
-          experimentId: selectedExperimentInfo?.id,
-        },
-      });
     } else {
       createTestCases({
         variables: {
@@ -74,13 +63,11 @@ function ExperimentsDetails() {
       return <Report />;
     } else if (showAdd) {
       return <CreatePromptTemplate />;
-    } else if (showClone) {
-      return <ClonePromptTemplate />;
     } else if (showEdit) {
       return <EditePromptTemplate />;
     } else if (currTab === TabNames.PROMPTTEMPLATE) {
       return <PromptTemplate handleCreate={handleCreate}/>;
-    } else {
+    } else if(currTab === TabNames.TESTCASES){
       return <TestCases handleCreate={handleCreate}/>;
     }
   };
@@ -96,7 +83,7 @@ function ExperimentsDetails() {
                   ? `${styles.selectedTab} text-[#2196F3] z-[2]`
                   : `${styles.notSelectedtab}`
               }
-              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap h-[119px]`}
+              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
               onClick={() => {
                 setShowReport(false);
                 setShowAdd(false);
@@ -111,7 +98,7 @@ function ExperimentsDetails() {
                   ? `${styles.selectedTab} text-[#2196F3] ml-[-20px]`
                   : `${styles.notSelectedtab} ml-[-15px]`
               }
-              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap h-[119px]`}
+              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
               onClick={() => {
                 setShowAdd(false);
                 toggleTab(TabNames.TESTCASES);
@@ -125,12 +112,11 @@ function ExperimentsDetails() {
               size="large"
               style={{ textTransform: "none" }}
               onClick={() => {
-                if(currTab ===TabNames.PROMPTTEMPLATE)
+      
                 setShowAdd(true);
-
                 handleCreate();
               }}
-              sx={{ color: "#2196F3",top:"-25px" }}
+              sx={{ color: "#2196F3" }}
             >
               <AddIcon className="mr-[11px]" />
               {currTab === TabNames.PROMPTTEMPLATE

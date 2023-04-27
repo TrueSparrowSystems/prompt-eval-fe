@@ -10,12 +10,14 @@ import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 import Select from "@mui/material/Select";
 import Pagination from "../../../Pagination/Pagination";
+import {useCompSelectorContext} from "../../../../context/compSelectorContext";
 
 function PromptTemplate({handleCreate}) {
   const { selectedExperimentInfo } = useExpContext();
   const [recordPerPage, setRecordPerPage] = useState(6);
   const [currentPage, setCurrentPage] = useState(1);
   const totalCount = useRef(0);
+  const {showEmptyState} = useCompSelectorContext();
 
   const startCount = (currentPage - 1) * recordPerPage + 1;
   const endCount = (totalCount.current < (startCount + recordPerPage - 1)) ? totalCount.current : startCount + recordPerPage - 1;
@@ -56,7 +58,7 @@ function PromptTemplate({handleCreate}) {
         <EmptyState handleCreate={handleCreate}/>
       ) : (
         <div className={`${styles.experimentBox}  max-h-[674px] overflow-auto`}>
-          <div className={`flex items-center text-md font-bold border-b-2`}>
+          <div className={`flex items-center text-[15px] tracking-[0.2px] font-semibold border-b-2`}>
             <div
               className={`basis-1/5 border-r-2 px-[10px] py-[34px] mr-[10px]`}
             >

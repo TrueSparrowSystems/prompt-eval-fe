@@ -9,10 +9,9 @@ import Report from "./Report/Report";
 import { useMutation } from "@apollo/client";
 import Queries from "../../../queries/Queries";
 import { useExpContext } from "../../../context/ExpContext";
-import ClonePromptTemplate from "./PromptTemplate/ClonePromptTemplate";
 import { useCompSelectorContext } from "../../../context/compSelectorContext";
 import EditePromptTemplate from "./PromptTemplate/EditPromptTemplate";
-import {TabNames} from "../../../constants/TabNames";
+import { TabNames } from "../../../constants/TabNames";
 
 function ExperimentsDetails() {
   const {
@@ -25,14 +24,16 @@ function ExperimentsDetails() {
     showEmpty,
     setShowEmpty,
     currTab,
-    setCurrTab
+    setCurrTab,
   } = useCompSelectorContext();
- 
+
   const toggleTab = (type) => {
     if (type != currTab) {
       setCurrTab(type);
     }
   };
+
+  const [createTc, setCreateTc] = useState(false);
 
   const [createTestCases, { dataTestCase, loadingTestCase, errorTestCase }] =
     useMutation(Queries.createTestCases);
@@ -41,21 +42,26 @@ function ExperimentsDetails() {
 
   const handleCreate = () => {
     if (showEmpty || currTab === TabNames.PROMPTTEMPLATE) {
+      setShowAdd(true);
     } else {
       createTestCases({
         variables: {
           name: "Untitled Test Case",
           description: "Initial Test Case Description",
-          dynamicVarValues: JSON.stringify({ "key":"hey","value":"value" }),
+          dynamicVarValues: JSON.stringify({ key: "hey", value: "value" }),
           expectedResult: ["hey", "hey10"],
           experimentId: selectedExperimentInfo?.id,
         },
       });
+      toggleTab(TabNames.TESTCASES);
     }
   };
 
-  const getExperimentUi = () => {
+  if (dataTestCase) {
+    setCreateTc(true);
+  }
 
+  const getExperimentUi = () => {
     setShowEmpty(false);
 
     if (showReport) {
@@ -66,9 +72,9 @@ function ExperimentsDetails() {
     } else if (showEdit) {
       return <EditePromptTemplate />;
     } else if (currTab === TabNames.PROMPTTEMPLATE) {
-      return <PromptTemplate handleCreate={handleCreate}/>;
-    } else if(currTab === TabNames.TESTCASES){
-      return <TestCases handleCreate={handleCreate}/>;
+      return <PromptTemplate handleCreate={handleCreate} />;
+    } else if (currTab === TabNames.TESTCASES) {
+      return <TestCases handleCreate={handleCreate} createTc={createTc} />;
     }
   };
 
@@ -107,22 +113,22 @@ function ExperimentsDetails() {
               Test Cases
             </div>
           </div>
-          <div>{!showEmpty && 
-            <Button
-              size="large"
-              style={{ textTransform: "none" }}
-              onClick={() => {
-      
-                setShowAdd(true);
-                handleCreate();
-              }}
-              sx={{ color: "#2196F3" }}
-            >
-              <AddIcon className="mr-[11px]" />
-              {currTab === TabNames.PROMPTTEMPLATE
-                ? "Add new template"
-                : "Add new test case"}
-            </Button>}
+          <div>
+            {!showEmpty && (
+              <Button
+                size="large"
+                style={{ textTransform: "none" }}
+                onClick={() => {
+                  handleCreate();
+                }}
+                sx={{ color: "#2196F3" }}
+              >
+                <AddIcon className="mr-[11px]" />
+                {currTab === TabNames.PROMPTTEMPLATE
+                  ? "Add new template"
+                  : "Add new test case"}
+              </Button>
+            )}
           </div>
         </div>
       </div>

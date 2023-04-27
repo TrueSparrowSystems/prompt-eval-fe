@@ -16,7 +16,7 @@ export default function TestCaseInfo({ value, isClicked, data }) {
     data?.expectedResult,
   ]);
 
-  const [testCaseName, setTestCaseName] = useState(data?.name);
+  const [testCaseName, setTestCaseName] = useState('');
   const [testCaseDescription, setTestCaseDescription] = useState(
     data?.description
   );
@@ -90,9 +90,9 @@ export default function TestCaseInfo({ value, isClicked, data }) {
     >
       <div id="0" className="tab">
         <input
-          className={`text-[15px] font-bold opacity-${opacity} outline-none pt-[27px]`}
+          className={`text-[15px] font-bold opacity-${opacity} outline-none pt-[27px] w-full`}
           type="text"
-          value={testCaseName}
+          value={testCaseName ? testCaseName : data?.name}
           onChange={(e) => {
             setTestCaseName(e.target.value);
           }}
@@ -121,7 +121,7 @@ export default function TestCaseInfo({ value, isClicked, data }) {
           Variable Definitions
         </p>
         <input
-          className={`${styles.inputStyle} opacity-40`}
+          className={`${styles.inputStyle} opacity-40 outline-none`}
           type="text"
           value={variableName}
           onChange={(e) => {
@@ -145,7 +145,7 @@ export default function TestCaseInfo({ value, isClicked, data }) {
           Acceptable Results
         </p>
         <input
-          className={`${styles.inputStyle} opacity-40`}
+          className={`${styles.inputStyle} opacity-40 outline-none`}
           type="text"
           value={acceptedResult[0][0]}
           onChange={(e) => {

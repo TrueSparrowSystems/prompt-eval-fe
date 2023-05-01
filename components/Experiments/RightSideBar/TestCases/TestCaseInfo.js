@@ -3,6 +3,8 @@ import Button from "@mui/material/Button";
 import HorizontalLine from "../../../../assets/Svg/HorizontalLine";
 import HorzLineWithAddIcon from "../../../../assets/Svg/HorzLineWithAddIcon";
 import styles from "./TestCaseInfo.module.scss";
+import { v4 as uuid } from "uuid";
+import ExpectedResult from "./ExpectedResult";
 
 export default function TestCaseInfo({ value, isClicked, data }) {
   const [variableName, setVariableName] = useState("Untitled Variable");
@@ -11,23 +13,70 @@ export default function TestCaseInfo({ value, isClicked, data }) {
       ? JSON.stringify(JSON.parse(data?.dynamicVarValues))
       : ""
   );
-  const [acceptedResult, setAcceptedResult] = useState(["Untitled Result"]);
-  const [acceptedResultValue, setAcceptedResultValue] = useState([
-    data?.expectedResult,
-  ]);
 
-  const [testCaseName, setTestCaseName] = useState('');
+  const [expectedResultsArr, setExpectedResultsArr] = useState([]);
+  const [testCaseName, setTestCaseName] = useState("");
   const [testCaseDescription, setTestCaseDescription] = useState(
     data?.description
   );
-  const [opacity, setOpacity] = useState("40");
+  
   const scrollRef = useRef(null);
+  const isExpectedResultsPopulated = useRef(false);
+
+
+  const addExpectedResult = () => {
+    const newExpectedResult = {
+      id: uuid(),
+      result: "",
+    };
+    setExpectedResultsArr((expectedResultsArr) => [
+      ...expectedResultsArr,
+      newExpectedResult,
+    ]);
+  };
+
+  const readExpectedResults = () => {
+    data?.expectedResult?.map((expectedResult, index) => {
+      const newExpectedResult = {
+        id: uuid(),
+        result: expectedResult,
+      };
+      setExpectedResultsArr((expectedResultsArr) => [
+        ...expectedResultsArr,
+        newExpectedResult,
+      ]);
+    });
+  };
+
+  const removeExpectedResult = (id) => {
+    console.log("id",id);
+    setExpectedResultsArr(
+      expectedResultsArr.filter((expectedResult) => expectedResult.id !== id)
+    );
+  };
+
+  const expectedResultsList = expectedResultsArr?.map(
+    (expectedResult, index) => (
+      <ExpectedResult
+        expectedResult={expectedResult}
+        id={index}
+        removeExpectedResult={removeExpectedResult}
+      />
+    )
+  );
 
   useEffect(() => {
     if (isClicked) {
       moveToTop(value);
     }
   }, [isClicked, data]);
+
+  useEffect(() => {
+    if (!isExpectedResultsPopulated.current) {
+      readExpectedResults();
+    }
+    isExpectedResultsPopulated.current = true;
+  }, []);
 
   async function moveToTop(Id) {
     const element = document.getElementById(Id);
@@ -67,20 +116,6 @@ export default function TestCaseInfo({ value, isClicked, data }) {
     }
   };
 
-  const addTextBox = () => {
-    let titleBox = document.createElement("input");
-    titleBox.className = `${styles.inputStyle}`;
-    titleBox.placeholder = "Untitled Result";
-
-    let textBox = document.createElement("textarea");
-    textBox.className = `${styles.textareaStyle}`;
-    textBox.placeholder =
-      "Define template variables in {‘variable_name’} format within the prompt.";
-
-    document.getElementById("result").appendChild(titleBox);
-    document.getElementById("result").appendChild(textBox);
-  };
-
   return (
     <div
       ref={scrollRef}
@@ -90,19 +125,17 @@ export default function TestCaseInfo({ value, isClicked, data }) {
     >
       <div id="0" className="tab">
         <input
-          className={`text-[15px] font-bold opacity-${opacity} outline-none pt-[27px] w-full`}
+          className={`text-[15px] font-bold opacity-40 outline-none pt-[27px] w-full`}
           type="text"
           value={testCaseName ? testCaseName : data?.name}
           onChange={(e) => {
             setTestCaseName(e.target.value);
           }}
-        
-          onBlur={(e) => setOpacity("40")}
         />
 
-        <p className="text-[14px] font-[500px] leading-[24px] tracking-[0.17px] text-black/[0.8] pt-[12px] pb-[6px]">
+        <div className="text-[14px] font-[500px] leading-[24px] tracking-[0.17px] text-black/[0.8] pt-[12px] pb-[6px]">
           Description
-        </p>
+        </div>
         <textarea
           className={`${styles.textareaStyle}`}
           placeholder="Define template variables in {‘variable_name’} format within the prompt."
@@ -140,36 +173,18 @@ export default function TestCaseInfo({ value, isClicked, data }) {
       <div className="py-[30px] tab" id="2">
         <HorizontalLine />
       </div>
-      <div id="result">
+      <div>
         <p className="text-[14px] font-[500px] leading-[24px] tracking-[0.17px] text-black/[0.8]">
           Acceptable Results
         </p>
-        <input
-          className={`${styles.inputStyle} opacity-40 outline-none`}
-          type="text"
-          value={acceptedResult[0][0]}
-          onChange={(e) => {
-            setAcceptedResult({ ...acceptedResult, 0: e.target.value });
-          }}
-        />
-        <textarea
-          className={`${styles.textareaStyle}`}
-          placeholder="Define template variables in {‘variable_name’} format within the prompt."
-          value={acceptedResultValue[0]}
-          onChange={(e) => {
-            setAcceptedResultValue({
-              ...acceptedResultValue,
-              0: e.target.value,
-            });
-          }}
-        />
+        <ul>{expectedResultsList}</ul>
       </div>
       <div className="my-[30px] relative">
         <HorizontalLine />
         <button
           className="z-[0] absolute top-[-11px] left-[50%]"
           onClick={() => {
-            addTextBox();
+            addExpectedResult();
           }}
         >
           <HorzLineWithAddIcon />

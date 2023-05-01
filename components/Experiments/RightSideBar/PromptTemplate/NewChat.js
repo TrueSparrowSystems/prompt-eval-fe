@@ -37,7 +37,7 @@ function NewChat({ prompt, remove }) {
           isHover ? "opacity-40  hover:opacity-60" : "opacity-0"
         }`}
         onClick={(e) => {
-          remove(e.target.id);
+          remove(prompt.id);
         }}
       >
         <RemoveIcon />

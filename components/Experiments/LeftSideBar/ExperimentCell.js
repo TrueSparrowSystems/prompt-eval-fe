@@ -35,7 +35,7 @@ function ExperimentCell({
       setNewExperimentName(selectedExperimentInfo?.name);
   }, [selectedExperimentInfo]);
 
-  const handleUpdate = async async () => {
+  const handleUpdate = async () => {
     if (newExperimentName.length === 0) {
       setNewExperimentName(selectedExperimentInfo?.name);
       return;
@@ -86,9 +86,6 @@ function ExperimentCell({
                 }}
                 disabled={!editable}
               />
-            ) : (
-              <div className="text-md text-[#000]">{newExperimentName}</div>
-            )}
             <button
               className={`ml-auto hover:bg-[#0000001A] p-[5px] ${
                 showEditIcon ? "opacity-100" : "opacity-0"

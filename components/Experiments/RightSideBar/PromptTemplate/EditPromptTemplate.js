@@ -120,10 +120,6 @@ function EditePromptTemplate() {
                 setShowEdit(false);
               }}
               variant="contained"
-              style={{
-                background: "#2196F3",
-                border: "1px solid rgba(0, 0, 0, 0.23)",
-              }}
               sx={{ ml: "10px", textTransform: "none" }}
             >
               <BackArrow />

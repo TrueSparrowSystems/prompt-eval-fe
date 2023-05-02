@@ -8,7 +8,7 @@ import Queries from "../../../queries/Queries";
 import { useQuery } from "@apollo/client";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Box } from "@mui/system";
-import { useExpContext } from "../../../context/ExpContext";
+
 function LeftSideBar(props) {
   const showLanding = false;
 

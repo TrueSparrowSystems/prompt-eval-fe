@@ -31,6 +31,13 @@ export default function ExperimentList() {
     return <ExperimentListSkeleton />;
   }
 
+  if (error) {
+    return (
+      <div className="text-[#f00] text-[14px] mt-[12px] break-all p-[10px]">
+        {error.message}
+      </div>
+    );
+  }
   return (
     <div
       className="mt-[20px] second-step"
@@ -39,20 +46,22 @@ export default function ExperimentList() {
         overflow: "auto",
       }}
     >
-      {data?.experimentList.map((experiment, index) => (
-        <ExperimentCell
-          id={experiment.id}
-          experimentName={experiment.name}
-          key={index}
-          index={index}
-          selectedExperiment={selectedExperiment}
-          setSelectedExperiment={handleChange}
-        />
-      ))}
-
-      {error && (
-        <div className=" flex items-center text-[#f00] text-[14px] ml-[12px] mb-[12px] break-normal">
-          {error.message}
+      {data?.experimentList.length > 0 ? (
+        <>
+          {data?.experimentList.map((experiment, index) => (
+            <ExperimentCell
+              id={experiment.id}
+              experimentName={experiment.name}
+              key={index}
+              index={index}
+              selectedExperiment={selectedExperiment}
+              setSelectedExperiment={handleChange}
+            />
+          ))}{" "}
+        </>
+      ) : (
+        <div className="mt-[30px] opacity-60 p-[10px]">
+          No experiments created.
         </div>
       )}
     </div>

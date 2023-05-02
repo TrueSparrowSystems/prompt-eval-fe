@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
@@ -6,24 +6,32 @@ import styles from "./TestCaseTabs.module.scss";
 import Button from "@mui/material/Button";
 import HorizontalLine from "../../../../assets/Svg/HorizontalLine";
 import AddIcon from "../../../../assets/Svg/AddIcon";
-import AcceptableResultCell from "./AcceptableResultCell";
+import { v4 as uuid } from "uuid";
+import ExpectedResult from "./ExpectedResult";
 import "intersection-observer";
 
 export default function BasicTabs({ data }) {
   let flag = false;
-
+  const isExpectedResultsPopulated = useRef(false);
   const [value, setValue] = React.useState(0);
   const [variableValue, setVariableValue] = useState(
     data?.dynamicVarValues ? JSON.parse(data?.dynamicVarValues).value : ""
   );
 
-  const [acceptedResult, setAcceptedResult] = useState(data?.expectedResult);
+  const [expectedResultsArr, setExpectedResultsArr] = useState([]);
 
   const [testCaseName, setTestCaseName] = useState(data?.name);
   const [testCaseDescription, setTestCaseDescription] = useState(
     data?.description
   );
   const [opacity, setOpacity] = useState("40");
+
+  useEffect(() => {
+    if (!isExpectedResultsPopulated.current) {
+      readExpectedResults();
+    }
+    isExpectedResultsPopulated.current = true;
+  }, []);
 
   useEffect(() => {
     const root = document.querySelector("#cont");
@@ -60,7 +68,7 @@ export default function BasicTabs({ data }) {
       });
     };
   }, []);
-  
+
   const handleChange = (event, newValue) => {
     setValue(parseInt(newValue));
     const section = document.querySelector(`#\\3${newValue}`);
@@ -74,9 +82,45 @@ export default function BasicTabs({ data }) {
     }
   };
 
-  const addResult = () => {
-    setAcceptedResult((prevResult) => [...prevResult, ""]);
+  const addExpectedResult = () => {
+    const newExpectedResult = {
+      id: uuid(),
+      result: "",
+    };
+    setExpectedResultsArr((expectedResultsArr) => [
+      ...expectedResultsArr,
+      newExpectedResult,
+    ]);
   };
+
+  const readExpectedResults = () => {
+    data?.expectedResult?.map((expectedResult, index) => {
+      const newExpectedResult = {
+        id: uuid(),
+        result: expectedResult,
+      };
+      setExpectedResultsArr((expectedResultsArr) => [
+        ...expectedResultsArr,
+        newExpectedResult,
+      ]);
+    });
+  };
+
+  const removeExpectedResult = (id) => {
+    setExpectedResultsArr(
+      expectedResultsArr.filter((expectedResult) => expectedResult.id !== id)
+    );
+  };
+
+  const expectedResultsList = expectedResultsArr?.map(
+    (expectedResult, index) => (
+      <ExpectedResult
+        expectedResult={expectedResult}
+        id={index}
+        removeExpectedResult={removeExpectedResult}
+      />
+    )
+  );
 
   return (
     <Box sx={{ width: "100%", marginTop: "-20px" }}>
@@ -149,10 +193,7 @@ export default function BasicTabs({ data }) {
             <p className="text-[14px] font-[500px] leading-[24px] tracking-[0.17px] text-black/[0.8]">
               Acceptable Results
             </p>
-            {acceptedResult &&
-              acceptedResult.map((result, index) => (
-                <AcceptableResultCell key={index} acceptedResult={result} />
-              ))}
+            <ul>{expectedResultsList}</ul>
           </div>
           <div>
             <Button
@@ -163,7 +204,7 @@ export default function BasicTabs({ data }) {
                 fontSize: "14px",
               }}
               onClick={() => {
-                addResult();
+                addExpectedResult();
               }}
               sx={{ color: "#2196F3" }}
             >
@@ -178,8 +219,11 @@ export default function BasicTabs({ data }) {
             <Button
               variant="contained"
               className="bg-[#2196F3] absolute left-0  top-0 "
-              sx={{ ml: "10px", textTransform: "none",
-              border: "1px solid rgba(0, 0, 0, 0.23)", }}
+              sx={{
+                ml: "10px",
+                textTransform: "none",
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+              }}
             >
               SAVE
             </Button>

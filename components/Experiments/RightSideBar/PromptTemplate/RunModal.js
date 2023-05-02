@@ -2,7 +2,7 @@ import { useState } from "react";
 import Modal from "react-modal";
 import RunPromptIcon from "../../../../assets/Svg/RunPromptIcon";
 import CrossIcon from "../../../../assets/Svg/CrossIcon";
-import { ExpandMore } from "@mui/icons-material";
+import DropDownArrow from "../../../../assets/Svg/DropDownArrow";
 import Button from "@mui/material/Button";
 import { Select, MenuItem } from "@mui/material";
 
@@ -50,8 +50,8 @@ export default function RunModal({ showRunModal, setShowRunModal }) {
           <Select
             className="w-[425px] h-[48px] rounded-[4px] outline-none"
             IconComponent={(props) => (
-              <div {...props}>
-                <ExpandMore />
+              <div {...props} className="mr-[20px]">
+                <DropDownArrow />
               </div>
             )}
             value={model}
@@ -85,8 +85,8 @@ export default function RunModal({ showRunModal, setShowRunModal }) {
           <Select
             className="w-[425px] h-[48px] rounded-[4px] outline-none cursor-pointer"
             IconComponent={(props) => (
-              <div {...props}>
-                <ExpandMore />
+              <div {...props} className="mr-[20px]">
+                <DropDownArrow />
               </div>
             )}
             value={evaluation}

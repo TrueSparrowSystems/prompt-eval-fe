@@ -10,10 +10,10 @@ export const CompSelectorContext = createContext({
   setShowClone: () => {},
   showEdit: {},
   setShowEdit: () => {},
-  showEmpty: {},
-  setShowEmpty: () => {},
   currTab: {},
   setCurrTab: () => {},
+  addTestCase: {},
+  setAddTestCase: () => {},
 });
 
 export function useCompSelectorContext() {
@@ -26,10 +26,10 @@ export function useCompSelectorContext() {
     setShowClone,
     showEdit,
     setShowEdit,
-    showEmpty,
-    setShowEmpty,
     currTab,
     setCurrTab,
+    addTestCase,
+    setAddTestCase,
   } = useContext(CompSelectorContext);
 
   return {
@@ -41,10 +41,10 @@ export function useCompSelectorContext() {
     setShowClone,
     showEdit,
     setShowEdit,
-    showEmpty,
-    setShowEmpty,
     currTab,
     setCurrTab,
+    addTestCase,
+    setAddTestCase,
   };
 }
 
@@ -53,8 +53,8 @@ export const CompSelectorProvider = ({ children }) => {
   const [showAdd, setShowAdd] = useState(false);
   const [showClone, setShowClone] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  const [showEmpty, setShowEmpty] = useState(false);
   const [currTab, setCurrTab] = useState(TabNames.PROMPTTEMPLATE);
+  const [addTestCase, setAddTestCase] = useState(false);
 
   return (
     <CompSelectorContext.Provider
@@ -67,10 +67,10 @@ export const CompSelectorProvider = ({ children }) => {
         setShowClone,
         showEdit,
         setShowEdit,
-        showEmpty,
-        setShowEmpty,
         currTab,
         setCurrTab,
+        addTestCase,
+        setAddTestCase,
       }}
     >
       {children}

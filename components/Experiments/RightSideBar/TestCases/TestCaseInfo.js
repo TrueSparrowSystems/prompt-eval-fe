@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import Button from "@mui/material/Button";
 import HorizontalLine from "../../../../assets/Svg/HorizontalLine";
-import HorzLineWithAddIcon from "../../../../assets/Svg/HorzLineWithAddIcon";
 import styles from "./TestCaseInfo.module.scss";
+import AddIcon from "../../../../assets/Svg/AddIcon";
 
 export default function TestCaseInfo({ value, isClicked, data }) {
   const [variableName, setVariableName] = useState("Untitled Variable");
@@ -96,7 +96,6 @@ export default function TestCaseInfo({ value, isClicked, data }) {
           onChange={(e) => {
             setTestCaseName(e.target.value);
           }}
-        
           onBlur={(e) => setOpacity("40")}
         />
 
@@ -164,16 +163,21 @@ export default function TestCaseInfo({ value, isClicked, data }) {
           }}
         />
       </div>
-      <div className="my-[30px] relative">
-        <HorizontalLine />
-        <button
-          className="z-[0] absolute top-[-11px] left-[50%]"
+      <div>
+        <Button
+          size="large"
+          style={{ textTransform: "none", marginTop: "20px", fontSize: "14px" }}
           onClick={() => {
             addTextBox();
           }}
+          sx={{ color: "#2196F3" }}
         >
-          <HorzLineWithAddIcon />
-        </button>
+          <AddIcon className="mr-[11px]" />
+          Add acceptable result
+        </Button>
+      </div>
+      <div className="py-[30px] tab" id="2">
+        <HorizontalLine />
       </div>
       <div className="relative">
         <Button

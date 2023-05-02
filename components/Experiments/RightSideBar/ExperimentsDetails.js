@@ -6,13 +6,9 @@ import TestCases from "./TestCases/TestCases";
 import AddIcon from "../../../assets/Svg/AddIcon";
 import CreatePromptTemplate from "./PromptTemplate/CreatePromptTemplate";
 import Report from "./Report/Report";
-import { useMutation } from "@apollo/client";
-import Queries from "../../../queries/Queries";
-import { useExpContext } from "../../../context/ExpContext";
-import ClonePromptTemplate from "./PromptTemplate/ClonePromptTemplate";
 import { useCompSelectorContext } from "../../../context/compSelectorContext";
 import EditePromptTemplate from "./PromptTemplate/EditPromptTemplate";
-import {TabNames} from "../../../constants/TabNames";
+import { TabNames } from "../../../constants/TabNames";
 
 function ExperimentsDetails() {
   const {
@@ -20,44 +16,19 @@ function ExperimentsDetails() {
     setShowReport,
     showAdd,
     setShowAdd,
-    showClone,
     showEdit,
-    showEmpty,
-    setShowEmpty,
     currTab,
-    setCurrTab
+    setCurrTab,
+    setAddTestCase,
   } = useCompSelectorContext();
- 
+
   const toggleTab = (type) => {
     if (type != currTab) {
       setCurrTab(type);
     }
   };
 
-  const [createTestCases, { dataTestCase, loadingTestCase, errorTestCase }] =
-    useMutation(Queries.createTestCases);
-
-  const { selectedExperimentInfo } = useExpContext();
-
-  const handleCreate = () => {
-    if (showEmpty || currTab === TabNames.PROMPTTEMPLATE) {
-    } else {
-      createTestCases({
-        variables: {
-          name: "Untitled Test Case",
-          description: "Initial Test Case Description",
-          dynamicVarValues: JSON.stringify({ "key":"hey","value":"value" }),
-          expectedResult: ["hey", "hey10"],
-          experimentId: selectedExperimentInfo?.id,
-        },
-      });
-    }
-  };
-
   const getExperimentUi = () => {
-
-    setShowEmpty(false);
-
     if (showReport) {
       toggleTab(TabNames.TESTCASES);
       return <Report />;
@@ -66,9 +37,9 @@ function ExperimentsDetails() {
     } else if (showEdit) {
       return <EditePromptTemplate />;
     } else if (currTab === TabNames.PROMPTTEMPLATE) {
-      return <PromptTemplate handleCreate={handleCreate}/>;
-    } else if(currTab === TabNames.TESTCASES){
-      return <TestCases handleCreate={handleCreate}/>;
+      return <PromptTemplate />;
+    } else if (currTab === TabNames.TESTCASES) {
+      return <TestCases />;
     }
   };
 
@@ -83,7 +54,7 @@ function ExperimentsDetails() {
                   ? `${styles.selectedTab} text-[#2196F3] z-[2]`
                   : `${styles.notSelectedtab}`
               }
-              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
+              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap h-[119px]`}
               onClick={() => {
                 setShowReport(false);
                 setShowAdd(false);
@@ -98,7 +69,7 @@ function ExperimentsDetails() {
                   ? `${styles.selectedTab} text-[#2196F3] ml-[-20px]`
                   : `${styles.notSelectedtab} ml-[-15px]`
               }
-              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
+              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap h-[119px]`}
               onClick={() => {
                 setShowAdd(false);
                 toggleTab(TabNames.TESTCASES);
@@ -107,23 +78,22 @@ function ExperimentsDetails() {
               Test Cases
             </div>
           </div>
-          <div>{!showEmpty && 
-            <Button
-              size="large"
-              style={{ textTransform: "none" }}
-              onClick={() => {
-      
-                setShowAdd(true);
-                handleCreate();
-              }}
-              sx={{ color: "#2196F3" }}
-            >
-              <AddIcon className="mr-[11px]" />
-              {currTab === TabNames.PROMPTTEMPLATE
-                ? "Add new template"
-                : "Add new test case"}
-            </Button>}
-          </div>
+          <Button
+            size="large"
+            style={{ textTransform: "none", top: "-25px" }}
+            onClick={() => {
+              if (currTab === TabNames.PROMPTTEMPLATE) setShowAdd(true);
+              else {
+                setAddTestCase(true);
+              }
+            }}
+            sx={{ color: "#2196F3" }}
+          >
+            <AddIcon className="mr-[11px]" />
+            {currTab === TabNames.PROMPTTEMPLATE
+              ? "Add new template"
+              : "Add new test case"}
+          </Button>
         </div>
       </div>
       <div className="w-full">{getExperimentUi()}</div>

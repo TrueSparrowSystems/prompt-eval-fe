@@ -26,7 +26,7 @@ export default function ExperimentList() {
       setSelectedExperimentInfo(data.experimentList[0]);
     }
   }, [data]);
-  
+
   if (loading) {
     return <ExperimentListSkeleton />;
   }
@@ -50,9 +50,11 @@ export default function ExperimentList() {
         />
       ))}
 
-      {error && <div className="text-[#f00] text-[14px] mt-[12px] break-all">
+      {error && (
+        <div className="text-[#f00] text-[14px] mt-[12px] break-all">
           {error.message}
-        </div>}
+        </div>
+      )}
     </div>
   );
 }

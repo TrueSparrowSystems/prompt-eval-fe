@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import styles from "../ExperimentsDetails.module.scss";
 import BackArrow from "../../../../assets/Svg/BackArrow";
 import { useCompSelectorContext } from "../../../../context/compSelectorContext";
@@ -28,14 +28,18 @@ function ClonePromptTemplate() {
 
   useEffect(() => {
     if (!isCloned.current && promptTemplate) {
-      createPromptTemplate({
-        variables: {
-          name: "Untitled Template copy",
-          description: promptTemplate?.description,
-          conversation: getConversation(promptTemplate?.conversation),
-          experimentId: selectedExperimentInfo?.id,
-        },
-      });
+      try {
+        createPromptTemplate({
+          variables: {
+            name: "Untitled Template copy",
+            description: promptTemplate?.description,
+            conversation: getConversation(promptTemplate?.conversation),
+            experimentId: selectedExperimentInfo?.id,
+          },
+        });
+      } catch (err) {
+        return err;
+      }
     }
     isCloned.current = true;
   }, []);
@@ -46,7 +50,7 @@ function ClonePromptTemplate() {
         <UpdateTemplateSkeleton />
       ) : (
         <>
-          <Toast msg={MESSAGES.PROMPT_TEMPLATE_CLONED}/>
+          <Toast msg={MESSAGES.PROMPT_TEMPLATE_CLONED} />
           <div className={`${styles.experimentBox}`}>
             <div
               className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60"
@@ -55,12 +59,14 @@ function ClonePromptTemplate() {
               }}
             >
               <BackArrow />
-              <div className="text-[14px] opacity-60 py-[25px]">
+              <div className="text-[15px] opacity-60 py-[25px]">
                 Back to prompt templates
               </div>
             </div>
-            <div  className="text-[20px] font-bold opacity-60 outline-none pb-[25px] w-1/3">Untitled Template copy</div>
-            {promptTemplate.conversation.map((chat,index) => (
+            <div className="text-[20px] font-bold opacity-60 outline-none pb-[25px] w-1/3">
+              Untitled Template copy
+            </div>
+            {promptTemplate.conversation.map((chat, index) => (
               <div className="flex p-2" key={index}>
                 <div className="uppercase cursor-pointer text-md hover:bg-[#fff] p-[10px] h-[40px] basis-20">
                   {chat.role}

@@ -20,6 +20,7 @@ function ExperimentCell({
   const { selectedExperimentInfo, setSelectedExperimentInfo } = useExpContext();
   const { setShowReport, setShowAdd, setShowClone, setShowEdit } =
     useCompSelectorContext();
+
   const [updateExperiment, { data, loading, error }] = useMutation(
     Queries.updateExperiment
   );
@@ -33,7 +34,7 @@ function ExperimentCell({
       setNewExperimentName(selectedExperimentInfo?.name);
   }, [selectedExperimentInfo]);
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     if (newExperimentName.length === 0) {
       setNewExperimentName(selectedExperimentInfo?.name);
       return;
@@ -42,12 +43,17 @@ function ExperimentCell({
       ...prevState,
       name: newExperimentName,
     }));
-    updateExperiment({
-      variables: {
-        documentId: id,
-        name: newExperimentName,
-      },
-    });
+
+    try {
+      await updateExperiment({
+        variables: {
+          documentId: id,
+          name: newExperimentName,
+        },
+      });
+    } catch (err) {
+      return err;
+    }
   };
 
   return (
@@ -55,7 +61,7 @@ function ExperimentCell({
       <Link href={`/experiments/${id}`}>
         <a>
           <div
-            className={`flex items-center gap-[10px] p-[10px] cursor-pointer hover:bg-[#F0F0F0] ${
+            className={`flex items-center gap-[10px] p-[12px] cursor-pointer hover:bg-[#F0F0F0] ${
               selectedExperiment == index
                 ? "bg-[#F8FAFB] rounded-[4px]"
                 : "opacity-60"
@@ -70,7 +76,9 @@ function ExperimentCell({
             onMouseEnter={() => setShowEditIcon(true)}
             onMouseLeave={() => setShowEditIcon(false)}
           >
-            <ExperimentsIcon />
+            <div>
+              <ExperimentsIcon />
+            </div>
             {editable ? (
               <input
                 type="text"
@@ -83,7 +91,9 @@ function ExperimentCell({
                 }}
               />
             ) : (
-              <div className="text-md text-[#000]">{newExperimentName}</div>
+              <div className="text-md text-[#000] text-ellipsis line-clamp-2">
+                {newExperimentName}
+              </div>
             )}
             <button
               className={`ml-auto hover:bg-[#0000001A] p-[5px] ${

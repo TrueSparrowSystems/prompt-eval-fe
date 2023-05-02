@@ -44,12 +44,26 @@ function ExperimentCell({
       ...prevState,
       name: newExperimentName,
     }));
-    updateExperiment({
-      variables: {
-        documentId: id,
+
+    try {
+      await updateExperiment({
+        variables: {
+          documentId: id,
+          name: newExperimentName,
+        },
+      });
+
+      setSelectedExperimentInfo((prevState) => ({
+        ...prevState,
         name: newExperimentName,
-      },
-    });
+      }));
+
+    } catch (err) {
+      setShowErrorMsg(true);
+      setTimeout(()=>setShowErrorMsg(false),4000);
+      setNewExperimentName(selectedExperimentInfo?.name);
+      return err;
+    }
   };
 
   return (
@@ -75,6 +89,7 @@ function ExperimentCell({
             <div>
               <ExperimentsIcon />
             </div>
+
               <input
                 type="text"
                 value={newExperimentName}

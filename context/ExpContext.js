@@ -7,6 +7,8 @@ export const ExpContext = createContext({
   setReportId: () => {},
   promptTemplate: {},
   setPromptTemplate: () => {},
+  testCase: {},
+  setTestCase: () => {},
 });
 
 export function useExpContext() {
@@ -17,6 +19,8 @@ export function useExpContext() {
     setReportId,
     promptTemplate,
     setPromptTemplate,
+    testCase,
+    setTestCase,
   } = useContext(ExpContext);
 
   return {
@@ -26,6 +30,8 @@ export function useExpContext() {
     setReportId,
     promptTemplate,
     setPromptTemplate,
+    testCase,
+    setTestCase,
   };
 }
 
@@ -33,6 +39,7 @@ export const ExpContextProvider = ({ children }) => {
   const [selectedExperimentInfo, setSelectedExperimentInfo] = useState({});
   const [reportId, setReportId] = useState(null);
   const [promptTemplate, setPromptTemplate] = useState({});
+  const [testCase, setTestCase] = useState({});
 
   return (
     <ExpContext.Provider
@@ -43,6 +50,8 @@ export const ExpContextProvider = ({ children }) => {
         setReportId,
         promptTemplate,
         setPromptTemplate,
+        testCase,
+        setTestCase,
       }}
     >
       {children}

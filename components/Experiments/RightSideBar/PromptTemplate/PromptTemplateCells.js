@@ -10,7 +10,7 @@ import { useCompSelectorContext } from "../../../../context/compSelectorContext"
 import { useMutation } from "@apollo/client";
 import Queries from "../../../../queries/Queries";
 
-function PromptTemplateCells({ PromptTemplate }) {
+function PromptTemplateCells({ PromptTemplate,setRunSuccess }) {
   const { setReportId, setPromptTemplate, selectedExperimentInfo } =
     useExpContext();
   const { setShowClone, setShowReport, setShowEdit } = useCompSelectorContext();
@@ -60,7 +60,8 @@ function PromptTemplateCells({ PromptTemplate }) {
           {PromptTemplate.name}
         </div>
         <div className="basis-1/5 px-[10px]">
-          {PromptTemplate.latestEvaluationReport[0] !== null
+          {PromptTemplate.latestEvaluationReport[0] !== null &&
+          typeof PromptTemplate.latestEvaluationReport[0].accuracy === "number"
             ? PromptTemplate.latestEvaluationReport[0].accuracy + "%"
             : "--"}
         </div>
@@ -107,6 +108,7 @@ function PromptTemplateCells({ PromptTemplate }) {
               onClick={(e) => {
                 e.stopPropagation();
                 setShowRunModal(!showRunModal);
+                setPromptTemplate(PromptTemplate);
               }}
             >
               Run
@@ -124,7 +126,7 @@ function PromptTemplateCells({ PromptTemplate }) {
           </div>
         </div>
       </div>
-      <RunModal showRunModal={showRunModal} setShowRunModal={setShowRunModal} />
+      <RunModal showRunModal={showRunModal} setShowRunModal={setShowRunModal} setRunSuccess={setRunSuccess}/>
     </>
   );
 }

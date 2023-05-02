@@ -3,4 +3,5 @@ export const MESSAGES = {
   PROMPT_TEMPLATE_UPDATED: "Prompt template has been updated successfully.",
   PROMPT_TEMPLATE_CLONED: "Prompt template has been cloned successfully.",
   TEST_CASE_CREATED: "Untitled test case has been created successfully.",
+  RUN_SUCCESS: "Run successful.",
 };

@@ -4,7 +4,7 @@ import RemoveIcon from "../../../../assets/Svg/RemoveIcon";
 function NewChat({ prompt, remove }) {
   const [isHover, setIsHover] = useState(false);
   const [ptomptMessage, setPromptMessage] = useState(prompt.content);
-
+  const [promptRole,setPromptRole] = useState(prompt.role);
   return (
     <li
       className="flex hover:bg-[#F8FAFB] p-2"
@@ -14,10 +14,11 @@ function NewChat({ prompt, remove }) {
       <div
         className="uppercase cursor-pointer text-md hover:bg-[#CDE6F8] p-[10px] h-[40px] w-[60px] basis-20 rounded-[4px] flex items-center justify-center select-none"
         onClick={() => {
-          prompt.role = prompt.role === "system" ? "user" : "system";
+          setPromptRole(prevRole => prevRole == "system"?"user":"system")
+          prompt.role = promptRole;
         }}
       >
-        {prompt.role}
+        {promptRole}
       </div>
       <textarea
         className={`w-full border rounded-[4px] h-[120px] p-[10px] ml-[40px] mr-[10px] outline-none ${
@@ -37,7 +38,7 @@ function NewChat({ prompt, remove }) {
           isHover ? "opacity-40  hover:opacity-60" : "opacity-0"
         }`}
         onClick={(e) => {
-          remove(e.target.id);
+          remove(prompt.id);
         }}
       >
         <RemoveIcon />

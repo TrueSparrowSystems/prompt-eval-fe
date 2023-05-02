@@ -41,9 +41,10 @@ function Report() {
       limit: 10,
     },
   });
-  // if (data?.promptListByPagination.totalCount) {
-  //   totalCount.current = data?.promptListByPagination.totalCount;
-  // }
+
+  if (data?.getReport.totalCount) {
+    totalCount.current = data?.getReport.totalCount;
+  }
 
   const [expanded, setExpanded] = useState("panel1");
   return (
@@ -52,7 +53,7 @@ function Report() {
         background: " #ffffff",
         boxShadow:
           "0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.14),0px 2px 1px -1px rgba(0, 0, 0, 0.2)",
-        borderRadius: "8px;",
+        borderRadius: "8px",
         position: "absolute",
         zIndex: "100",
         top: "85px",

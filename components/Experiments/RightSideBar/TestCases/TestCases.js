@@ -11,14 +11,14 @@ import { useCompSelectorContext } from "../../../../context/compSelectorContext"
 import { useMutation } from "@apollo/client";
 
 export default function TestCases() {
-  const { selectedExperimentInfo } = useExpContext();
+  const { selectedExperimentInfo, promptTemplate } = useExpContext();
   const { data, loading, error, refetch } = useQuery(Queries.getTestCaseById, {
     variables: { experimentId: selectedExperimentInfo?.id },
   });
   const [createTestCases, { dataTestCase, loadingTestCase, errorTestCase }] =
     useMutation(Queries.createTestCases);
 
-  const [selectTestCase, setSelectTestCase] = useState(data?.testCases[0]);
+  const [selectTestCase, setSelectTestCase] = useState(0);
 
   const { addTestCase, setAddTestCase } = useCompSelectorContext();
 
@@ -27,7 +27,7 @@ export default function TestCases() {
       handleAddTestCase();
       setAddTestCase(false);
     }
-  }, [addTestCase]);
+  }, [addTestCase,data,selectTestCase]);
 
   if (loading) {
     return <LoadingState />;
@@ -52,18 +52,28 @@ export default function TestCases() {
 
   return (
     <div>
-      {data == null || data.testCases.length === 0 || error ? (
+      {data?.testCases.length === 0 ? (
         <EmptyState />
       ) : (
-        <div
-          className={`flex gap-[20px] ${styles.experimentBox}`}
-        >
-          <div className="basis-56 max-h-[674px] overflow-auto">
-            <TestCasesList data={data} setSelectTestCase={setSelectTestCase} />
-          </div>
-          <div className="mt-[13px] w-full">
-            <TestCaseTabs selectTestCase={selectTestCase} />
-          </div>
+        <div className={`flex gap-[20px] ${styles.experimentBox}`}>
+          {error ? (
+            <div className="flex space-evenly text-[20px] text-[#ff0000] tracking-[0.2px] h-[400px]">
+              {error.message}
+            </div>
+          ) : (
+            <>
+              <div className="basis-64 max-h-[674px] ">
+                <TestCasesList
+                  data={data}
+                  selectTestCase={selectTestCase}
+                  setSelectTestCase={setSelectTestCase}
+                />
+              </div>
+              <div className="mt-[13px] w-full">
+                <TestCaseTabs data={data?.testCases[selectTestCase]} />
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>

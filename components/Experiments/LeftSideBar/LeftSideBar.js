@@ -80,7 +80,7 @@ function LeftSideBar(props) {
               />
             )}
             {error && (
-              <div className="text-[#f00] text-[14px] mt-[12px] break-all">
+              <div className="text-[#f00] text-[14px] mt-[12px] break-normal">
                 {error.message}
               </div>
             )}

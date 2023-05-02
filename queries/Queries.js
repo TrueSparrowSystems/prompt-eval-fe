@@ -199,10 +199,14 @@ class Queries {
           completedAt
           createdAt
           updatedAt
+          totalCount
           testCaseEvaluationReport {
             id
-            evaluationResultId
-            prompt
+            evaluationId
+            prompt {
+              role
+              content
+            }
             testCaseId
             testCaseName
             testCaseDescription
@@ -246,6 +250,28 @@ class Queries {
         }
       }
     `;
+  }
+
+  get createEvaluation(){
+    return gql`
+    mutation createEvaluation($promptTemplateId:String!,$eval:String!,$model:String!){
+      createEvaluation(evaluationData:{promptTemplateId:$promptTemplateId,eval:$eval,model:$model}){
+        report{
+          id
+          model
+          eval
+          accuracy
+          promptTemplateId
+          runId
+          status
+          initiatedAt
+          completedAt
+          createdAt
+          updatedAt
+        }
+      }
+    }
+    `
   }
 }
 

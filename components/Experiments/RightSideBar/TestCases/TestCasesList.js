@@ -1,20 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import TestCaseCell from "./TestCaseCell";
-import { useQuery } from "@apollo/client";
-import Queries from "../../../../queries/Queries";
-import { useExpContext } from "../../../../context/ExpContext";
 import { Button } from "@mui/material";
 import AddIcon from "../../../../assets/Svg/AddIcon";
 import { useCompSelectorContext } from "../../../../context/compSelectorContext";
+import styles from "./TestCaseTabs.module.scss";
 
-function TestCasesList({ data, setSelectTestCase }) {
-  const [selectedTestCase, setSelectedTestCase] = useState(0);
+function TestCasesList({ data, selectTestCase,setSelectTestCase }) {
 
   const { addTestCase, setAddTestCase } = useCompSelectorContext();
-
-  useEffect(() => {
-    setSelectTestCase(data?.testCases[selectedTestCase]);
-  }, [selectedTestCase]);
 
   return (
     <div className="flex item-center flex-col border-r pr-[12px] border-[F8FAFB] mr-[13px] h-[674px]">
@@ -35,15 +28,17 @@ function TestCasesList({ data, setSelectTestCase }) {
         <AddIcon className="mr-[11px]" />
         Add test case
       </Button>
+      <div className={`max-h-[580px] overflow-auto ${styles.scrollCont}`}>
       {data?.testCases.map((testCase, index) => (
         <TestCaseCell
           testCaseName={testCase.name}
           key={index}
           index={index}
-          selectedTestCase={selectedTestCase}
-          setSelectedTestCase={setSelectedTestCase}
+          selectTestCase={selectTestCase}
+          setSelectTestCase={setSelectTestCase}
         />
       ))}
+      </div>
     </div>
   );
 }

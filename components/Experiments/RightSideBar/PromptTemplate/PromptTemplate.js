@@ -18,6 +18,8 @@ function PromptTemplate() {
   const [currentPage, setCurrentPage] = useState(1);
   const totalCount = useRef(0);
 
+  const [runSuccess, setRunSuccess] = useState(false);
+
   const startCount = (currentPage - 1) * recordPerPage + 1;
   const endCount =
     totalCount.current < startCount + recordPerPage - 1
@@ -46,7 +48,14 @@ function PromptTemplate() {
   useEffect(() => {
     refetch();
   }, []);
-
+  
+  useEffect(() => {
+    if (runSuccess) {
+      refetch();
+      setRunSuccess(false);
+    }
+  }, [runSuccess]);
+  
   if (data?.promptListByPagination.totalCount) {
     totalCount.current = data?.promptListByPagination.totalCount;
   }
@@ -78,15 +87,18 @@ function PromptTemplate() {
               <div>Actions</div>
             </div>
           </div>
-          <div className="h-[580px] overflow-auto">
+          <div>
+            <div className="max-h-[468px] overflow-auto">
             {data?.promptListByPagination.prompts.map(
               (PromptTemplate, index) => (
                 <PromptTemplateCells
                   key={index}
                   PromptTemplate={PromptTemplate}
+                  setRunSuccess={setRunSuccess}
                 />
               )
             )}
+            </div>
             <div className="flex justify-end px-[20px] py-[15px] border-b-2">
               <div className="flex items-center text-md text-[#000]">
                 <div className="opacity-60 mr-[20px]">Rows per page:</div>

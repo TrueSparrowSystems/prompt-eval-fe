@@ -11,6 +11,7 @@ import { useMutation } from "@apollo/client";
 import Queries from "../../../../queries/Queries";
 import Toast from "../../../ToastMessage/Toast";
 import { MESSAGES } from "../../../../constants/Messages";
+import AddIcon from "../../../../assets/Svg/AddIcon";
 
 function EditePromptTemplate() {
   const { promptTemplate } = useExpContext();
@@ -97,64 +98,80 @@ function EditePromptTemplate() {
 
   return (
     <>
-      {data && <Toast msg={showClone ? MESSAGES.PROMPT_TEMPLATE_CLONED  : MESSAGES.PROMPT_TEMPLATE_UPDATED} />}
-      <div className={`${styles.experimentBox}`}>
-        {error ?
+      {data && (
+        <Toast
+          msg={
+            showClone
+              ? MESSAGES.PROMPT_TEMPLATE_CLONED
+              : MESSAGES.PROMPT_TEMPLATE_UPDATED
+          }
+        />
+      )}
+      <div className={`${styles.experimentBox} overflow-auto`}>
+        {error ? (
           <div className="flex items-center justify-center text-[20px] text-[#ff0000] tracking-[0.2px] h-[400px]">
             {error.message}
           </div>
-         : 
-        <>
-        <div
-          className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60"
-          onClick={() => {
-            setShowEdit(false);
-          }}
-        >
-          <BackArrow />
-          <div className="text-[15px] opacity-60 py-[25px]">
-            Back to all prompt templates
-          </div>
-        </div>
-        <input
-          className="text-[20px] font-bold opacity-60 outline-none pb-[25px] w-full"
-          type="text"
-          value={templateName}
-          onChange={(e) => {
-            setTemplateName(e.target.value);
-          }}
-        />
-        <ul>{promptsList}</ul>
-        <div className="flex gap-[25px]">
-          <div className="basis-20"></div>
-          <div>
-            <div>
-              <Button
-                size="large"
-                style={{ textTransform: "none", color: "#000" }}
-                onClick={(e) => {
-                  addNewPrompt(e);
-                }}
-              >
-                + Add message
-              </Button>
-            </div>
-            <Button
+        ) : (
+          <>
+            <div
+              className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60"
               onClick={() => {
-                updatePromptTemplate();
+                setShowEdit(false);
               }}
-              variant="contained"
-              style={{
-                background: "#2196F3",
-                border: "1px solid rgba(0, 0, 0, 0.23)",
-              }}
-              sx={{ ml: "10px", textTransform: "none" }}
             >
-              Save
-            </Button>
-          </div>
-        </div>
-        </>}
+              <BackArrow />
+              <div className="text-[15px] opacity-60 py-[25px]">
+                Back to all prompt templates
+              </div>
+            </div>
+            <input
+              className="text-[20px] font-bold opacity-60 outline-none pb-[25px] w-full"
+              type="text"
+              value={templateName}
+              onChange={(e) => {
+                setTemplateName(e.target.value);
+              }}
+            />
+            <ul>{promptsList}</ul>
+            <div className="flex gap-[25px]">
+              <div className="basis-20"></div>
+              <div>
+                <div className="ml-[15px] mt-[8px] mb-[15px]">
+                  <Button
+                    size="large"
+                    style={{
+                      textTransform: "none",
+                      color: "#000",
+                      fontSize: "14px",
+                      opacity: "0.8",
+                    }}
+                    onClick={(e) => {
+                      addNewPrompt(e);
+                    }}
+                  >
+                    <AddIcon className="fill-black mr-[12px]" /> Add message
+                  </Button>
+                </div>
+                <Button
+                  onClick={() => {
+                    updatePromptTemplate();
+                  }}
+                  variant="contained"
+                  className="bg-[#2196F3]"
+                  sx={{
+                    ml: "10px",
+                    textTransform: "none",
+                    backgroundColor: "#2196F3",
+                    border: "1px solid rgba(0, 0, 0, 0.23)",
+                  }}
+                >
+                  Save
+                </Button>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </>
   );

@@ -51,7 +51,7 @@ export default function ExperimentList() {
       ))}
 
       {error && (
-        <div className="text-[#f00] text-[14px] mt-[12px] break-all">
+        <div className=" flex items-center text-[#f00] text-[14px] ml-[12px] mb-[12px] break-normal">
           {error.message}
         </div>
       )}

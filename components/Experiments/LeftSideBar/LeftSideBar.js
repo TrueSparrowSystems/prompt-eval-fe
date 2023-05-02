@@ -51,44 +51,36 @@ function LeftSideBar(props) {
   return (
     <div className="px-[14px] bg-[#fff] ">
       <div className="second-step">
-        <div className="first-step pt-[5px] relative ">
-          <Box sx={{ m: 1, position: "relative" }}>
-            <Button
-              fullWidth
-              variant="outlined"
-              sx={buttonSx}
-              disabled={loading || loadingList}
-              onClick={handleClick}
-            >
-              <AddIcon
-                className={`mr-[12px]`}
-                style={{ fill: loading || loadingList ? "#999999" : "#2196F3" }}
-              />{" "}
-              <span className="whitespace-nowrap">Create experiment </span>
-            </Button>
-            {(loading || loadingList) && (
-              <CircularProgress
-                size={24}
-                sx={{
-                  color: "#2196F3",
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  marginTop: "-12px",
-                  marginLeft: "-24px",
-                }}
-              />
-            )}
-            {error && (
-              <div className="text-[#f00] text-[14px] mt-[12px] break-all">
-                {error.message}
-              </div>
-            )}
-          </Box>
-        </div>
-        <ExperimentList />
-        {showLanding && <ReactJoyride />}
+      <div className="first-step pt-[5px] relative ">
+      <Box sx={{ m: 1, position: 'relative' }}>
+        <Button
+        fullWidth
+          variant="outlined"
+          sx={buttonSx}
+          disabled={(loading || loadingList)}
+          onClick={handleClick}
+        >
+          <AddIcon className={`mr-[12px]`} style={{fill:(loading || loadingList)?'#999999':'#2196F3'}}/> <span className="whitespace-nowrap">Create experiment{" "}</span>
+        </Button>
+        {(loading || loadingList) && (
+          <CircularProgress
+            size={24}
+            sx={{
+              color: '#2196F3',
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              marginTop: '-12px',
+              marginLeft: '-24px',
+            }}
+          />
+        )}
+        {error && <div className="text-[#f00] text-[14px] mt-[12px] break-all">{error.message}</div>}
+      </Box>
       </div>
+      <ExperimentList />
+      {showLanding && <ReactJoyride />}
+    </div>
     </div>
   );
 }

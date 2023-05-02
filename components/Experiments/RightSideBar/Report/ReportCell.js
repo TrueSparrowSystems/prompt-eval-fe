@@ -27,12 +27,12 @@ function ReportCell({ report, index, setExpanded, expanded }) {
             <div className="pr-[10px] pl-[20px] py-[34px] w-4/6 border-l-2">
               {report?.testCaseDescription}
             </div>
-            <div className="px-[10px] py-[34px]">
+            <div className="px-[10px] py-[34px] ml-[10px]">
               <StatusBadge status={report.accuracy < 60 ? "failed" : "pass"} />
             </div>
           </div>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails sx={report.accuracy < 60?({borderLeft: `2px solid rgba(179, 38, 30, 1)`}):({borderLeft: `2px solid rgba(46, 125, 50, 1)`})}>
           <div className={`bg-[#2196F30A] py-[30px] px-[20px]`}>
             <div className="flex items-center text-[#000] opacity-60 text-[14px] py-[10px]">
               <div>Actual Result</div>

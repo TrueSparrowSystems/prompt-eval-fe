@@ -35,31 +35,21 @@ function ExperimentCell({
       setNewExperimentName(selectedExperimentInfo?.name);
   }, [selectedExperimentInfo]);
 
-  const handleUpdate = async () => {
+  const handleUpdate = async async () => {
     if (newExperimentName.length === 0) {
       setNewExperimentName(selectedExperimentInfo?.name);
       return;
     }
-
-    try {
-      await updateExperiment({
-        variables: {
-          documentId: id,
-          name: newExperimentName,
-        },
-      });
-
-      setSelectedExperimentInfo((prevState) => ({
-        ...prevState,
+    setSelectedExperimentInfo((prevState) => ({
+      ...prevState,
+      name: newExperimentName,
+    }));
+    updateExperiment({
+      variables: {
+        documentId: id,
         name: newExperimentName,
-      }));
-
-    } catch (err) {
-      setShowErrorMsg(true);
-      setTimeout(()=>setShowErrorMsg(false),4000);
-      setNewExperimentName(selectedExperimentInfo?.name);
-      return err;
-    }
+      },
+    });
   };
 
   return (
@@ -96,6 +86,9 @@ function ExperimentCell({
                 }}
                 disabled={!editable}
               />
+            ) : (
+              <div className="text-md text-[#000]">{newExperimentName}</div>
+            )}
             <button
               className={`ml-auto hover:bg-[#0000001A] p-[5px] ${
                 showEditIcon ? "opacity-100" : "opacity-0"

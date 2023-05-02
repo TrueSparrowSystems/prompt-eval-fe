@@ -69,6 +69,11 @@ function RightSideBar() {
             onBlur={() => handleUpdate(true)}
             className="font-semibold text-[20px] text-[#000] pb-[10px] bg-transparent outline-none w-full"
           />
+          {error && (
+        <div className="text-[#f00] text-[14px] mt-[2px] break-all">
+          {error.message}
+        </div>
+      )}
         </div>
         <div>
           <textarea

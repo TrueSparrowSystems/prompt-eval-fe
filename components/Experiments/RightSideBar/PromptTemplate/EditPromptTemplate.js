@@ -119,6 +119,8 @@ function EditePromptTemplate() {
               onClick={() => {
                 setShowEdit(false);
               }}
+              variant="contained"
+              sx={{ ml: "10px", textTransform: "none" }}
             >
               <BackArrow />
               <div className="text-[15px] opacity-60 py-[25px]">

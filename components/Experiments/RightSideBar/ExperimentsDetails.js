@@ -54,7 +54,7 @@ function ExperimentsDetails() {
                   ? `${styles.selectedTab} text-[#2196F3] z-[2]`
                   : `${styles.notSelectedtab}`
               }
-              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap h-[119px]`}
+              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
               onClick={() => {
                 setShowReport(false);
                 setShowAdd(false);
@@ -69,7 +69,7 @@ function ExperimentsDetails() {
                   ? `${styles.selectedTab} text-[#2196F3] ml-[-20px]`
                   : `${styles.notSelectedtab} ml-[-15px]`
               }
-              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap h-[119px]`}
+              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
               onClick={() => {
                 setShowAdd(false);
                 toggleTab(TabNames.TESTCASES);

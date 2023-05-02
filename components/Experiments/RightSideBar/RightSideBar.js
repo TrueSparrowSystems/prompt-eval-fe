@@ -7,7 +7,7 @@ import { useExpContext } from "../../../context/ExpContext";
 
 function RightSideBar() {
   const { selectedExperimentInfo, setSelectedExperimentInfo } = useExpContext();
-  const [experimentName, setExperimentName] = useState("");
+  const [experimentName, setExperimentName] = useState("Untitled 1");
   const [experimentDescription, setExperimentDescription] = useState(
     "Copy Use this template to track your experiments. Click + Add new template to create a new prompt template on this board."
   );

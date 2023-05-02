@@ -95,7 +95,7 @@ function CreatePromptTemplate() {
               </div>
             </div>
             <input
-              className="text-[20px] font-bold opacity-60 outline-none pb-[25px]"
+              className="text-[20px] font-bold opacity-60 outline-none pb-[25px] w-full"
               type="text"
               value={templateName}
               onChange={(e) => {

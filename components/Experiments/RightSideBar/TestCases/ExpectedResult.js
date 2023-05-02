@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import RemoveIcon from "../../../../assets/Svg/RemoveIcon";
-import styles from "./TestCaseInfo.module.scss";
+import styles from "./TestCaseTabs.module.scss";
 
-function ExpectedResult({ expectedResult, id, removeExpectedResult }) {
+function ExpectedResult({ expectedResult, removeExpectedResult }) {
   const [expectedResultMessage, setExpectedResultMessage] = useState(
     expectedResult.result
   );
@@ -10,10 +10,7 @@ function ExpectedResult({ expectedResult, id, removeExpectedResult }) {
   return (
     <li>
       <div
-        className={`${styles.inputStyle} opacity-40 outline-none`}
-      >{`Acceptable result ${id + 1}`}</div>
-      <div
-        className="flex hover:bg-[#F8FAFB] p-2"
+        className="flex hover:bg-[#F8FAFB]"
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >
@@ -31,7 +28,7 @@ function ExpectedResult({ expectedResult, id, removeExpectedResult }) {
           }}
         />
         <div
-          className={`cursor-pointer ml-[10px] ${
+          className={`cursor-pointer ml-[10px] pt-2 ${
             isHover ? "opacity-40  hover:opacity-60" : "opacity-0"
           }`}
           onClick={(e) => {

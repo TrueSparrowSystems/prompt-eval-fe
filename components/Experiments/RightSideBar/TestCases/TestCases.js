@@ -7,36 +7,73 @@ import { useQuery } from "@apollo/client";
 import Queries from "../../../../queries/Queries";
 import { useExpContext } from "../../../../context/ExpContext";
 import LoadingState from "../../LoadingState";
+import { useCompSelectorContext } from "../../../../context/compSelectorContext";
+import { useMutation } from "@apollo/client";
 
-export default function TestCases({ handleCreate, createTc }) {
-  const { selectedExperimentInfo } = useExpContext();
-
+export default function TestCases() {
+  const { selectedExperimentInfo, promptTemplate } = useExpContext();
   const { data, loading, error, refetch } = useQuery(Queries.getTestCaseById, {
     variables: { experimentId: selectedExperimentInfo?.id },
   });
+  const [createTestCases, { dataTestCase, loadingTestCase, errorTestCase }] =
+    useMutation(Queries.createTestCases);
 
-  const [selectTestCase, setSelectTestCase] = useState(data?.testCases[0]);
+  const [selectTestCase, setSelectTestCase] = useState(0);
+
+  const { addTestCase, setAddTestCase } = useCompSelectorContext();
 
   useEffect(() => {
-    refetch();
-  }, [createTc]);
+    if (addTestCase) {
+      handleAddTestCase();
+      setAddTestCase(false);
+    }
+  }, [addTestCase,data,selectTestCase]);
 
   if (loading) {
     return <LoadingState />;
   }
 
+  const handleAddTestCase = async () => {
+    try {
+      await createTestCases({
+        variables: {
+          name: "Untitled Test Case",
+          description: "Initial Test Case Description",
+          dynamicVarValues: JSON.stringify({ key: "hey", value: "value" }),
+          expectedResult: ["hey", "hey10"],
+          experimentId: selectedExperimentInfo?.id,
+        },
+      });
+      await refetch();
+    } catch (err) {
+      return err;
+    }
+  };
+
   return (
     <div>
-      {data.testCases.length === 0 || error ? (
-        <EmptyState handleCreate={handleCreate} />
+      {data?.testCases.length === 0 ? (
+        <EmptyState />
       ) : (
         <div className={`flex gap-[20px] ${styles.experimentBox}`}>
-          <div className="basis-56 max-h-[674px] overflow-auto">
-            <TestCasesList data={data} setSelectTestCase={setSelectTestCase} />
-          </div>
-          <div className="mt-[13px] w-full">
-            <TestCaseTabs selectTestCase={selectTestCase} />
-          </div>
+          {error ? (
+            <div className="flex space-evenly text-[20px] text-[#ff0000] tracking-[0.2px] h-[400px]">
+              {error.message}
+            </div>
+          ) : (
+            <>
+              <div className="basis-64 max-h-[674px] ">
+                <TestCasesList
+                  data={data}
+                  selectTestCase={selectTestCase}
+                  setSelectTestCase={setSelectTestCase}
+                />
+              </div>
+              <div className="mt-[13px] w-full">
+                <TestCaseTabs data={data?.testCases[selectTestCase]} />
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>

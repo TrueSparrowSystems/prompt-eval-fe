@@ -11,6 +11,7 @@ import { useMutation } from "@apollo/client";
 import Queries from "../../../../queries/Queries";
 import Toast from "../../../ToastMessage/Toast";
 import { MESSAGES } from "../../../../constants/Messages";
+import AddIcon from "../../../../assets/Svg/AddIcon";
 
 function CreatePromptTemplate() {
   const [templateName, setTemplateName] = useState("Untitled Template");
@@ -33,15 +34,19 @@ function CreatePromptTemplate() {
     return conversation;
   };
 
-  const createNewPromptTemplate = () => {
-    createPromptTemplate({
-      variables: {
-        name: templateName,
-        description: "Initial Prompt Template Description",
-        conversation: getConversation(),
-        experimentId: selectedExperimentInfo?.id,
-      },
-    });
+  const createNewPromptTemplate = async () => {
+    try {
+      await createPromptTemplate({
+        variables: {
+          name: templateName,
+          description: "Initial Prompt Template Description",
+          conversation: getConversation(),
+          experimentId: selectedExperimentInfo?.id,
+        },
+      });
+    } catch (err) {
+      return err;
+    }
   };
   if (data) {
     setTimeout(() => {
@@ -70,7 +75,7 @@ function CreatePromptTemplate() {
     <>
       {data && <Toast msg={MESSAGES.PROMPT_TEMPLATE_CREATED} />}
 
-      <div className={`${styles.experimentBox}`}>
+      <div className={`${styles.experimentBox} overflow-auto`}>
         {error ? (
           <div className="flex items-center justify-center text-[20px] text-[#ff0000] tracking-[0.2px] h-[400px]">
             {error.message}
@@ -85,7 +90,7 @@ function CreatePromptTemplate() {
               }}
             >
               <BackArrow />
-              <div className="text-[14px] opacity-80 py-[25px]">
+              <div className="text-[15px] opacity-80 py-[25px]">
                 Back to all Template
               </div>
             </div>
@@ -101,7 +106,7 @@ function CreatePromptTemplate() {
             <div className="flex gap-[25px]">
               <div className="basis-20"></div>
               <div>
-                <div>
+                <div className="ml-[15px] mt-[8px] mb-[15px]">
                   <Button
                     size="large"
                     style={{
@@ -114,7 +119,7 @@ function CreatePromptTemplate() {
                       addNewPrompt(e);
                     }}
                   >
-                    + Add message
+                    <AddIcon className="fill-black mr-[12px]" /> Add message
                   </Button>
                 </div>
                 <Button
@@ -122,11 +127,13 @@ function CreatePromptTemplate() {
                   onClick={() => {
                     createNewPromptTemplate();
                   }}
-                  style={{
-                    background: "#2196F3",
+                  className="bg-[#2196F3]"
+                  sx={{
+                    ml: "10px",
+                    textTransform: "none",
+                    backgroundColor: "#2196F3",
                     border: "1px solid rgba(0, 0, 0, 0.23)",
                   }}
-                  sx={{ ml: "10px", textTransform: "none" }}
                 >
                   Save
                 </Button>

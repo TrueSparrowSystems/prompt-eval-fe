@@ -17,9 +17,11 @@ function ExperimentCell({
   const [showEditIcon, setShowEditIcon] = useState(false);
   const [editable, setEditable] = useState(false);
   const [newExperimentName, setNewExperimentName] = useState(experimentName);
+  const [showErrorMsg,setShowErrorMsg] = useState(false);
   const { selectedExperimentInfo, setSelectedExperimentInfo } = useExpContext();
   const { setShowReport, setShowAdd, setShowClone, setShowEdit } =
     useCompSelectorContext();
+
   const [updateExperiment, { data, loading, error }] = useMutation(
     Queries.updateExperiment
   );
@@ -33,7 +35,7 @@ function ExperimentCell({
       setNewExperimentName(selectedExperimentInfo?.name);
   }, [selectedExperimentInfo]);
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     if (newExperimentName.length === 0) {
       setNewExperimentName(selectedExperimentInfo?.name);
       return;
@@ -42,12 +44,26 @@ function ExperimentCell({
       ...prevState,
       name: newExperimentName,
     }));
-    updateExperiment({
-      variables: {
-        documentId: id,
+
+    try {
+      await updateExperiment({
+        variables: {
+          documentId: id,
+          name: newExperimentName,
+        },
+      });
+
+      setSelectedExperimentInfo((prevState) => ({
+        ...prevState,
         name: newExperimentName,
-      },
-    });
+      }));
+
+    } catch (err) {
+      setShowErrorMsg(true);
+      setTimeout(()=>setShowErrorMsg(false),4000);
+      setNewExperimentName(selectedExperimentInfo?.name);
+      return err;
+    }
   };
 
   return (
@@ -55,7 +71,7 @@ function ExperimentCell({
       <Link href={`/experiments/${id}`}>
         <a>
           <div
-            className={`flex items-center gap-[10px] p-[10px] cursor-pointer hover:bg-[#F0F0F0] ${
+            className={`flex items-center gap-[10px] p-[12px] cursor-pointer hover:bg-[#F0F0F0] ${
               selectedExperiment == index
                 ? "bg-[#F8FAFB] rounded-[4px]"
                 : "opacity-60"
@@ -70,21 +86,21 @@ function ExperimentCell({
             onMouseEnter={() => setShowEditIcon(true)}
             onMouseLeave={() => setShowEditIcon(false)}
           >
-            <ExperimentsIcon />
-            {editable ? (
+            <div>
+              <ExperimentsIcon />
+            </div>
+
               <input
                 type="text"
                 value={newExperimentName}
-                className="text-md text-[#000] focus:outline-none outline-none"
+                className="text-md text-[#000] focus:outline-none outline-none text-ellipsis "
                 onChange={(e) => setNewExperimentName(e.target.value)}
                 onBlur={() => {
                   setEditable(false);
                   handleUpdate();
                 }}
+                disabled={!editable}
               />
-            ) : (
-              <div className="text-md text-[#000]">{newExperimentName}</div>
-            )}
             <button
               className={`ml-auto hover:bg-[#0000001A] p-[5px] ${
                 showEditIcon ? "opacity-100" : "opacity-0"
@@ -99,8 +115,8 @@ function ExperimentCell({
           </div>
         </a>
       </Link>
-      {error && (
-        <div className="text-[#f00] text-[14px] mt-[12px] break-all">
+      {error && showErrorMsg && (
+        <div className="flex items-center text-[#f00] text-[14px] ml-[12px] mb-[12px] break-normal">
           {error.message}
         </div>
       )}

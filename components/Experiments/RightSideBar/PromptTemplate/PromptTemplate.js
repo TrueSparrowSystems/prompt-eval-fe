@@ -10,17 +10,22 @@ import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 import Select from "@mui/material/Select";
 import Pagination from "../../../Pagination/Pagination";
-import {useCompSelectorContext} from "../../../../context/compSelectorContext";
+import { useCompSelectorContext } from "../../../../context/compSelectorContext";
 
-function PromptTemplate({handleCreate}) {
+function PromptTemplate() {
   const { selectedExperimentInfo } = useExpContext();
   const [recordPerPage, setRecordPerPage] = useState(6);
   const [currentPage, setCurrentPage] = useState(1);
   const totalCount = useRef(0);
   const {showEmptyState} = useCompSelectorContext();
 
+  const [runSuccess, setRunSuccess] = useState(false);
+
   const startCount = (currentPage - 1) * recordPerPage + 1;
-  const endCount = (totalCount.current < (startCount + recordPerPage - 1)) ? totalCount.current : startCount + recordPerPage - 1;
+  const endCount =
+    totalCount.current < startCount + recordPerPage - 1
+      ? totalCount.current
+      : startCount + recordPerPage - 1;
 
   const handleChange = (event) => {
     setRecordPerPage(event.target.value);
@@ -44,7 +49,14 @@ function PromptTemplate({handleCreate}) {
   useEffect(() => {
     refetch();
   }, []);
-
+  
+  useEffect(() => {
+    if (runSuccess) {
+      refetch();
+      setRunSuccess(false);
+    }
+  }, [runSuccess]);
+  
   if (data?.promptListByPagination.totalCount) {
     totalCount.current = data?.promptListByPagination.totalCount;
   }
@@ -55,10 +67,12 @@ function PromptTemplate({handleCreate}) {
   return (
     <div>
       {error || data?.promptListByPagination.prompts.length === 0 ? (
-        <EmptyState handleCreate={handleCreate}/>
+        <EmptyState />
       ) : (
         <div className={`${styles.experimentBox}  max-h-[674px] overflow-auto`}>
-          <div className={`flex items-center text-[15px] tracking-[0.2px] font-semibold border-b-2`}>
+          <div
+            className={`flex items-center text-[15px] tracking-[0.2px] font-semibold border-b-2`}
+          >
             <div
               className={`basis-1/5 border-r-2 px-[10px] py-[34px] mr-[10px]`}
             >
@@ -74,15 +88,18 @@ function PromptTemplate({handleCreate}) {
               <div>Actions</div>
             </div>
           </div>
-          <div className="h-[580px] overflow-auto">
+          <div>
+            <div className="max-h-[468px] overflow-auto">
             {data?.promptListByPagination.prompts.map(
               (PromptTemplate, index) => (
                 <PromptTemplateCells
                   key={index}
                   PromptTemplate={PromptTemplate}
+                  setRunSuccess={setRunSuccess}
                 />
               )
             )}
+            </div>
             <div className="flex justify-end px-[20px] py-[15px] border-b-2">
               <div className="flex items-center text-md text-[#000]">
                 <div className="opacity-60 mr-[20px]">Rows per page:</div>

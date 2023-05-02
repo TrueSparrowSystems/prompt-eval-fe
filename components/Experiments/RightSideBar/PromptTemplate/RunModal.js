@@ -2,11 +2,17 @@ import { useState } from "react";
 import Modal from "react-modal";
 import RunPromptIcon from "../../../../assets/Svg/RunPromptIcon";
 import CrossIcon from "../../../../assets/Svg/CrossIcon";
-import { ExpandMore } from "@mui/icons-material";
+import DropDownArrow from "../../../../assets/Svg/DropDownArrow";
 import Button from "@mui/material/Button";
+import { CircularProgress } from "@mui/material";
 import { Select, MenuItem } from "@mui/material";
+import Queries from "../../../../queries/Queries";
+import { useMutation } from "@apollo/client";
+import { useExpContext } from "../../../../context/ExpContext";
+import Toast from "../../../ToastMessage/Toast";
+import { MESSAGES } from "../../../../constants/Messages";
 
-export default function RunModal({ showRunModal, setShowRunModal }) {
+export default function RunModal({ showRunModal, setShowRunModal,setRunSuccess }) {
   const [model, setModel] = useState("GPT3 Turbo");
   const [evaluation, setEvaluation] = useState("GraphQL");
   const customStyle = {
@@ -24,12 +30,41 @@ export default function RunModal({ showRunModal, setShowRunModal }) {
     },
   };
 
+  const [createEvaluation, { data, loading, error }] = useMutation(
+    Queries.createEvaluation
+  );
+
+  const { promptTemplate } = useExpContext();
+
+  const handleRun = async () => {
+    try {
+      await createEvaluation({
+        variables: {
+          promptTemplateId: promptTemplate?.id,
+          model: "GPT-3.5-Turbo",
+          eval: "graphQL",
+        },
+      });
+      setRunSuccess(true);
+    } catch (err) {
+      setRunSuccess(false);
+      return err;
+    }
+  };
+
   return (
     <Modal
       isOpen={showRunModal}
       style={customStyle}
       className="flex item-center"
     >
+      {data && (
+        <Toast
+          msg={
+            MESSAGES.RUN_SUCCESS
+          }
+        />
+      )}
       <div className="absolute w-[489px] h-[381px] bg-white py-[32px] px-[33px]">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row">
@@ -50,8 +85,8 @@ export default function RunModal({ showRunModal, setShowRunModal }) {
           <Select
             className="w-[425px] h-[48px] rounded-[4px] outline-none"
             IconComponent={(props) => (
-              <div {...props}>
-                <ExpandMore />
+              <div {...props} className="mr-[20px]">
+                <DropDownArrow />
               </div>
             )}
             value={model}
@@ -85,8 +120,8 @@ export default function RunModal({ showRunModal, setShowRunModal }) {
           <Select
             className="w-[425px] h-[48px] rounded-[4px] outline-none cursor-pointer"
             IconComponent={(props) => (
-              <div {...props}>
-                <ExpandMore />
+              <div {...props} className="mr-[20px]">
+                <DropDownArrow />
               </div>
             )}
             value={evaluation}
@@ -119,7 +154,14 @@ export default function RunModal({ showRunModal, setShowRunModal }) {
             style={{
               background: "#2196F3",
             }}
-            sx={{
+            sx={
+              {...((loading) && {
+                bgcolor: "#2196F3",
+                "&:hover": {
+                  bgcolor: "#2196F3",
+                },
+              }),
+              
               mt: "32px",
               textTransform: "none",
               width: "425px",
@@ -128,10 +170,26 @@ export default function RunModal({ showRunModal, setShowRunModal }) {
                 "0px 1px 5px rgba(0, 0, 0, 0.12), 0px 2px 2px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2)",
               bordeRadius: "4px",
             }}
+            disabled={loading}
+            onClick={()=>{
+              handleRun();
+            }}
           >
-            Run
+            {(loading) ? (
+              <CircularProgress
+                size={24}
+                sx={{
+                  color:"white"
+                }}
+              />
+            ):"Run"}
           </Button>
         </div>
+        {error && (
+        <div className="text-[#f00] text-[14px] mt-[6px] break-all text-ellipsis line-clamp-2">
+          {error.message}
+        </div>
+      )}
       </div>
     </Modal>
   );

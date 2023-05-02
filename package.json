@@ -18,6 +18,7 @@
     "@mui/material": "^5.11.16",
     "@reduxjs/toolkit": "^1.8.1",
     "graphql": "^16.6.0",
+    "intersection-observer": "^0.12.2",
     "lodash": "^4.17.21",
     "next": "12.1.5",
     "pino": "^7.10.0",

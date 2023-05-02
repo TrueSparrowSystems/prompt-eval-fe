@@ -23,14 +23,18 @@ function LeftSideBar(props) {
     refetch();
   }, [data]);
 
-  const handleClick = () => {
-    createExperiment({
-      variables: {
-        name: "Untitled Experiment",
-        description:
-          "Use this template to track your experiments. Add your experiment description here. Click + Add new template to create a new prompt template on this board.",
-      },
-    });
+  const handleClick = async () => {
+    try {
+      await createExperiment({
+        variables: {
+          name: "Untitled Experiment",
+          description:
+            "Use this template to track your experiments. Add your experiment description here. \nClick + Add new template to create a new prompt template on this board.",
+        },
+      });
+    } catch (err) {
+      return err;
+    }
   };
 
   const buttonSx = {
@@ -39,9 +43,9 @@ function LeftSideBar(props) {
       "&:hover": {
         bgcolor: "#2196F3",
       },
-      transform: "none",
     }),
     color: "#2196F3",
+    textTransform: "none",
   };
 
   return (

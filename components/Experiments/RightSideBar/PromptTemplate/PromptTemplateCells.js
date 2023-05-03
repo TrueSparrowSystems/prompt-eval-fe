@@ -9,13 +9,29 @@ import { useExpContext } from "../../../../context/ExpContext";
 import { useCompSelectorContext } from "../../../../context/compSelectorContext";
 import { useMutation } from "@apollo/client";
 import Queries from "../../../../queries/Queries";
+import AccuracyBadge from "../../../../assets/Svg/AccuracyBadge";
+import { MESSAGES } from "../../../../constants/Messages";
+import Toast from "../../../ToastMessage/Toast";
 
-function PromptTemplateCells({ PromptTemplate,setRunSuccess }) {
+function PromptTemplateCells({ PromptTemplate, setRunSuccess }) {
   const { setReportId, setPromptTemplate, selectedExperimentInfo } =
     useExpContext();
-  const { setShowClone, setShowReport, setShowEdit } = useCompSelectorContext();
+  const { showClone, setShowClone, setShowReport, setShowEdit } =
+    useCompSelectorContext();
   const [showRunModal, setShowRunModal] = useState(false);
-
+  const accuracy = PromptTemplate.latestEvaluationReport[0]?.accuracy;
+  const bgColor =
+    accuracy >= 75
+      ? "bg-[#2E7D321A]"
+      : accuracy >= 25
+      ? "bg-[#FFE6001A]"
+      : "bg-[#F4825E1A]";
+  const textColor =
+    accuracy >= 75
+      ? "text-[#2E7D54]"
+      : accuracy >= 25
+      ? "text-[#D9A900]"
+      : "text-[#794839]";
   const [createPromptTemplate, { data, loading, error }] = useMutation(
     Queries.createPromptTemplate
   );
@@ -48,6 +64,7 @@ function PromptTemplateCells({ PromptTemplate,setRunSuccess }) {
 
   return (
     <>
+      {showClone && <Toast msg={MESSAGES.PROMPT_TEMPLATE.CLONED} />}
       <div
         className={`flex items-center text-md border-b-2 cursor-pointer`}
         onClick={() => {
@@ -60,10 +77,15 @@ function PromptTemplateCells({ PromptTemplate,setRunSuccess }) {
           {PromptTemplate.name}
         </div>
         <div className="basis-1/5 px-[10px]">
-          {PromptTemplate.latestEvaluationReport[0] !== null &&
-          typeof PromptTemplate.latestEvaluationReport[0].accuracy === "number"
-            ? PromptTemplate.latestEvaluationReport[0].accuracy + "%"
-            : "--"}
+          {accuracy !== null && typeof accuracy === "number" ? (
+            <div
+              className={`flex flex-row items-center max-w-[100px] rounded-[8px] h-[32px] px-[10px] ${bgColor} ${textColor}`}
+            >
+              <AccuracyBadge accuracy={accuracy} />
+            </div>
+          ) : (
+            "--"
+          )}
         </div>
         <div className="basis-1/5 px-[10px]">
           {PromptTemplate.latestEvaluationReport[0] !== null
@@ -82,7 +104,7 @@ function PromptTemplateCells({ PromptTemplate,setRunSuccess }) {
             className={`flex items-center gap-[10px] mt-[10px] z-10 ${
               PromptTemplate.latestEvaluationReport[0] !== null
                 ? "cursor-pointer"
-                : ""
+                : "opacity-60 cursor-not-allowed"
             }`}
             onClick={(e) => {
               e.stopPropagation();
@@ -120,13 +142,18 @@ function PromptTemplateCells({ PromptTemplate,setRunSuccess }) {
                 e.stopPropagation();
                 handleClone();
               }}
+              title="Create Clone"
             >
               <Clone />
             </div>
           </div>
         </div>
       </div>
-      <RunModal showRunModal={showRunModal} setShowRunModal={setShowRunModal} setRunSuccess={setRunSuccess}/>
+      <RunModal
+        showRunModal={showRunModal}
+        setShowRunModal={setShowRunModal}
+        setRunSuccess={setRunSuccess}
+      />
     </>
   );
 }

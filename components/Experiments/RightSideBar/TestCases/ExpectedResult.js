@@ -18,7 +18,7 @@ function ExpectedResult({ expectedResult, removeExpectedResult }) {
           className={`${styles.textareaStyle} ${
             isHover ? "border-[#2196F380] bg-[#F8FAFB]" : ""
           }`}
-          placeholder="Define template variables in {‘variable_name’} format within the prompt."
+          placeholder="Define expected result here."
           value={expectedResultMessage}
           onChange={(e) => {
             setExpectedResultMessage(e.target.value);

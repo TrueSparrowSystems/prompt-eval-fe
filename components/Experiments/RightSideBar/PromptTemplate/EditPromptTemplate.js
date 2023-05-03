@@ -15,7 +15,8 @@ import AddIcon from "../../../../assets/Svg/AddIcon";
 
 function EditePromptTemplate() {
   const { promptTemplate } = useExpContext();
-  const { showAdd, setShowEdit, setCurrTab, showClone } = useCompSelectorContext();
+  const { showAdd, setShowEdit, setCurrTab, showClone, setShowClone } =
+    useCompSelectorContext();
   const isTemplatedRead = useRef(false);
   const [templateName, setTemplateName] = useState(promptTemplate.name);
 
@@ -68,7 +69,7 @@ function EditePromptTemplate() {
   };
 
   const updatePromptTemplate = async () => {
-    try{
+    try {
       await updateTemplate({
         variables: {
           name: templateName,
@@ -81,12 +82,12 @@ function EditePromptTemplate() {
       return err;
     }
   };
-  
+
   if (data) {
     setTimeout(() => {
       setShowEdit(false);
       setCurrTab(TabNames.PROMPTTEMPLATE);
-    }, 5000);
+    }, 2000);
   }
 
   useEffect(() => {
@@ -98,15 +99,8 @@ function EditePromptTemplate() {
 
   return (
     <>
-      {data && (
-        <Toast
-          msg={
-            showClone
-              ? MESSAGES.PROMPT_TEMPLATE_CLONED
-              : MESSAGES.PROMPT_TEMPLATE_UPDATED
-          }
-        />
-      )}
+      {data && <Toast msg={MESSAGES.PROMPT_TEMPLATE.UPDATED} type="success"/>}
+      {showClone && <Toast msg={MESSAGES.PROMPT_TEMPLATE.CLONED} type="success"/>}
       <div className={`${styles.experimentBox} overflow-auto`}>
         {error ? (
           <div className="flex items-center justify-center text-[20px] text-[#ff0000] tracking-[0.2px] h-[400px]">
@@ -118,6 +112,7 @@ function EditePromptTemplate() {
               className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60"
               onClick={() => {
                 setShowEdit(false);
+                setShowClone(false);
               }}
               variant="contained"
               sx={{ ml: "10px", textTransform: "none" }}

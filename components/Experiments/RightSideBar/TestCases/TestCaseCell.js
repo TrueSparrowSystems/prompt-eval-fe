@@ -3,16 +3,16 @@ import React from "react";
 function TestCaseCell({
   testCaseName,
   index,
-  selectTestCase,
-  setSelectTestCase,
+  selectedTestCase,
+  handleSelection,
 }) {
   return (
     <div
       className={`flex items-center gap-[10px] py-[20px] px-[18px] cursor-pointer hover:bg-[#F0F0F0] ${
-        selectTestCase == index ? "bg-[#F8FAFB] rounded-[4px]" : "opacity-60"
+        selectedTestCase == index ? "bg-[#F8FAFB] rounded-[4px]" : "opacity-60"
       }`}
       onClick={() => {
-        setSelectTestCase(index);
+        handleSelection(index);
       }}
     >
       <div>

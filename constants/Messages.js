@@ -1,7 +1,17 @@
 export const MESSAGES = {
-  PROMPT_TEMPLATE_CREATED: "Prompt template has been created successfully.",
-  PROMPT_TEMPLATE_UPDATED: "Prompt template has been updated successfully.",
-  PROMPT_TEMPLATE_CLONED: "Prompt template has been cloned successfully.",
-  TEST_CASE_CREATED: "Untitled test case has been created successfully.",
-  RUN_SUCCESS: "Run successful.",
+  PROMPT_TEMPLATE:{
+    CREATED: "Prompt template has been created successfully.",
+    UPDATED: "Prompt template has been updated successfully.",
+    CLONED: "Prompt template has been cloned successfully.",
+  },
+  TEST_CASE:{
+    CREATED: "Test case has been created successfully.",
+    UPDATED: "Test case has been updated successfully.",
+    UPDATE_ERROR: "Test case could not be updated.",
+    FAILED: "Test case creation failed."
+  },
+  RUN:{
+    SUCCESS: "Run successful.",
+    FAILURE: "Run failed."
+  },
 };

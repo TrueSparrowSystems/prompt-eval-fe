@@ -4,11 +4,20 @@
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
 }
+
 .selectedTab {
   background: #ffffff;
   box-shadow: 8px 4px 24px rgba(0, 0, 0, 0.11);
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
+}
+
+.notSelectedTestCase {
+  box-shadow: 8px 4px 24px rgba(0, 0, 0, 0.11);
+}
+
+.notSelectedPromptTemplate {
+  box-shadow: -8px 4px 24px rgba(0, 0, 0, 0.11);
 }
 
 .experimentBox {
@@ -18,7 +27,7 @@
   border-radius: 8px;
   padding: 25px;
   z-index: 10;
-  width:100%;
+  width: 100%;
   border: 1px solid white;
   position: relative;
   margin-top: -5px;
@@ -26,15 +35,15 @@
 }
 
 .experimentBox:after {
-  content:"";
+  content: "";
   position: absolute;
   width: 470px;
   top: 0px;
   left: 36px;
   border: 1px solid #0000001A;
-  }
-  
-.emptyState{
+}
+
+.emptyState {
   background-image: url("../../../assets/Svg/EmptyPage.svg");
   background-size: cover;
   background-position: top;
@@ -44,14 +53,14 @@
   width: 100%;
   border-radius: 8px;
   min-height: 70vh;
-  height:674px;
+  height: 674px;
   z-index: 10;
   margin-top: -5px;
   border: 1px solid white;
 }
 
-.emptyState::after{
-  content:"";
+.emptyState::after {
+  content: "";
   position: absolute;
   width: 470px;
   top: -2px;

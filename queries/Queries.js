@@ -252,26 +252,69 @@ class Queries {
     `;
   }
 
-  get createEvaluation(){
+  get createEvaluation() {
     return gql`
-    mutation createEvaluation($promptTemplateId:String!,$eval:String!,$model:String!){
-      createEvaluation(evaluationData:{promptTemplateId:$promptTemplateId,eval:$eval,model:$model}){
-        report{
-          id
-          model
-          eval
-          accuracy
-          promptTemplateId
-          runId
-          status
-          initiatedAt
-          completedAt
-          createdAt
-          updatedAt
+      mutation createEvaluation(
+        $promptTemplateId: String!
+        $eval: String!
+        $model: String!
+      ) {
+        createEvaluation(
+          evaluationData: {
+            promptTemplateId: $promptTemplateId
+            eval: $eval
+            model: $model
+          }
+        ) {
+          report {
+            id
+            model
+            eval
+            accuracy
+            promptTemplateId
+            runId
+            status
+            initiatedAt
+            completedAt
+            createdAt
+            updatedAt
+          }
         }
       }
-    }
-    `
+    `;
+  }
+
+  get updateTestCases() {
+    return gql`
+      mutation updateTestCases(
+        $id: String!
+        $name: String
+        $description: String
+        $dynamicVarValues: JSONString
+        $expectedResult: [String]
+      ) {
+        updateTestCases(
+          updateTestCaseData: {
+            id: $id
+            name: $name
+            description: $description
+            dynamicVarValues: $dynamicVarValues
+            expectedResult: $expectedResult
+          }
+        ) {
+          testCase {
+            id
+            name
+            description
+            expectedResult
+            dynamicVarValues
+            createdAt
+            updatedAt
+            experimentId
+          }
+        }
+      }
+    `;
   }
 }
 

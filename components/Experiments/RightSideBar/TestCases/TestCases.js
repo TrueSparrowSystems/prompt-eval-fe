@@ -9,16 +9,23 @@ import { useExpContext } from "../../../../context/ExpContext";
 import LoadingState from "../../LoadingState";
 import { useCompSelectorContext } from "../../../../context/compSelectorContext";
 import { useMutation } from "@apollo/client";
-
+import { MESSAGES } from "../../../../constants/Messages";
+import Toast from "../../../ToastMessage/Toast";
 export default function TestCases() {
-  const { selectedExperimentInfo, promptTemplate } = useExpContext();
+  const { selectedExperimentInfo, testCase, setTestCase } = useExpContext();
+
   const { data, loading, error, refetch } = useQuery(Queries.getTestCaseById, {
     variables: { experimentId: selectedExperimentInfo?.id },
   });
-  const [createTestCases, { dataTestCase, loadingTestCase, errorTestCase }] =
-    useMutation(Queries.createTestCases);
 
-  const [selectTestCase, setSelectTestCase] = useState(0);
+  const [
+    createTestCases,
+    {
+      data: createTestCase,
+      loading: loadingCreateTestCase,
+      error: errorCreateTestCase,
+    },
+  ] = useMutation(Queries.createTestCases);
 
   const { addTestCase, setAddTestCase } = useCompSelectorContext();
 
@@ -27,7 +34,8 @@ export default function TestCases() {
       handleAddTestCase();
       setAddTestCase(false);
     }
-  }, [addTestCase,data,selectTestCase]);
+    setTestCase(data?.testCases[0]);
+  }, [addTestCase, data, createTestCase]);
 
   if (loading) {
     return <LoadingState />;
@@ -35,23 +43,36 @@ export default function TestCases() {
 
   const handleAddTestCase = async () => {
     try {
+      let allDynamicVars = {};
+      if (selectedExperimentInfo?.dynamicVariables) {
+        for (let i = 0;i < selectedExperimentInfo?.dynamicVariables.length;i++) {
+          allDynamicVars[selectedExperimentInfo?.dynamicVars[i]] = "";
+        }
+      }
+
       await createTestCases({
         variables: {
           name: "Untitled Test Case",
           description: "Initial Test Case Description",
-          dynamicVarValues: JSON.stringify({ key: "hey", value: "value" }),
-          expectedResult: ["hey", "hey10"],
+          dynamicVarValues: JSON.stringify(allDynamicVars),
           experimentId: selectedExperimentInfo?.id,
         },
       });
       await refetch();
     } catch (err) {
+      console.log(err);
       return err;
     }
   };
-
+  //Todo add error handling
   return (
     <div>
+      {createTestCase && (
+        <Toast msg={MESSAGES.TEST_CASE.CREATED} type="success" />
+      )}
+      {errorCreateTestCase && (
+        <Toast msg={MESSAGES.TEST_CASE.FAILED} type="error" />
+      )}
       {data?.testCases.length === 0 ? (
         <EmptyState />
       ) : (
@@ -63,14 +84,10 @@ export default function TestCases() {
           ) : (
             <>
               <div className="basis-64 max-h-[674px] ">
-                <TestCasesList
-                  data={data}
-                  selectTestCase={selectTestCase}
-                  setSelectTestCase={setSelectTestCase}
-                />
+                <TestCasesList data={data} />
               </div>
               <div className="mt-[13px] w-full">
-                <TestCaseTabs data={data?.testCases[selectTestCase]} />
+                <TestCaseTabs />
               </div>
             </>
           )}

@@ -52,7 +52,7 @@ function CreatePromptTemplate() {
     setTimeout(() => {
       setShowAdd(false);
       setCurrTab(TabNames.PROMPTTEMPLATE);
-    }, 5000);
+    }, 2000);
   }
 
   const addNewPrompt = (e) => {
@@ -73,7 +73,7 @@ function CreatePromptTemplate() {
 
   return (
     <>
-      {data && <Toast msg={MESSAGES.PROMPT_TEMPLATE_CREATED} />}
+      {data && <Toast msg={MESSAGES.PROMPT_TEMPLATE.CREATED} />}
 
       <div className={`${styles.experimentBox} overflow-auto`}>
         {error ? (

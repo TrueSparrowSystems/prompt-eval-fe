@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Button from "@mui/material/Button";
 import styles from "./ExperimentsDetails.module.scss";
 import PromptTemplate from "./PromptTemplate/PromptTemplate";
@@ -23,6 +23,7 @@ function ExperimentsDetails() {
     currTab,
     setCurrTab,
     setAddTestCase,
+    showEmptyState,
   } = useCompSelectorContext();
 
   const { selectedExperimentInfo, testCase, setTestCase } = useExpContext();
@@ -45,7 +46,7 @@ function ExperimentsDetails() {
       return <PromptTemplate />;
     } else if (currTab === TabNames.TESTCASES) {
       if (testCase == null) {
-        const { data, loading, error } = useQuery(Queries.getTestCaseById, {
+        const { data } = useQuery(Queries.getTestCaseById, {
           variables: { experimentId: selectedExperimentInfo?.id },
         });
         if (data?.testCases.length > 0) setTestCase(data?.testCases[0]);
@@ -89,22 +90,24 @@ function ExperimentsDetails() {
               Test Cases
             </div>
           </div>
-          <Button
-            size="large"
-            style={{ textTransform: "none" }}
-            onClick={() => {
-              if (currTab === TabNames.PROMPTTEMPLATE) setShowAdd(true);
-              else {
-                setAddTestCase(true);
-              }
-            }}
-            sx={{ color: "#2196F3" }}
-          >
-            <AddIcon className="mr-[11px]" />
-            {currTab === TabNames.PROMPTTEMPLATE
-              ? "Add new template"
-              : "Add new test case"}
-          </Button>
+          {!showEmptyState && (
+            <Button
+              size="large"
+              style={{ textTransform: "none" }}
+              onClick={() => {
+                if (currTab === TabNames.PROMPTTEMPLATE) setShowAdd(true);
+                else {
+                  setAddTestCase(true);
+                }
+              }}
+              sx={{ color: "#2196F3" }}
+            >
+              <AddIcon className="mr-[11px]" />
+              {currTab === TabNames.PROMPTTEMPLATE
+                ? "Add new template"
+                : "Add new test case"}
+            </Button>
+          )}
         </div>
       </div>
       <div className="w-full">{getExperimentUi()}</div>

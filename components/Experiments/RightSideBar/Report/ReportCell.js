@@ -32,7 +32,13 @@ function ReportCell({ report, index, setExpanded, expanded }) {
             </div>
           </div>
         </AccordionSummary>
-        <AccordionDetails sx={report.accuracy < 60?({borderLeft: `2px solid rgba(179, 38, 30, 1)`}):({borderLeft: `2px solid rgba(46, 125, 50, 1)`})}>
+        <AccordionDetails
+          sx={
+            report.accuracy < 60
+              ? { borderLeft: `2px solid rgba(179, 38, 30, 1)` }
+              : { borderLeft: `2px solid rgba(46, 125, 50, 1)` }
+          }
+        >
           <div className={`bg-[#2196F30A] py-[30px] px-[20px]`}>
             <div className="flex items-center text-[#000] opacity-60 text-[14px] py-[10px]">
               <div>Actual Result</div>
@@ -47,6 +53,7 @@ function ReportCell({ report, index, setExpanded, expanded }) {
                 report.accuracy < 60 ? "border-[#B3261E]" : "border-[#2E7D32]"
               }`}
               placeholder="Define template variables in {‘variable_name’} format within the prompt."
+              disabled={true}
             />
             <div className="border border-dashed border-[#00000033] my-[30px]"></div>
             <div className="text-[#000] opacity-60 text-[14px]">
@@ -61,6 +68,7 @@ function ReportCell({ report, index, setExpanded, expanded }) {
                   className={`w-full border rounded-[4px] h-[120px] p-[10px] outline-none`}
                   value={result}
                   placeholder="Define template variables in {‘variable_name’} format within the prompt."
+                  disabled={true}
                 />
               </>
             ))}

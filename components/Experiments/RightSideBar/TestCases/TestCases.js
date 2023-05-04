@@ -6,11 +6,11 @@ import TestCasesList from "./TestCasesList";
 import { useQuery } from "@apollo/client";
 import Queries from "../../../../queries/Queries";
 import { useExpContext } from "../../../../context/ExpContext";
-import LoadingState from "../../LoadingState";
 import { useCompSelectorContext } from "../../../../context/compSelectorContext";
 import { useMutation } from "@apollo/client";
 import { MESSAGES } from "../../../../constants/Messages";
 import Toast from "../../../ToastMessage/Toast";
+import LoadingState from "../../LoadingState";
 export default function TestCases() {
   const { selectedExperimentInfo, testCase, setTestCase } = useExpContext();
 
@@ -27,19 +27,21 @@ export default function TestCases() {
     },
   ] = useMutation(Queries.createTestCases);
 
-  const { addTestCase, setAddTestCase } = useCompSelectorContext();
+  const { addTestCase, setAddTestCase, setAddDynamicVars } =
+    useCompSelectorContext();
 
   useEffect(() => {
     if (addTestCase) {
       handleAddTestCase();
       setAddTestCase(false);
     }
-    setTestCase(data?.testCases[0]);
+    if (Object.keys(testCase).length==0 && data?.testCases.length > 0) setTestCase(data?.testCases[0]);
   }, [addTestCase, data, createTestCase]);
 
-  if (loading) {
-    return <LoadingState />;
-  }
+  useEffect(() => {
+    setAddDynamicVars(true);
+    refetch();
+  }, []);
 
   const handleAddTestCase = async () => {
     try {
@@ -49,7 +51,6 @@ export default function TestCases() {
           allDynamicVars[selectedExperimentInfo?.dynamicVars[i]] = "";
         }
       }
-
       await createTestCases({
         variables: {
           name: "Untitled Test Case",
@@ -64,7 +65,10 @@ export default function TestCases() {
       return err;
     }
   };
-  //Todo add error handling
+
+  if(loading){
+    return <LoadingState />
+  }
   return (
     <div>
       {createTestCase && (

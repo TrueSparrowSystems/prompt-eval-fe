@@ -10,7 +10,7 @@ import Box from "@mui/material/Box";
 import Select from "@mui/material/Select";
 import { useCompSelectorContext } from "../../../../context/compSelectorContext";
 import { TabNames } from "../../../../constants/TabNames";
-
+import styles from "../ExperimentsDetails.module.scss";
 function Report() {
   const { reportId } = useExpContext();
 
@@ -60,6 +60,7 @@ function Report() {
         width: "100%",
         height: "674px",
       }}
+      className={`${styles.experimentBox} overflow-auto`}
     >
       <div
         className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60 px-[30px]"
@@ -80,7 +81,7 @@ function Report() {
         </div>
         <div className="px-[10px] py-[34px]">Status</div>
       </div>
-      <div className="h-[450px] overflow-auto">
+      <div className="h-[600px] overflow-auto">
         {data?.getReport?.testCaseEvaluationReport.map((report, index) => (
           <ReportCell
             key={index}
@@ -90,7 +91,7 @@ function Report() {
             setExpanded={setExpanded}
           />
         ))}
-        <div className="flex justify-end px-[20px] py-[15px] border-b-2">
+        <div className="flex justify-end px-[20px] py-[15px] border-b-2 border-t-2">
           <div className="flex items-center text-md text-[#000]">
             <div className="opacity-60 mr-[20px]">Rows per page:</div>
             <Box

@@ -14,6 +14,10 @@ export const CompSelectorContext = createContext({
   setCurrTab: () => {},
   addTestCase: {},
   setAddTestCase: () => {},
+  addDynamicVars: {},
+  setAddDynamicVars: () => {},
+  showEmptyState: {},
+  setShowEmptyState: () => {},
 });
 
 export function useCompSelectorContext() {
@@ -30,6 +34,10 @@ export function useCompSelectorContext() {
     setCurrTab,
     addTestCase,
     setAddTestCase,
+    addDynamicVars,
+    setAddDynamicVars,
+    showEmptyState,
+    setShowEmptyState,
   } = useContext(CompSelectorContext);
 
   return {
@@ -45,6 +53,10 @@ export function useCompSelectorContext() {
     setCurrTab,
     addTestCase,
     setAddTestCase,
+    addDynamicVars,
+    setAddDynamicVars,
+    showEmptyState,
+    setShowEmptyState,
   };
 }
 
@@ -55,6 +67,8 @@ export const CompSelectorProvider = ({ children }) => {
   const [showEdit, setShowEdit] = useState(false);
   const [currTab, setCurrTab] = useState(TabNames.PROMPTTEMPLATE);
   const [addTestCase, setAddTestCase] = useState(false);
+  const [addDynamicVars, setAddDynamicVars] = useState(false);
+  const [showEmptyState, setShowEmptyState] = useState(false);
 
   return (
     <CompSelectorContext.Provider
@@ -71,6 +85,10 @@ export const CompSelectorProvider = ({ children }) => {
         setCurrTab,
         addTestCase,
         setAddTestCase,
+        addDynamicVars,
+        setAddDynamicVars,
+        showEmptyState,
+        setShowEmptyState,
       }}
     >
       {children}

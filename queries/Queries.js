@@ -74,6 +74,7 @@ class Queries {
           limit: $limit
           page: $page
         ) {
+          isRunnable
           totalCount
           prompts {
             id
@@ -314,6 +315,17 @@ class Queries {
           }
         }
       }
+    `;
+  }
+
+  get getEvalAndModels(){
+    return gql`
+    query GetEvalAndModelType{
+      getEvalAndModels {
+        evals
+        models
+      }
+    }
     `;
   }
 }

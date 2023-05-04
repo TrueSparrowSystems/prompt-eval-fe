@@ -17,7 +17,6 @@ function ExperimentCell({
   const [showEditIcon, setShowEditIcon] = useState(false);
   const [editable, setEditable] = useState(false);
   const [newExperimentName, setNewExperimentName] = useState(experimentName);
-  const [showErrorMsg,setShowErrorMsg] = useState(false);
   const { selectedExperimentInfo, setSelectedExperimentInfo } = useExpContext();
   const { setShowReport, setShowAdd, setShowClone, setShowEdit } =
     useCompSelectorContext();
@@ -40,10 +39,6 @@ function ExperimentCell({
       setNewExperimentName(selectedExperimentInfo?.name);
       return;
     }
-    setSelectedExperimentInfo((prevState) => ({
-      ...prevState,
-      name: newExperimentName,
-    }));
 
     try {
       await updateExperiment({
@@ -57,10 +52,7 @@ function ExperimentCell({
         ...prevState,
         name: newExperimentName,
       }));
-
     } catch (err) {
-      setShowErrorMsg(true);
-      setTimeout(()=>setShowErrorMsg(false),4000);
       setNewExperimentName(selectedExperimentInfo?.name);
       return err;
     }
@@ -90,17 +82,17 @@ function ExperimentCell({
               <ExperimentsIcon />
             </div>
 
-              <input
-                type="text"
-                value={newExperimentName}
-                className="text-md text-[#000] focus:outline-none outline-none text-ellipsis "
-                onChange={(e) => setNewExperimentName(e.target.value)}
-                onBlur={() => {
-                  setEditable(false);
-                  handleUpdate();
-                }}
-                disabled={!editable}
-              />
+            <input
+              type="text"
+              value={newExperimentName}
+              className="text-md text-[#000] focus:outline-none outline-none text-ellipsis "
+              onChange={(e) => setNewExperimentName(e.target.value)}
+              onBlur={() => {
+                setEditable(false);
+                handleUpdate();
+              }}
+              disabled={!editable}
+            />
             <button
               className={`ml-auto hover:bg-[#0000001A] p-[5px] ${
                 showEditIcon ? "opacity-100" : "opacity-0"
@@ -115,7 +107,7 @@ function ExperimentCell({
           </div>
         </a>
       </Link>
-      {error && showErrorMsg && (
+      {error && (
         <div className="flex items-center text-[#f00] text-[14px] ml-[12px] mb-[12px] break-normal">
           {error.message}
         </div>

@@ -3,10 +3,10 @@ import MuiAlert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref}  {...props} />;
+  return <MuiAlert elevation={6} ref={ref} {...props} />;
 });
 
-function Toast({ msg }) {
+function Toast({ msg, type }) {
   const toastRef = useRef(null);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ function Toast({ msg }) {
         horizontal: "center",
       }}
     >
-      <Alert severity="success" sx={{ width: "100%" }}>
+      <Alert severity={type} sx={{ width: "100%" }}>
         {msg}
       </Alert>
     </Snackbar>

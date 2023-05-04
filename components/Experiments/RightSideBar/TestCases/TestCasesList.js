@@ -1,13 +1,22 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import TestCaseCell from "./TestCaseCell";
 import { Button } from "@mui/material";
 import AddIcon from "../../../../assets/Svg/AddIcon";
 import { useCompSelectorContext } from "../../../../context/compSelectorContext";
 import styles from "./TestCaseTabs.module.scss";
+import { useExpContext } from "../../../../context/ExpContext";
 
-function TestCasesList({ data, selectTestCase,setSelectTestCase }) {
+function TestCasesList({ data }) {
 
   const { addTestCase, setAddTestCase } = useCompSelectorContext();
+  const {testCase,setTestCase} = useExpContext();
+
+  const [selectedTestCase,setSelectedTestCase] = useState(0);
+
+  const handleSelection = (index) => {
+    setSelectedTestCase(index);
+    setTestCase(data?.testCases[index]);
+  };
 
   return (
     <div className="flex item-center flex-col border-r pr-[12px] border-[F8FAFB] mr-[13px] h-[674px]">
@@ -34,8 +43,8 @@ function TestCasesList({ data, selectTestCase,setSelectTestCase }) {
           testCaseName={testCase.name}
           key={index}
           index={index}
-          selectTestCase={selectTestCase}
-          setSelectTestCase={setSelectTestCase}
+          selectedTestCase={selectedTestCase}
+          handleSelection={handleSelection}
         />
       ))}
       </div>

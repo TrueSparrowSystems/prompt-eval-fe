@@ -8,21 +8,35 @@ import HorizontalLine from "../../../../assets/Svg/HorizontalLine";
 import AddIcon from "../../../../assets/Svg/AddIcon";
 import { v4 as uuid } from "uuid";
 import ExpectedResult from "./ExpectedResult";
+import VariableCell from "./VariableCell";
 import "intersection-observer";
+import { useMutation } from "@apollo/client";
+import Queries from "../../../../queries/Queries";
+import { useExpContext } from "../../../../context/ExpContext";
+import Toast from "../../../ToastMessage/Toast";
+import { MESSAGES } from "../../../../constants/Messages";
+import { CircularProgress } from "@mui/material";
 
-export default function BasicTabs({ data }) {
-  let flag = false;
+export default function BasicTabs() {
+  const [updateTestCases, { data, loading, error }] = useMutation(
+    Queries.updateTestCases
+  );
+  const { selectedExperimentInfo, testCase } = useExpContext();
+
+  let interSectionFlag = false;
   const isExpectedResultsPopulated = useRef(false);
   const [value, setValue] = React.useState(0);
-  const [variableValue, setVariableValue] = useState(
-    data?.dynamicVarValues ? JSON.parse(data?.dynamicVarValues).value : ""
-  );
 
   const [expectedResultsArr, setExpectedResultsArr] = useState([]);
 
-  const [testCaseName, setTestCaseName] = useState(data?.name);
+  const variableNames = selectedExperimentInfo?.dynamicVars;
+  const [variableValues, setVariableValues] = useState(
+    JSON.parse(testCase?.dynamicVarValues ? testCase?.dynamicVarValues : "{}")
+  );
+
+  const [testCaseName, setTestCaseName] = useState(testCase?.name);
   const [testCaseDescription, setTestCaseDescription] = useState(
-    data?.description
+    testCase?.description
   );
   const [opacity, setOpacity] = useState("40");
 
@@ -31,17 +45,26 @@ export default function BasicTabs({ data }) {
       readExpectedResults();
     }
     isExpectedResultsPopulated.current = true;
-  }, []);
+  }, [testCase]);
 
   useEffect(() => {
-    const root = document.querySelector("#cont");
+    setTestCaseName(testCase?.name);
+    setTestCaseDescription(testCase?.description);
+    setVariableValues(
+      JSON.parse(testCase?.dynamicVarValues ? testCase?.dynamicVarValues : "{}")
+    );
+    isExpectedResultsPopulated.current = false;
+  }, [testCase]);
+
+  useEffect(() => {
+    const root = document.querySelector("#testCaseContainer");
     const observer = new IntersectionObserver(
       (entries) => {
-        flag = false;
+        interSectionFlag = false;
 
         entries.forEach((entry) => {
-          if (!flag && entry.isIntersecting) {
-            flag = true;
+          if (!interSectionFlag && entry.isIntersecting) {
+            interSectionFlag = true;
             setValue(parseInt(entry.target.id));
           }
         });
@@ -55,7 +78,7 @@ export default function BasicTabs({ data }) {
       observer.observe(section);
     });
 
-    let ele = document.getElementById("cont");
+    let ele = document.getElementById("testCaseContainer");
 
     const containerPosition =
       ele.getBoundingClientRect().top + window.pageYOffset;
@@ -94,7 +117,8 @@ export default function BasicTabs({ data }) {
   };
 
   const readExpectedResults = () => {
-    data?.expectedResult?.map((expectedResult, index) => {
+    setExpectedResultsArr([]);
+    testCase?.expectedResult?.map((expectedResult, index) => {
       const newExpectedResult = {
         id: uuid(),
         result: expectedResult,
@@ -122,114 +146,170 @@ export default function BasicTabs({ data }) {
     )
   );
 
+  const handleUpdate = async () => {
+    try {
+      await updateTestCases({
+        variables: {
+          id: testCase?.id,
+          name: testCaseName,
+          dynamicVarValues: JSON.stringify(variableValues),
+          description: testCaseDescription,
+          expectedResult: expectedResultsArr.map(
+            (expectedResult) => expectedResult.result
+          ),
+        },
+      });
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  };
+
   return (
-    <Box sx={{ width: "100%", marginTop: "-20px" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
+    <>
+      {data && <Toast msg={MESSAGES.TEST_CASE.UPDATED} type="success" />}
+      {error && <Toast msg={MESSAGES.TEST_CASE.UPDATE_ERROR} type="error" />}
+      <Box sx={{ width: "100%", marginTop: "-20px" }}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+          >
+            <Tab label="Details" />
+            <Tab label="VARIABLE DEFINITIONS" />
+            <Tab label="acceptable results" />
+          </Tabs>
+        </Box>
+
+        <div
+          id="testCaseContainer"
+          className="overflow-auto relative mb-[30px] max-h-[570px]"
         >
-          <Tab label="Details" />
-          <Tab label="VARIABLE DEFINITIONS" />
-          <Tab label="acceptable results" />
-        </Tabs>
-      </Box>
-      <div id="cont" className="overflow-auto relative mb-[30px] max-h-[570px]">
-        <div id="0" className="tab">
-          <input
-            className={`text-[15px] font-bold opacity-${opacity} hover:opacity-80 outline-none pt-[27px]`}
-            type="text"
-            value={testCaseName}
-            onChange={(e) => {
-              setTestCaseName(e.target.value);
-            }}
-            onFocus={() => setOpacity("80")}
-            onBlur={() => setOpacity("40")}
-          />
+          <div id="0" className="tab">
+            <input
+              className={`text-[15px] font-bold opacity-${opacity} hover:opacity-80 outline-none pt-[27px]`}
+              type="text"
+              value={testCaseName}
+              onChange={(e) => {
+                setTestCaseName(e.target.value);
+              }}
+              onFocus={() => setOpacity("80")}
+              onBlur={() => setOpacity("40")}
+            />
 
-          <p className="text-[14px] font-[500px] leading-[24px] tracking-[0.17px] text-black/[0.8] pt-[12px] pb-[6px]">
-            Description
-          </p>
-          <textarea
-            className={`${styles.textareaStyle}`}
-            placeholder="Define template variables in {‘variable_name’} format within the prompt."
-            value={testCaseDescription}
-            onChange={(e) => {
-              setTestCaseDescription(e.target.value);
-            }}
-          />
-        </div>
-
-        <div className="tab" id="1">
-          <div className="py-[30px]">
-            <HorizontalLine />
-          </div>
-          <div>
-            <p className="text-[14px] font-[500px] leading-[24px] tracking-[0.17px] text-black/[0.8]">
-              Variable Definitions
+            <p className="text-[14px] font-[500px] leading-[24px] tracking-[0.17px] text-black/[0.8] pt-[12px] pb-[6px]">
+              Description
             </p>
-            <div className={`${styles.inputStyle} opacity-40 cursor-auto`}>
-              {data?.dynamicVarValues
-                ? JSON.parse(data?.dynamicVarValues).key
-                : "--"}
-            </div>
             <textarea
               className={`${styles.textareaStyle}`}
-              placeholder="Define template variables in {‘variable_name’} format within the prompt."
-              value={variableValue}
+              placeholder="Please enter the description of the test case here."
+              value={testCaseDescription}
               onChange={(e) => {
-                setVariableValue(e.target.value);
+                setTestCaseDescription(e.target.value);
               }}
             />
           </div>
-        </div>
 
-        <div className="tab" id="2">
-          <div className="py-[30px]">
-            <HorizontalLine />
+          <div className="tab" id="1">
+            <div className="py-[30px]">
+              <HorizontalLine />
+            </div>
+            <div>
+              <p className="text-[14px] font-[500px] leading-[24px] tracking-[0.17px] text-black/[0.8]">
+                Variable Definitions
+              </p>
+              {variableNames.map((variableName, index) => (
+                <VariableCell
+                  variableName={variableName}
+                  key={index}
+                  variableValues={variableValues}
+                  setVariableValues={setVariableValues}
+                  id={index}
+                />
+              ))}
+            </div>
           </div>
-          <div id="result">
-            <p className="text-[14px] font-[500px] leading-[24px] tracking-[0.17px] text-black/[0.8]">
-              Acceptable Results
-            </p>
-            <ul>{expectedResultsList}</ul>
-          </div>
-          <div>
-            <Button
-              size="large"
-              style={{
-                textTransform: "none",
-                marginTop: "20px",
-                fontSize: "14px",
-              }}
-              onClick={() => {
-                addExpectedResult();
-              }}
-              sx={{ color: "#2196F3" }}
-            >
-              <AddIcon className="mr-[11px]" />
-              Add acceptable result
-            </Button>
-          </div>
-          <div className="py-[30px]">
-            <HorizontalLine />
-          </div>
-          <div className="relative">
-            <Button
-              variant="contained"
-              className="bg-[#2196F3] absolute left-0  top-0 "
-              sx={{
-                ml: "10px",
-                textTransform: "none",
-                border: "1px solid rgba(0, 0, 0, 0.23)",
-              }}
-            >
-              SAVE
-            </Button>
+
+          <div className="tab" id="2">
+            <div className="py-[30px]">
+              <HorizontalLine />
+            </div>
+            <div id="result">
+              <p className="text-[14px] font-[500px] leading-[24px] tracking-[0.17px] text-black/[0.8]">
+                Acceptable Results
+              </p>
+              <ul>{expectedResultsList}</ul>
+            </div>
+            <div>
+              <Button
+                size="large"
+                style={{
+                  textTransform: "none",
+                  marginTop: "20px",
+                  fontSize: "14px",
+                }}
+                onClick={() => {
+                  addExpectedResult();
+                }}
+                sx={{ color: "#2196F3" }}
+                disabled={variableNames.length === 0}
+              >
+                <AddIcon
+                  className="mr-[11px]"
+                  style={{
+                    fill: variableNames.length === 0 ? "#00000042" : "#2196F3",
+                  }}
+                />
+                Add acceptable result
+              </Button>
+            </div>
+            <div className="py-[30px]">
+              <HorizontalLine />
+            </div>
+            <div className="relative">
+              <Button
+                variant="contained"
+                className="bg-[#2196F3] absolute left-0  top-0 "
+                sx={{
+                  ...(loading && {
+                    bgcolor: "#2196F3",
+                    "&:hover": {
+                      bgcolor: "#2196F3",
+                    },
+                  }),
+                  ml: "10px",
+                  textTransform: "none",
+                  border: "1px solid rgba(0, 0, 0, 0.23)",
+                }}
+                onClick={() => {
+                  handleUpdate();
+                }}
+                disabled={loading}
+              >
+                SAVE
+              </Button>
+
+              {loading && (
+                <CircularProgress
+                  size={24}
+                  sx={{
+                    color: "#2196F3",
+                    position: "absolute",
+                    marginTop: "-12px",
+                    marginLeft: "-24px",
+                  }}
+                />
+              )}
+              {error && (
+                <div className="text-[#f00] text-[14px] pt-[50px] break-all">
+                  {error.message}
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </Box>
+      </Box>
+    </>
   );
 }

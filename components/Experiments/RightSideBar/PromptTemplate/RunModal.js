@@ -12,9 +12,18 @@ import { useExpContext } from "../../../../context/ExpContext";
 import Toast from "../../../ToastMessage/Toast";
 import { MESSAGES } from "../../../../constants/Messages";
 
-export default function RunModal({ showRunModal, setShowRunModal, setRunSuccess }) {
-  const [model, setModel] = useState("GPT3 Turbo");
-  const [evaluation, setEvaluation] = useState("GraphQL");
+Modal.setAppElement("*");
+
+export default function RunModal({
+  showRunModal,
+  setShowRunModal,
+  setRunSuccess,
+}) {
+  let modelOptions = ["GPT-3.5-Turbo", "GPT-4-Turbo", "GPT-5-Turbo"];
+  let evalOptions = ["graphQL", "REST", "gRPC"];
+
+  const [model, setModel] = useState(modelOptions[0]);
+  const [evaluation, setEvaluation] = useState(evalOptions[0]);
   const customStyle = {
     content: {
       inset: "0",
@@ -41,8 +50,8 @@ export default function RunModal({ showRunModal, setShowRunModal, setRunSuccess 
       await createEvaluation({
         variables: {
           promptTemplateId: promptTemplate?.id,
-          model: "GPT-3.5-Turbo",
-          eval: "graphQL",
+          model: model,
+          eval: evaluation,
         },
       });
       setRunSuccess(true);
@@ -59,13 +68,7 @@ export default function RunModal({ showRunModal, setShowRunModal, setRunSuccess 
       className="flex item-center"
       onRequestClose={() => setShowRunModal(!showRunModal)}
     >
-      {data && (
-        <Toast
-          msg={
-            MESSAGES.RUN_SUCCESS
-          }
-        />
-      )}
+      {data && <Toast msg={MESSAGES.RUN.SUCCESS} />}
       <div className="absolute w-[489px] h-[381px] bg-white py-[32px] px-[33px]">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row">
@@ -93,25 +96,16 @@ export default function RunModal({ showRunModal, setShowRunModal, setRunSuccess 
             value={model}
             onChange={(e) => setModel(e.target.value)}
           >
-            <MenuItem
-              value="GPT3 Turbo"
-              selected={true}
-              style={{ backgroundColor: "#F8FAFB" }}
-            >
-              GPT3 Turbo
-            </MenuItem>
-            <MenuItem value="A" style={{ color: "#00000099" }}>
-              A
-            </MenuItem>
-            <MenuItem value="B" style={{ color: "#00000099" }}>
-              B
-            </MenuItem>
-            <MenuItem value="C" style={{ color: "#00000099" }}>
-              C
-            </MenuItem>
-            <MenuItem value="D" style={{ color: "#00000099" }}>
-              D
-            </MenuItem>
+            {modelOptions.map((item, index) => (
+              <MenuItem
+                key={index}
+                value={item}
+                selected={model === item}
+                style={model === item ? { backgroundColor: "#F8FAFB" } : {}}
+              >
+                {item}
+              </MenuItem>
+            ))}
           </Select>
         </div>
         <div className="mt-[20px] font-400 text-[13px] text-[#000000]">
@@ -128,25 +122,18 @@ export default function RunModal({ showRunModal, setShowRunModal, setRunSuccess 
             value={evaluation}
             onChange={(e) => setEvaluation(e.target.value)}
           >
-            <MenuItem
-              value="GraphQL"
-              selected={true}
-              style={{ backgroundColor: "#F8FAFB" }}
-            >
-              GraphQL
-            </MenuItem>
-            <MenuItem value="A" style={{ color: "#00000099" }}>
-              A
-            </MenuItem>
-            <MenuItem value="B" style={{ color: "#00000099" }}>
-              B
-            </MenuItem>
-            <MenuItem value="C" style={{ color: "#00000099" }}>
-              C
-            </MenuItem>
-            <MenuItem value="D" style={{ color: "#00000099" }}>
-              D
-            </MenuItem>
+            {evalOptions.map((item, index) => (
+              <MenuItem
+                key={index}
+                value={item}
+                selected={evaluation === item}
+                style={
+                  evaluation === item ? { backgroundColor: "#F8FAFB" } : {}
+                }
+              >
+                {item}
+              </MenuItem>
+            ))}
           </Select>
         </div>
         <div className="flex flex-row item-center">
@@ -155,37 +142,38 @@ export default function RunModal({ showRunModal, setShowRunModal, setRunSuccess 
             style={{
               background: "#2196F3",
             }}
-            sx={
-              {
-                ...((loading) && {
+            sx={{
+              ...(loading && {
+                bgcolor: "#2196F3",
+                "&:hover": {
                   bgcolor: "#2196F3",
-                  "&:hover": {
-                    bgcolor: "#2196F3",
-                  },
-                }),
+                },
+              }),
 
-                mt: "32px",
-                textTransform: "none",
-                width: "425px",
-                height: "36px",
-                boxShadow:
-                  "0px 1px 5px rgba(0, 0, 0, 0.12), 0px 2px 2px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2)",
-                bordeRadius: "4px",
-              }}
+              mt: "32px",
+              textTransform: "none",
+              width: "425px",
+              height: "36px",
+              boxShadow:
+                "0px 1px 5px rgba(0, 0, 0, 0.12), 0px 2px 2px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2)",
+              bordeRadius: "4px",
+            }}
             disabled={loading}
             onClick={() => {
               handleRun();
               setShowRunModal(!showRunModal);
             }}
           >
-            {(loading) ? (
+            {loading ? (
               <CircularProgress
                 size={24}
                 sx={{
-                  color: "white"
+                  color: "white",
                 }}
               />
-            ) : "Run"}
+            ) : (
+              "Run"
+            )}
           </Button>
         </div>
         {error && (

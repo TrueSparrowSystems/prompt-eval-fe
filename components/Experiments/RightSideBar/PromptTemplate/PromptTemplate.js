@@ -17,7 +17,6 @@ function PromptTemplate() {
   const [recordPerPage, setRecordPerPage] = useState(6);
   const [currentPage, setCurrentPage] = useState(1);
   const totalCount = useRef(0);
-  const {showEmptyState} = useCompSelectorContext();
 
   const [runSuccess, setRunSuccess] = useState(false);
 
@@ -49,14 +48,14 @@ function PromptTemplate() {
   useEffect(() => {
     refetch();
   }, []);
-  
+
   useEffect(() => {
     if (runSuccess) {
       refetch();
       setRunSuccess(false);
     }
   }, [runSuccess]);
-  
+
   if (data?.promptListByPagination.totalCount) {
     totalCount.current = data?.promptListByPagination.totalCount;
   }
@@ -85,20 +84,20 @@ function PromptTemplate() {
             </div>
             <div className="basis-1/5 flex items-center justify-around px-[10px] py-[34px]">
               <div>Run</div>
-              <div>Actions</div>
+              <div>{"       "}</div>
             </div>
           </div>
           <div>
             <div className="max-h-[468px] overflow-auto">
-            {data?.promptListByPagination.prompts.map(
-              (PromptTemplate, index) => (
-                <PromptTemplateCells
-                  key={index}
-                  PromptTemplate={PromptTemplate}
-                  setRunSuccess={setRunSuccess}
-                />
-              )
-            )}
+              {data?.promptListByPagination.prompts.map(
+                (PromptTemplate, index) => (
+                  <PromptTemplateCells
+                    key={index}
+                    PromptTemplate={PromptTemplate}
+                    setRunSuccess={setRunSuccess}
+                  />
+                )
+              )}
             </div>
             <div className="flex justify-end px-[20px] py-[15px] border-b-2">
               <div className="flex items-center text-md text-[#000]">

@@ -9,6 +9,9 @@ import Report from "./Report/Report";
 import { useCompSelectorContext } from "../../../context/compSelectorContext";
 import EditePromptTemplate from "./PromptTemplate/EditPromptTemplate";
 import { TabNames } from "../../../constants/TabNames";
+import { useExpContext } from "../../../context/ExpContext";
+import { useQuery } from "@apollo/client";
+import Queries from "../../../queries/Queries";
 
 function ExperimentsDetails() {
   const {
@@ -21,6 +24,8 @@ function ExperimentsDetails() {
     setCurrTab,
     setAddTestCase,
   } = useCompSelectorContext();
+
+  const { selectedExperimentInfo, testCase, setTestCase } = useExpContext();
 
   const toggleTab = (type) => {
     if (type != currTab) {
@@ -39,6 +44,12 @@ function ExperimentsDetails() {
     } else if (currTab === TabNames.PROMPTTEMPLATE) {
       return <PromptTemplate />;
     } else if (currTab === TabNames.TESTCASES) {
+      if (testCase == null) {
+        const { data, loading, error } = useQuery(Queries.getTestCaseById, {
+          variables: { experimentId: selectedExperimentInfo?.id },
+        });
+        if (data?.testCases.length > 0) setTestCase(data?.testCases[0]);
+      }
       return <TestCases />;
     }
   };
@@ -52,7 +63,7 @@ function ExperimentsDetails() {
               className={`${
                 currTab === TabNames.PROMPTTEMPLATE
                   ? `${styles.selectedTab} text-[#2196F3] z-[2]`
-                  : `${styles.notSelectedtab}`
+                  : `${styles.notSelectedtab} ${styles.notSelectedPromptTemplate}`
               }
               px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
               onClick={() => {
@@ -67,7 +78,7 @@ function ExperimentsDetails() {
               className={`${
                 currTab === TabNames.TESTCASES
                   ? `${styles.selectedTab} text-[#2196F3] ml-[-20px]`
-                  : `${styles.notSelectedtab} ml-[-15px]`
+                  : `${styles.notSelectedtab} ml-[-15px] ${styles.notSelectedTestCase}`
               }
               px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
               onClick={() => {
@@ -80,7 +91,7 @@ function ExperimentsDetails() {
           </div>
           <Button
             size="large"
-            style={{ textTransform: "none", top: "-25px" }}
+            style={{ textTransform: "none" }}
             onClick={() => {
               if (currTab === TabNames.PROMPTTEMPLATE) setShowAdd(true);
               else {

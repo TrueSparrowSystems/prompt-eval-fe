@@ -73,6 +73,7 @@ export default function RunModal({
       isOpen={showRunModal}
       style={customStyle}
       className="flex item-center"
+      onRequestClose={() => setShowRunModal(!showRunModal)}
     >
       {data && <Toast msg={MESSAGES.RUN.SUCCESS} />}
       <div className="absolute w-[489px] h-[381px] bg-white py-[32px] px-[33px]">
@@ -165,6 +166,7 @@ export default function RunModal({
             disabled={loading || !isRunnable}
             onClick={() => {
               handleRun();
+              setShowRunModal(!showRunModal);
             }}
           >
             {loading ? (

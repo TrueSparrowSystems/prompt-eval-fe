@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import Link from "next/link";
 export default function Home() {
   const handleClick = () => {
-    localStorage.setItem("onBoardingWithExitButton", "true"); //cycle incomplete
+    localStorage.setItem("onBoardingWithExitButton", "true");
   };
 
   return (

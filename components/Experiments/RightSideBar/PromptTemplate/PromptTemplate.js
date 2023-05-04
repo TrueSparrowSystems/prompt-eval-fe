@@ -60,9 +60,11 @@ function PromptTemplate() {
     totalCount.current = data?.promptListByPagination.totalCount;
   }
 
+  if(loading) return <LoadingState />
+
   return (
     <div>
-      {loading || error || data?.promptListByPagination.prompts.length === 0 ? (
+      {error || data?.promptListByPagination.prompts.length === 0 ? (
         <EmptyState />
       ) : (
         <div className={`${styles.experimentBox}  max-h-[674px] overflow-auto`}>

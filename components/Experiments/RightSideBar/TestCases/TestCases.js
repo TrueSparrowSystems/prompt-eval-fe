@@ -10,6 +10,7 @@ import { useCompSelectorContext } from "../../../../context/compSelectorContext"
 import { useMutation } from "@apollo/client";
 import { MESSAGES } from "../../../../constants/Messages";
 import Toast from "../../../ToastMessage/Toast";
+import LoadingState from "../../LoadingState";
 export default function TestCases() {
   const { selectedExperimentInfo, testCase, setTestCase } = useExpContext();
 
@@ -65,6 +66,9 @@ export default function TestCases() {
     }
   };
 
+  if(loading){
+    return <LoadingState />
+  }
   return (
     <div>
       {createTestCase && (
@@ -73,7 +77,7 @@ export default function TestCases() {
       {errorCreateTestCase && (
         <Toast msg={MESSAGES.TEST_CASE.FAILED} type="error" />
       )}
-      {loading || data?.testCases.length === 0 ? (
+      {data?.testCases.length === 0 ? (
         <EmptyState />
       ) : (
         <div className={`flex gap-[20px] ${styles.experimentBox}`}>

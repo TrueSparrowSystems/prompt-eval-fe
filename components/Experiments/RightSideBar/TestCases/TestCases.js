@@ -9,6 +9,7 @@ import { useExpContext } from "../../../../context/ExpContext";
 import LoadingState from "../../LoadingState";
 import { useCompSelectorContext } from "../../../../context/compSelectorContext";
 import { useMutation } from "@apollo/client";
+import TestCaseEmptyState from "../TestCaseEmptyState";
 
 export default function TestCases() {
   const { selectedExperimentInfo, promptTemplate } = useExpContext();
@@ -54,6 +55,7 @@ export default function TestCases() {
     <div>
       {data?.testCases.length === 0 ? (
         <EmptyState />
+        // <TestCaseEmptyState />
       ) : (
         <div className={`flex gap-[20px] ${styles.experimentBox}`}>
           {error ? (

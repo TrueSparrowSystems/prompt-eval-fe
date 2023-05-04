@@ -82,7 +82,7 @@ function RightSideBar() {
               setExperimentDescription(e.target.value);
             }}
             onBlur={() => handleUpdate(false)}
-            className="text-md opacity-60 pt-[5px] bg-transparent outline-none break-words resize-none w-full"
+            className={` text-md opacity-60 pt-[5px] bg-transparent outline-none break-words resize-none w-full `}
             maxLength={240}
           />
           {error && showErrorMsg && (

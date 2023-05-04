@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "react-modal";
 import RunPromptIcon from "../../../../assets/Svg/RunPromptIcon";
 import CrossIcon from "../../../../assets/Svg/CrossIcon";
@@ -18,12 +18,19 @@ export default function RunModal({
   showRunModal,
   setShowRunModal,
   setRunSuccess,
+  modelOptions,
+  evalOptions,
+  isRunnable,
 }) {
-  let modelOptions = ["GPT-3.5-Turbo", "GPT-4-Turbo", "GPT-5-Turbo"];
-  let evalOptions = ["graphQL", "REST", "gRPC"];
+  const [model, setModel] = useState("");
+  const [evaluation, setEvaluation] = useState("");
 
-  const [model, setModel] = useState(modelOptions[0]);
-  const [evaluation, setEvaluation] = useState(evalOptions[0]);
+  useEffect(() => {
+    if (modelOptions) setModel(modelOptions[0]);
+
+    if (evalOptions) setEvaluation(evalOptions[0]);
+  }, [modelOptions, evalOptions]);
+
   const customStyle = {
     content: {
       inset: "0",
@@ -95,16 +102,17 @@ export default function RunModal({
             value={model}
             onChange={(e) => setModel(e.target.value)}
           >
-            {modelOptions.map((item, index) => (
-              <MenuItem
-                key={index}
-                value={item}
-                selected={model === item}
-                style={model === item ? { backgroundColor: "#F8FAFB" } : {}}
-              >
-                {item}
-              </MenuItem>
-            ))}
+            {modelOptions &&
+              modelOptions.map((item, index) => (
+                <MenuItem
+                  key={index}
+                  value={item}
+                  selected={model === item}
+                  style={model === item ? { backgroundColor: "#F8FAFB" } : {}}
+                >
+                  {item}
+                </MenuItem>
+              ))}
           </Select>
         </div>
         <div className="mt-[20px] font-400 text-[13px] text-[#000000]">
@@ -121,34 +129,31 @@ export default function RunModal({
             value={evaluation}
             onChange={(e) => setEvaluation(e.target.value)}
           >
-            {evalOptions.map((item, index) => (
-              <MenuItem
-                key={index}
-                value={item}
-                selected={evaluation === item}
-                style={
-                  evaluation === item ? { backgroundColor: "#F8FAFB" } : {}
-                }
-              >
-                {item}
-              </MenuItem>
-            ))}
+            {evalOptions &&
+              evalOptions.map((item, index) => (
+                <MenuItem
+                  key={index}
+                  value={item}
+                  selected={evaluation === item}
+                  style={
+                    evaluation === item ? { backgroundColor: "#F8FAFB" } : {}
+                  }
+                >
+                  {item}
+                </MenuItem>
+              ))}
           </Select>
         </div>
         <div className="flex flex-row item-center">
           <Button
             variant="contained"
             style={{
-              background: "#2196F3",
+              background: !isRunnable ? "" : "#2196F3",
             }}
             sx={{
-              ...(loading && {
-                bgcolor: "#2196F3",
-                "&:hover": {
-                  bgcolor: "#2196F3",
-                },
+              ...((loading || !isRunnable) && {
+                bgcolor: !isRunnable ? "#999999" : "#2196F3",
               }),
-
               mt: "32px",
               textTransform: "none",
               width: "425px",
@@ -157,7 +162,7 @@ export default function RunModal({
                 "0px 1px 5px rgba(0, 0, 0, 0.12), 0px 2px 2px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2)",
               bordeRadius: "4px",
             }}
-            disabled={loading}
+            disabled={loading || !isRunnable}
             onClick={() => {
               handleRun();
             }}

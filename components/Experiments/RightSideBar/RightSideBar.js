@@ -17,17 +17,22 @@ function RightSideBar() {
   );
 
   useEffect(() => {
-    setExperimentName(selectedExperimentInfo?.name);
-    setExperimentDescription(selectedExperimentInfo?.description);
+    if (
+      selectedExperimentInfo &&
+      Object.keys(selectedExperimentInfo).length !== 0
+    ) {
+      setExperimentName(selectedExperimentInfo?.name);
+      setExperimentDescription(selectedExperimentInfo?.description);
+    }
   }, [selectedExperimentInfo]);
 
   const handleUpdate = async (isNameChanged) => {
-    if (experimentName.length === 0) {
+    if (experimentName?.length === 0) {
       setExperimentName(selectedExperimentInfo?.name);
       return;
     }
 
-    if (experimentDescription.length === 0) {
+    if (experimentDescription?.length === 0) {
       setExperimentDescription(selectedExperimentInfo?.description);
       return;
     }
@@ -65,6 +70,7 @@ function RightSideBar() {
             }}
             onBlur={() => handleUpdate(true)}
             className="font-semibold text-[20px] text-[#000] pb-[10px] bg-transparent outline-none w-full"
+            disabled={selectedExperimentInfo == null}
           />
           {error && (
             <div className="text-[#f00] text-[14px] mt-[2px] break-all">
@@ -81,6 +87,7 @@ function RightSideBar() {
             onBlur={() => handleUpdate(false)}
             className="text-md opacity-60 pt-[5px] bg-transparent outline-none break-words resize-none w-full"
             maxLength={240}
+            disabled={selectedExperimentInfo == null}
           />
           {error && (
             <div className="text-[#f00] text-[14px] mt-[2px] break-all">

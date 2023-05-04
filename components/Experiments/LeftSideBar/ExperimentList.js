@@ -4,12 +4,15 @@ import { useQuery } from "@apollo/client";
 import Queries from "../../../queries/Queries";
 import ExperimentListSkeleton from "../../Skeletons/ExperimentListSkeleton";
 import { useExpContext } from "../../../context/ExpContext";
+import { useCompSelectorContext } from "../../../context/compSelectorContext";
 
 export default function ExperimentList() {
   const experimentDetailsFetched = useRef(false);
   const [selectedExperiment, setSelectedExperiment] = useState(0);
-  const { data, loading, error } = useQuery(Queries.experimentList);
+  const { data, loading, error, refetch } = useQuery(Queries.experimentList);
   const { setSelectedExperimentInfo } = useExpContext();
+
+  const { addDynamicVars, setAddDynamicVars } = useCompSelectorContext();
 
   const handleChange = (index) => {
     setSelectedExperiment(index);
@@ -19,6 +22,12 @@ export default function ExperimentList() {
   useEffect(() => {
     handleChange(selectedExperiment);
   }, []);
+
+  useEffect(() => {
+    refetch();
+    experimentDetailsFetched.current = false;
+    setAddDynamicVars(false);
+  }, [addDynamicVars]);
 
   useEffect(() => {
     if (!experimentDetailsFetched.current && data?.experimentList.length) {

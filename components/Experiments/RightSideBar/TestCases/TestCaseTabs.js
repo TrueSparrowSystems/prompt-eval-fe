@@ -48,12 +48,16 @@ export default function BasicTabs() {
   }, [testCase]);
 
   useEffect(() => {
-    setTestCaseName(testCase?.name);
-    setTestCaseDescription(testCase?.description);
-    setVariableValues(
-      JSON.parse(testCase?.dynamicVarValues ? testCase?.dynamicVarValues : "{}")
-    );
-    isExpectedResultsPopulated.current = false;
+    if (testCase && Object.keys(testCase).length > 0) {
+      setTestCaseName(testCase?.name);
+      setTestCaseDescription(testCase?.description);
+      setVariableValues(
+        JSON.parse(
+          testCase?.dynamicVarValues ? testCase?.dynamicVarValues : "{}"
+        )
+      );
+      isExpectedResultsPopulated.current = false;
+    }
   }, [testCase]);
 
   useEffect(() => {
@@ -203,7 +207,7 @@ export default function BasicTabs() {
             </p>
             <textarea
               className={`${styles.textareaStyle}`}
-              placeholder="Please enter the description of the test case here."
+              placeholder="Add a description for your test case."
               value={testCaseDescription}
               onChange={(e) => {
                 setTestCaseDescription(e.target.value);

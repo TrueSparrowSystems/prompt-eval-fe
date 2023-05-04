@@ -1,12 +1,20 @@
-import { React } from "react";
+import { React, useEffect } from "react";
 import styles from "./ExperimentsDetails.module.scss";
 import { Button } from "@mui/material";
 import AddIcon from "../../../assets/Svg/AddIcon";
 import { useCompSelectorContext } from "../../../context/compSelectorContext";
 
 function EmptyState() {
-  const { setShowAdd } = useCompSelectorContext();
+  const { setShowAdd, setShowEmptyState } =
+    useCompSelectorContext();
 
+  useEffect(() => {
+    setShowEmptyState(true);
+
+    return () => {
+      setShowEmptyState(false);
+    };
+  }, []);
   return (
     <div
       className={`relative ${styles.emptyState} bg-white flex justify-center items-center`}

@@ -18,7 +18,7 @@ function ExpectedResult({ expectedResult, removeExpectedResult }) {
           className={`${styles.textareaStyle} ${
             isHover ? "border-[#2196F380] bg-[#F8FAFB]" : ""
           }`}
-          placeholder="Define expected result here."
+          placeholder="Define acceptable result for this test case."
           value={expectedResultMessage}
           onChange={(e) => {
             setExpectedResultMessage(e.target.value);

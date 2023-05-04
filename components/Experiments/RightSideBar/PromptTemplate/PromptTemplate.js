@@ -10,14 +10,12 @@ import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 import Select from "@mui/material/Select";
 import Pagination from "../../../Pagination/Pagination";
-import { useCompSelectorContext } from "../../../../context/compSelectorContext";
 
 function PromptTemplate() {
   const { selectedExperimentInfo } = useExpContext();
   const [recordPerPage, setRecordPerPage] = useState(6);
   const [currentPage, setCurrentPage] = useState(1);
   const totalCount = useRef(0);
-
   const [runSuccess, setRunSuccess] = useState(false);
 
   const startCount = (currentPage - 1) * recordPerPage + 1;
@@ -45,6 +43,8 @@ function PromptTemplate() {
     }
   );
 
+  const isRunnable = data?.promptListByPagination?.isRunnable;
+
   useEffect(() => {
     refetch();
   }, []);
@@ -56,16 +56,13 @@ function PromptTemplate() {
     }
   }, [runSuccess]);
 
-  if (data?.promptListByPagination.totalCount) {
+  if (data?.promptListByPagination?.totalCount) {
     totalCount.current = data?.promptListByPagination.totalCount;
   }
 
-  if (loading) {
-    return <LoadingState />;
-  }
   return (
     <div>
-      {error || data?.promptListByPagination.prompts.length === 0 ? (
+      {loading || error || data?.promptListByPagination.prompts.length === 0 ? (
         <EmptyState />
       ) : (
         <div className={`${styles.experimentBox}  max-h-[674px] overflow-auto`}>
@@ -95,6 +92,7 @@ function PromptTemplate() {
                     key={index}
                     PromptTemplate={PromptTemplate}
                     setRunSuccess={setRunSuccess}
+                    isRunnable={isRunnable}
                   />
                 )
               )}

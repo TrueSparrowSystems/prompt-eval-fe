@@ -18,14 +18,14 @@ function Toast({ msg, type }) {
   return (
     <Snackbar
       ref={toastRef}
-      open={open}
+      open={true}
       autoHideDuration={5000}
       anchorOrigin={{
         vertical: "top",
         horizontal: "center",
       }}
     >
-      <MuiAlert severity={type} sx={{ width: "100%" }} elevation={6}>
+      <MuiAlert severity={type} sx={{ width: "100%", }} elevation={6}>
         {msg}
       </MuiAlert>
     </Snackbar>

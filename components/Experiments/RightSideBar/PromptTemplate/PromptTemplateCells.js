@@ -13,7 +13,12 @@ import AccuracyBadge from "../../../../assets/Svg/AccuracyBadge";
 import { MESSAGES } from "../../../../constants/Messages";
 import Toast from "../../../ToastMessage/Toast";
 
-function PromptTemplateCells({ PromptTemplate, setRunSuccess, isRunnable }) {
+function PromptTemplateCells({
+  PromptTemplate,
+  runSuccess,
+  setRunSuccess,
+  isRunnable,
+}) {
   const { setReportId, setPromptTemplate, selectedExperimentInfo } =
     useExpContext();
   const { showClone, setShowClone, setShowReport, setShowEdit } =
@@ -160,6 +165,7 @@ function PromptTemplateCells({ PromptTemplate, setRunSuccess, isRunnable }) {
       <RunModal
         showRunModal={showRunModal}
         setShowRunModal={setShowRunModal}
+        runSuccess={runSuccess}
         setRunSuccess={setRunSuccess}
         modelOptions={evalsAndModelOptions?.getEvalAndModels?.models}
         evalOptions={evalsAndModelOptions?.getEvalAndModels?.evals}

@@ -14,4 +14,7 @@ export const MESSAGES = {
     SUCCESS: "Run successful.",
     FAILURE: "Run failed."
   },
+  SHARE:{
+    SUCCESS: "Text Copied!",
+  },
 };

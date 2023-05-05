@@ -80,7 +80,7 @@ export default function TestCases() {
       {data?.testCases.length === 0 ? (
         <EmptyState />
       ) : (
-        <div className={`flex gap-[20px] ${styles.experimentBox}`}>
+        <div className={`flex ${styles.experimentBox}`}>
           {error ? (
             <div className="flex space-evenly text-[20px] text-[#ff0000] tracking-[0.2px] h-[400px]">
               {error.message}

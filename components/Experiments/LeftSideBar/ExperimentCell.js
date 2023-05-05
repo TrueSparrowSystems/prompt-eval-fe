@@ -63,10 +63,10 @@ function ExperimentCell({
       <Link href={`/experiments/${id}`}>
         <a>
           <div
-            className={`flex items-center gap-[10px] p-[12px] cursor-pointer hover:bg-[#F0F0F0] ${
-              selectedExperiment == index
-                ? "bg-[#F8FAFB] rounded-[4px]"
-                : "opacity-60"
+            className={`flex items-center gap-[10px] p-[12px] cursor-pointer ${
+              showEditIcon ? "bg-[#F0F0F0]" : ""
+            } ${
+              selectedExperiment == index ? "bg-[#F8FAFB] rounded-[4px]" : ""
             }`}
             onClick={() => {
               setSelectedExperiment(index);
@@ -85,7 +85,13 @@ function ExperimentCell({
             <input
               type="text"
               value={newExperimentName}
-              className="text-md text-[#000] focus:outline-none outline-none text-ellipsis "
+              className={`text-md text-[#00000099] focus:outline-none outline-none text-ellipsis ${
+                showEditIcon
+                  ? "bg-[#F0F0F0]"
+                  : selectedExperiment == index
+                  ? "bg-[#F8FAFB]"
+                  : "bg-white"
+              }`}
               onChange={(e) => setNewExperimentName(e.target.value)}
               onBlur={() => {
                 setEditable(false);

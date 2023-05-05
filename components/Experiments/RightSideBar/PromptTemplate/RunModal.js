@@ -11,12 +11,14 @@ import { useMutation } from "@apollo/client";
 import { useExpContext } from "../../../../context/ExpContext";
 import Toast from "../../../ToastMessage/Toast";
 import { MESSAGES } from "../../../../constants/Messages";
+import Tooltip from "@mui/material/Tooltip";
 
 Modal.setAppElement("*");
 
 export default function RunModal({
   showRunModal,
   setShowRunModal,
+  runSuccess,
   setRunSuccess,
   modelOptions,
   evalOptions,
@@ -51,6 +53,7 @@ export default function RunModal({
   );
 
   const { promptTemplate } = useExpContext();
+  const [errorMsg, setErrorMsg] = useState(null);
 
   const handleRun = async () => {
     try {
@@ -63,26 +66,31 @@ export default function RunModal({
       });
       setRunSuccess(true);
     } catch (err) {
-      setRunSuccess(false);
+      setErrorMsg(err);
       return err;
     }
   };
 
+  const handleClose = () => {
+    setShowRunModal(!showRunModal);
+    setErrorMsg(null);
+  };
   return (
     <Modal
       isOpen={showRunModal}
       style={customStyle}
       className="flex item-center"
-      onRequestClose={() => setShowRunModal(!showRunModal)}
     >
-      {data && <Toast msg={MESSAGES.RUN.SUCCESS} />}
+      {runSuccess && <Toast msg={MESSAGES.RUN.SUCCESS} type="success" /> &&
+        setTimeout(() => handleClose(), 1000)}
+      {errorMsg && <Toast msg={MESSAGES.RUN.FAILURE} type="error" />}
       <div className="absolute w-[489px] h-[381px] bg-white py-[32px] px-[33px]">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row">
             <RunPromptIcon />
             <span className="font-[600] text-[15px] ml-[10px]">Run Prompt</span>
           </div>
-          <button onClick={() => setShowRunModal(!showRunModal)}>
+          <button onClick={() => handleClose()}>
             <CrossIcon />
           </button>
         </div>
@@ -146,44 +154,47 @@ export default function RunModal({
           </Select>
         </div>
         <div className="flex flex-row item-center">
-          <Button
-            variant="contained"
-            style={{
-              background: !isRunnable ? "" : "#2196F3",
-            }}
-            sx={{
-              ...((loading || !isRunnable) && {
-                bgcolor: !isRunnable ? "#999999" : "#2196F3",
-              }),
-              mt: "32px",
-              textTransform: "none",
-              width: "425px",
-              height: "36px",
-              boxShadow:
-                "0px 1px 5px rgba(0, 0, 0, 0.12), 0px 2px 2px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2)",
-              bordeRadius: "4px",
-            }}
-            disabled={loading || !isRunnable}
-            onClick={() => {
-              handleRun();
-              setShowRunModal(!showRunModal);
-            }}
-          >
-            {loading ? (
-              <CircularProgress
-                size={24}
-                sx={{
-                  color: "white",
+          <Tooltip title={!isRunnable ? "No test cases available" : ""}>
+            <span>
+              <Button
+                variant="contained"
+                style={{
+                  background: !isRunnable ? "" : "#2196F3",
                 }}
-              />
-            ) : (
-              "Run"
-            )}
-          </Button>
+                sx={{
+                  ...((loading || !isRunnable) && {
+                    bgcolor: !isRunnable ? "#999999" : "#2196F3",
+                  }),
+                  mt: "32px",
+                  textTransform: "none",
+                  width: "425px",
+                  height: "36px",
+                  boxShadow:
+                    "0px 1px 5px rgba(0, 0, 0, 0.12), 0px 2px 2px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2)",
+                  bordeRadius: "4px",
+                }}
+                disabled={loading || !isRunnable}
+                onClick={() => {
+                  handleRun();
+                }}
+              >
+                {loading ? (
+                  <CircularProgress
+                    size={24}
+                    sx={{
+                      color: "white",
+                    }}
+                  />
+                ) : (
+                  "Run"
+                )}
+              </Button>
+            </span>
+          </Tooltip>
         </div>
-        {error && (
-          <div className="text-[#f00] text-[14px] mt-[6px] break-all text-ellipsis line-clamp-2">
-            {error.message}
+        {errorMsg && (
+          <div className="text-[#f00] text-[14px] mt-[6px] break-all text-ellipsis line-clamp-2 flex justify-center items-center">
+            {errorMsg?.message}
           </div>
         )}
       </div>

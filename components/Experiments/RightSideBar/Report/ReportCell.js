@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import StatusBadge from "./StatusBadge";
 import Share from "../../../../assets/Svg/Share";
 import { Accordion, AccordionSummary, AccordionDetails } from "./AccordionComp";
-
+import ShareModal from "./ShareModal";
 function ReportCell({ report, index, setExpanded, expanded }) {
+  const [showShareModal, setShowShareModal] = useState(false);
+
   const [actualResult] = useState(report?.actualResult[0]);
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -42,7 +44,10 @@ function ReportCell({ report, index, setExpanded, expanded }) {
           <div className={`bg-[#2196F30A] py-[30px] px-[20px]`}>
             <div className="flex items-center text-[#000] opacity-60 text-[14px] py-[10px]">
               <div>Actual Result</div>
-              <div className="flex ietms-center gap-[10px] cursor-pointer ml-auto">
+              <div
+                className="flex ietms-center gap-[10px] cursor-pointer ml-auto"
+                onClick={() => setShowShareModal(true)}
+              >
                 <Share />
                 <div> Share Report</div>
               </div>
@@ -51,7 +56,7 @@ function ReportCell({ report, index, setExpanded, expanded }) {
               value={actualResult}
               className={`w-full rounded-[4px] h-[120px] p-[10px] outline-none border ${
                 report.accuracy < 60 ? "border-[#B3261E]" : "border-[#2E7D32]"
-              }`}
+              } resize-none`}
               placeholder="Define template variables in {‘variable_name’} format within the prompt."
               disabled={true}
             />
@@ -60,21 +65,25 @@ function ReportCell({ report, index, setExpanded, expanded }) {
               Acceptable Results
             </div>
             {report?.acceptableResult.map((result, index) => (
-              <>
+              <div key={index}>
                 <div className="text-[#000] text-[15px] mt-[15px] mb-[10px]">
                   Acceptable Result {index + 1}
                 </div>
                 <textarea
-                  className={`w-full border rounded-[4px] h-[120px] p-[10px] outline-none`}
+                  className={`w-full border rounded-[4px] h-[120px] p-[10px] outline-none resize-none`}
                   value={result}
                   placeholder="Define template variables in {‘variable_name’} format within the prompt."
                   disabled={true}
                 />
-              </>
+              </div>
             ))}
           </div>
         </AccordionDetails>
       </Accordion>
+      <ShareModal
+        showShareModal={showShareModal}
+        setShowShareModal={setShowShareModal}
+      />
     </>
   );
 }

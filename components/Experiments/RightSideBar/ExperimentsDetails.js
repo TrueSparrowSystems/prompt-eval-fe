@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "@mui/material/Button";
 import styles from "./ExperimentsDetails.module.scss";
 import PromptTemplate from "./PromptTemplate/PromptTemplate";
@@ -12,6 +12,7 @@ import { TabNames } from "../../../constants/TabNames";
 import { useExpContext } from "../../../context/ExpContext";
 import { useQuery } from "@apollo/client";
 import Queries from "../../../queries/Queries";
+import { useRouter } from "next/router";
 
 function ExperimentsDetails() {
   const {
@@ -26,13 +27,25 @@ function ExperimentsDetails() {
     showEmptyState,
   } = useCompSelectorContext();
 
-  const { selectedExperimentInfo, testCase, setTestCase } = useExpContext();
+  const { selectedExperimentInfo, testCase, setTestCase, setReportId } =
+    useExpContext();
+
+  const router = useRouter();
 
   const toggleTab = (type) => {
     if (type != currTab) {
       setCurrTab(type);
     }
   };
+
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    if (router.query?.reportId) {
+      setReportId(router.query?.reportId);
+      setShowReport(true);
+    }
+  }, [router.isReady]);
 
   const getExperimentUi = () => {
     if (showReport) {

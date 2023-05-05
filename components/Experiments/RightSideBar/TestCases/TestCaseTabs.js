@@ -34,10 +34,8 @@ export default function BasicTabs() {
     JSON.parse(testCase?.dynamicVarValues ? testCase?.dynamicVarValues : "{}")
   );
 
-  const [testCaseName, setTestCaseName] = useState(testCase?.name);
-  const [testCaseDescription, setTestCaseDescription] = useState(
-    testCase?.description
-  );
+  const [testCaseName, setTestCaseName] = useState("");
+  const [testCaseDescription, setTestCaseDescription] = useState("");
   const [opacity, setOpacity] = useState("40");
 
   useEffect(() => {
@@ -49,6 +47,7 @@ export default function BasicTabs() {
 
   useEffect(() => {
     if (testCase && Object.keys(testCase).length > 0) {
+
       setTestCaseName(testCase?.name);
       setTestCaseDescription(testCase?.description);
       setVariableValues(
@@ -58,6 +57,8 @@ export default function BasicTabs() {
       );
       isExpectedResultsPopulated.current = false;
     }
+
+    handleChange(null, 0);
   }, [testCase]);
 
   useEffect(() => {
@@ -143,6 +144,7 @@ export default function BasicTabs() {
   const expectedResultsList = expectedResultsArr?.map(
     (expectedResult, index) => (
       <ExpectedResult
+        key={index}
         expectedResult={expectedResult}
         id={index}
         removeExpectedResult={removeExpectedResult}
@@ -190,7 +192,7 @@ export default function BasicTabs() {
           id="testCaseContainer"
           className="overflow-auto relative mb-[30px] max-h-[570px]"
         >
-          <div id="0" className="tab">
+          <div id="0" className="tab ml-[20px]">
             <input
               className={`text-[15px] font-bold opacity-${opacity} hover:opacity-80 outline-none pt-[27px]`}
               type="text"
@@ -206,7 +208,7 @@ export default function BasicTabs() {
               Description
             </p>
             <textarea
-              className={`${styles.textareaStyle}`}
+              className={`${styles.textareaStyle} resize-none`}
               placeholder="Add a description for your test case."
               value={testCaseDescription}
               onChange={(e) => {
@@ -215,7 +217,7 @@ export default function BasicTabs() {
             />
           </div>
 
-          <div className="tab" id="1">
+          <div className="tab ml-[20px]" id="1">
             <div className="py-[30px]">
               <HorizontalLine />
             </div>
@@ -236,16 +238,16 @@ export default function BasicTabs() {
           </div>
 
           <div className="tab" id="2">
-            <div className="py-[30px]">
+            <div className="py-[30px] ml-[20px]">
               <HorizontalLine />
             </div>
             <div id="result">
-              <p className="text-[14px] font-[500px] leading-[24px] tracking-[0.17px] text-black/[0.8]">
+              <p className="text-[14px] font-[500px] leading-[24px] tracking-[0.17px] text-black/[0.8] ml-[20px]">
                 Acceptable Results
               </p>
-              <ul>{expectedResultsList}</ul>
+              <ul className="ml-[12px]">{expectedResultsList}</ul>
             </div>
-            <div>
+            <div className="ml-[20px]">
               <Button
                 size="large"
                 style={{
@@ -268,10 +270,10 @@ export default function BasicTabs() {
                 Add acceptable result
               </Button>
             </div>
-            <div className="py-[30px]">
+            <div className="py-[30px] ml-[20px]">
               <HorizontalLine />
             </div>
-            <div className="relative">
+            <div className="relative ml-[20px]">
               <Button
                 variant="contained"
                 className="bg-[#2196F3] absolute left-0  top-0 "

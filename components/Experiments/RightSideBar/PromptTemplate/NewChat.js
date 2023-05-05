@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import RemoveIcon from "../../../../assets/Svg/RemoveIcon";
-import styles from '../../RightSideBar/PromptTemplate/NewChat.module.scss'
+import styles from "../../RightSideBar/PromptTemplate/NewChat.module.scss";
 
 function NewChat({ prompt, remove }) {
   const [isHover, setIsHover] = useState(false);
   const [ptomptMessage, setPromptMessage] = useState(prompt.content);
-  const [promptRole,setPromptRole] = useState(prompt.role);
+  const [promptRole, setPromptRole] = useState(prompt.role);
   return (
     <li
       className="flex hover:bg-[#F8FAFB] p-2"
@@ -15,16 +15,18 @@ function NewChat({ prompt, remove }) {
       <div
         className="uppercase cursor-pointer text-md hover:bg-[#CDE6F8] p-[10px] h-[40px] w-[60px] basis-20 rounded-[4px] flex items-center justify-center select-none"
         onClick={() => {
-          setPromptRole(prevRole => prevRole == "system"?"user":"system")
+          setPromptRole((prevRole) =>
+            prevRole == "system" ? "user" : "system"
+          );
           prompt.role = promptRole;
         }}
       >
         {promptRole}
       </div>
       <textarea
-        className={`w-full border rounded-[4px] h-[120px] p-[10px] ml-[40px] mr-[10px] outline-none ${styles.textareaStyle} ${
-          isHover ? "border-[#2196F380] bg-[#F8FAFB]" : ""
-        }`}
+        className={`w-full border rounded-[4px] h-[120px] p-[10px] ml-[40px] mr-[10px] outline-none ${
+          styles.textareaStyle
+        } ${isHover ? "border-[#2196F380] bg-[#F8FAFB]" : ""} resize-none`}
         value={ptomptMessage}
         onChange={(e) => {
           setPromptMessage(e.target.value);

@@ -60,7 +60,7 @@ function PromptTemplate() {
     totalCount.current = data?.promptListByPagination.totalCount;
   }
 
-  if(loading) return <LoadingState />
+  if (loading) return <LoadingState />;
 
   return (
     <div>
@@ -93,6 +93,7 @@ function PromptTemplate() {
                   <PromptTemplateCells
                     key={index}
                     PromptTemplate={PromptTemplate}
+                    runSuccess={runSuccess}
                     setRunSuccess={setRunSuccess}
                     isRunnable={isRunnable}
                   />

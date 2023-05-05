@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import BackArrow from "../../../../assets/Svg/BackArrow";
 import ReportCell from "./ReportCell";
 import { useQuery } from "@apollo/client";
@@ -47,6 +47,13 @@ function Report() {
   }
 
   const [expanded, setExpanded] = useState("panel1");
+
+  useEffect(()=>{
+    if(data?.testCaseEvaluationReport?.length===0)
+    setShowReport(false);
+    setCurrTab(TabNames.PROMPTTEMPLATE);
+  },[data]);
+
   return (
     <div
       style={{
@@ -60,7 +67,7 @@ function Report() {
         width: "100%",
         height: "674px",
       }}
-      className={`${styles.experimentBox} overflow-auto`}
+      className={`${styles.experimentBox} `}
     >
       <div
         className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60 px-[30px]"
@@ -81,7 +88,7 @@ function Report() {
         </div>
         <div className="px-[10px] py-[34px]">Status</div>
       </div>
-      <div className="h-[600px] overflow-auto">
+      <div className="h-[470px] overflow-auto">
         {data?.getReport?.testCaseEvaluationReport.map((report, index) => (
           <ReportCell
             key={index}

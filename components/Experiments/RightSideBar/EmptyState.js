@@ -6,8 +6,15 @@ import { useCompSelectorContext } from "../../../context/compSelectorContext";
 import { TabNames } from "../../../constants/TabNames";
 
 function EmptyState() {
-  const { setShowAdd, currTab, setAddTestCase } =
+  const { setShowAdd, currTab, setAddTestCase, setShowEmptyState } =
     useCompSelectorContext();
+
+  useEffect(() => {
+    setShowEmptyState(true);
+    return () => {
+      setShowEmptyState(false);
+    };
+  }, []);
 
   return (
     <div

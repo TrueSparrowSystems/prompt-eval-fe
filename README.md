@@ -10,5 +10,5 @@ You need to create a new `.env` file in your project directory and add a new env
 
 3. Run the project using the following command
 ```
-npx next dev
+npm run dev
 ```

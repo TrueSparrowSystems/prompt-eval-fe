@@ -16,3 +16,10 @@ function Experiments() {
 }
 
 export default Experiments;
+
+export async function getServerSideProps() {
+  
+  const data = {
+  };
+  return { props: { data } };
+}

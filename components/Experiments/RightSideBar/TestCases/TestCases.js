@@ -80,7 +80,7 @@ export default function TestCases() {
       {errorCreateTestCase && (
         <Toast msg={MESSAGES.TEST_CASE.FAILED} type="error" />
       )}
-      {data?.testCases.length === 0 ? (
+      {error || data?.testCases.length === 0 ? (
         <EmptyState />
       ) : (
         <div className={`flex ${styles.experimentBox}`}>

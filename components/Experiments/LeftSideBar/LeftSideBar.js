@@ -88,7 +88,7 @@ function LeftSideBar() {
                   top: "50%",
                   left: "50%",
                   marginTop: "-12px",
-                  marginLeft: "-24px",
+                  marginLeft: "-15px",
                 }}
               />
             )}

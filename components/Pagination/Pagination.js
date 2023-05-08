@@ -12,7 +12,7 @@ const Pagination = ({ handlePaginationChange, pageCount, initialPage }) => {
         marginPagesDisplayed={0}
         pageRangeDisplayed={-1}
         pageCount={pageCount}
-        initialPage={pageCount == 0 ? initialPage - 1 : initialPage}
+        initialPage={initialPage}
         disabledClassName={"text-[#5C696E99]"}
         containerClassName={
           "pagination flex gap-[10px] items-center font-medium text-[14px] leading-[18px] text-[#5C696E99]"

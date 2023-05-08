@@ -17,7 +17,7 @@ import Toast from "../../../ToastMessage/Toast";
 import { MESSAGES } from "../../../../constants/Messages";
 import { CircularProgress } from "@mui/material";
 
-export default function BasicTabs() {
+export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
   const [updateTestCases, { data, loading, error }] = useMutation(
     Queries.updateTestCases
   );
@@ -59,6 +59,7 @@ export default function BasicTabs() {
     }
 
     handleChange(null, 0);
+    setUnsavedChanges(false);
   }, [testCase]);
 
   useEffect(() => {
@@ -148,6 +149,8 @@ export default function BasicTabs() {
         expectedResult={expectedResult}
         id={index}
         removeExpectedResult={removeExpectedResult}
+        unsavedChanges={unsavedChanges}
+        setUnsavedChanges={setUnsavedChanges}
       />
     )
   );
@@ -175,8 +178,8 @@ export default function BasicTabs() {
     <>
       {data && <Toast msg={MESSAGES.TEST_CASE.UPDATED} type="success" />}
       {error && <Toast msg={MESSAGES.TEST_CASE.UPDATE_ERROR} type="error" />}
-      <Box sx={{ width: "100%", marginTop: "-20px" }}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <Box sx={{ width: "100%", marginTop: "-20px", height:"calc(100vh - 280px)"}}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider"}}>
           <Tabs
             value={value}
             onChange={handleChange}
@@ -190,7 +193,7 @@ export default function BasicTabs() {
 
         <div
           id="testCaseContainer"
-          className="overflow-auto relative mb-[30px] max-h-[570px]"
+          className={` relative mb-[30px]  ${styles.subBoxHeightForTestContent} overflow-auto`}
         >
           <div id="0" className="tab ml-[20px]">
             <input
@@ -199,6 +202,7 @@ export default function BasicTabs() {
               value={testCaseName}
               onChange={(e) => {
                 setTestCaseName(e.target.value);
+                if (!unsavedChanges) setUnsavedChanges(true);
               }}
               onFocus={() => setOpacity("80")}
               onBlur={() => setOpacity("40")}
@@ -213,6 +217,7 @@ export default function BasicTabs() {
               value={testCaseDescription}
               onChange={(e) => {
                 setTestCaseDescription(e.target.value);
+                if (!unsavedChanges) setUnsavedChanges(true);
               }}
             />
           </div>
@@ -232,6 +237,8 @@ export default function BasicTabs() {
                   variableValues={variableValues}
                   setVariableValues={setVariableValues}
                   id={index}
+                  unsavedChanges={unsavedChanges}
+                  setUnsavedChanges={setUnsavedChanges}
                 />
               ))}
             </div>
@@ -290,6 +297,7 @@ export default function BasicTabs() {
                 }}
                 onClick={() => {
                   handleUpdate();
+                  setUnsavedChanges(false);
                 }}
                 disabled={loading}
               >

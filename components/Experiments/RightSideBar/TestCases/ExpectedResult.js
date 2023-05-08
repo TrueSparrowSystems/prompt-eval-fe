@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import RemoveIcon from "../../../../assets/Svg/RemoveIcon";
 import styles from "./TestCaseTabs.module.scss";
 
-function ExpectedResult({ expectedResult, removeExpectedResult }) {
+function ExpectedResult({
+  expectedResult,
+  removeExpectedResult,
+  unsavedChanges,
+  setUnsavedChanges,
+}) {
   const [expectedResultMessage, setExpectedResultMessage] = useState(
     expectedResult.result
   );
@@ -22,6 +27,8 @@ function ExpectedResult({ expectedResult, removeExpectedResult }) {
           value={expectedResultMessage}
           onChange={(e) => {
             setExpectedResultMessage(e.target.value);
+            if(!unsavedChanges)
+            setUnsavedChanges(true);
           }}
           onBlur={(e) => {
             expectedResult.result = e.target.value;

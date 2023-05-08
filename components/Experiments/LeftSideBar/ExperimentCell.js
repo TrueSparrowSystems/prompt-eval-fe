@@ -87,7 +87,9 @@ function ExperimentCell({
               value={newExperimentName}
               className={`text-md text-[#00000099] focus:outline-none outline-none text-ellipsis ${
                 showEditIcon
-                  ? "bg-[#F0F0F0]"
+                  ? selectedExperiment == index
+                    ? "bg-[#F8FAFB]"
+                    : ""
                   : selectedExperiment == index
                   ? "bg-[#F8FAFB]"
                   : "bg-white"

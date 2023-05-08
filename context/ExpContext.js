@@ -1,23 +1,60 @@
-import React, { createContext, useEffect } from "react";
+import React, { createContext, useContext, useState } from "react";
 
-
-export const ExpContext = createContext(
-  {
-    selectedExperimentInfo: {},
-    setSelectedExperimentInfo: () => {},
-  }
-);
+export const ExpContext = createContext({
+  selectedExperimentInfo: {},
+  setSelectedExperimentInfo: () => {},
+  reportId: {},
+  setReportId: () => {},
+  promptTemplate: {},
+  setPromptTemplate: () => {},
+  testCase: {},
+  setTestCase: () => {},
+});
 
 export function useExpContext() {
-  const {selectedExperimentInfo,setSelectedExperimentInfo} = React.useContext(ExpContext);
+  const {
+    selectedExperimentInfo,
+    setSelectedExperimentInfo,
+    reportId,
+    setReportId,
+    promptTemplate,
+    setPromptTemplate,
+    testCase,
+    setTestCase,
+  } = useContext(ExpContext);
 
-  return {selectedExperimentInfo,setSelectedExperimentInfo} ;
+  return {
+    selectedExperimentInfo,
+    setSelectedExperimentInfo,
+    reportId,
+    setReportId,
+    promptTemplate,
+    setPromptTemplate,
+    testCase,
+    setTestCase,
+  };
 }
 
-export const ExpContextProvider = ({children}) => {
-  const [selectedExperimentInfo, setSelectedExperimentInfo] = React.useState({});
+export const ExpContextProvider = ({ children }) => {
+  const [selectedExperimentInfo, setSelectedExperimentInfo] = useState({});
+  const [reportId, setReportId] = useState(null);
+  const [promptTemplate, setPromptTemplate] = useState({});
+  const [testCase, setTestCase] = useState({});
 
-  return <ExpContext.Provider value={{selectedExperimentInfo,setSelectedExperimentInfo}} >
-    {children}
+  return (
+    <ExpContext.Provider
+      value={{
+        selectedExperimentInfo,
+        setSelectedExperimentInfo,
+        reportId,
+        setReportId,
+        promptTemplate,
+        setPromptTemplate,
+        testCase,
+        setTestCase,
+      }}
+    >
+      {children}
     </ExpContext.Provider>
-}
+  );
+};

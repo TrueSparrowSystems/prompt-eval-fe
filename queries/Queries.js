@@ -74,6 +74,7 @@ class Queries {
           limit: $limit
           page: $page
         ) {
+          isRunnable
           totalCount
           prompts {
             id
@@ -82,6 +83,17 @@ class Queries {
             conversation {
               role
               content
+            }
+            latestEvaluationReport {
+              id
+              model
+              eval
+              accuracy
+              status
+              initiatedAt
+              completedAt
+              createdAt
+              updatedAt
             }
             createdAt
             updatedAt
@@ -130,7 +142,7 @@ class Queries {
         $experimentId: ID!
         $name: String!
         $description: String
-        $dynamicVarValues: [InputDynamicVarType]
+        $dynamicVarValues: JSONString
         $expectedResult: [String]
       ) {
         createTestCases(
@@ -147,10 +159,7 @@ class Queries {
             name
             description
             expectedResult
-            dynamicVarValues {
-              key
-              value
-            }
+            dynamicVarValues
             createdAt
             updatedAt
             experimentId
@@ -163,21 +172,162 @@ class Queries {
   get getTestCaseById() {
     return gql`
       query getTestCaseById($experimentId: String!) {
-          testCases(experimentId: $experimentId) {
+        testCases(experimentId: $experimentId) {
+          id
+          name
+          description
+          dynamicVarValues
+          experimentId
+          expectedResult
+          updatedAt
+          createdAt
+        }
+      }
+    `;
+  }
+  get getReportByReportId() {
+    return gql`
+      query getReport($reportId: String!, $limit: Int!, $page: Int!) {
+        getReport(reportId: $reportId, limit: $limit, page: $page) {
+          id
+          model
+          eval
+          accuracy
+          promptTemplateId
+          runId
+          status
+          initiatedAt
+          completedAt
+          createdAt
+          updatedAt
+          totalCount
+          testCaseEvaluationReport {
+            id
+            evaluationId
+            prompt {
+              role
+              content
+            }
+            testCaseId
+            testCaseName
+            testCaseDescription
+            actualResult
+            acceptableResult
+            accuracy
+          }
+        }
+      }
+    `;
+  }
+
+  get updatePromptTemplate() {
+    return gql`
+      mutation updatePromptTemplate(
+        $name: String
+        $description: String
+        $id: String!
+        $conversation: [InputConversationType]
+      ) {
+        updatePromptTemplate(
+          updatePromptTemplateData: {
+            id: $id
+            conversation: $conversation
+            name: $name
+            description: $description
+          }
+        ) {
+          promptTemplate {
             id
             name
             description
-            dynamicVarValues{
-              key
-              value
+            conversation {
+              role
+              content
             }
             experimentId
-            expectedResult
-            updatedAt
             createdAt
+            updatedAt
           }
-        }`
+        }
+      }
+    `;
+  }
+
+  get createEvaluation() {
+    return gql`
+      mutation createEvaluation(
+        $promptTemplateId: String!
+        $eval: String!
+        $model: String!
+      ) {
+        createEvaluation(
+          evaluationData: {
+            promptTemplateId: $promptTemplateId
+            eval: $eval
+            model: $model
+          }
+        ) {
+          report {
+            id
+            model
+            eval
+            accuracy
+            promptTemplateId
+            runId
+            status
+            initiatedAt
+            completedAt
+            createdAt
+            updatedAt
+          }
+        }
+      }
+    `;
+  }
+
+  get updateTestCases() {
+    return gql`
+      mutation updateTestCases(
+        $id: String!
+        $name: String
+        $description: String
+        $dynamicVarValues: JSONString
+        $expectedResult: [String]
+      ) {
+        updateTestCases(
+          updateTestCaseData: {
+            id: $id
+            name: $name
+            description: $description
+            dynamicVarValues: $dynamicVarValues
+            expectedResult: $expectedResult
+          }
+        ) {
+          testCase {
+            id
+            name
+            description
+            expectedResult
+            dynamicVarValues
+            createdAt
+            updatedAt
+            experimentId
+          }
+        }
+      }
+    `;
+  }
+
+  get getEvalAndModels(){
+    return gql`
+    query GetEvalAndModelType{
+      getEvalAndModels {
+        evals
+        models
+      }
+    }
+    `;
+  }
 }
-};
 
 module.exports = new Queries();

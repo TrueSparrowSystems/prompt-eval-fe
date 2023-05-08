@@ -1,64 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styles from "../ExperimentsDetails.module.scss";
 import NewChat from "./NewChat";
 import Button from "@mui/material/Button";
 import { v4 as uuid } from "uuid";
 import BackArrow from "../../../../assets/Svg/BackArrow";
+import { useExpContext } from "../../../../context/ExpContext";
 import { useCompSelectorContext } from "../../../../context/compSelectorContext";
 import { TabNames } from "../../../../constants/TabNames";
-import { useExpContext } from "../../../../context/ExpContext";
 import { useMutation } from "@apollo/client";
 import Queries from "../../../../queries/Queries";
 import Toast from "../../../ToastMessage/Toast";
 import { MESSAGES } from "../../../../constants/Messages";
 import AddIcon from "../../../../assets/Svg/AddIcon";
 
-function CreatePromptTemplate() {
-  const [templateName, setTemplateName] = useState("Untitled Template");
-  const [prompts, setPrompts] = useState([
-    { id: uuid(), role: "system", content: "" },
-  ]);
-  const [prevRole, setPrevRole] = useState("system");
-  const { selectedExperimentInfo } = useExpContext();
-  const { setCurrTab, setShowAdd } = useCompSelectorContext();
+function EditePromptTemplate() {
+  const { promptTemplate } = useExpContext();
+  const { showAdd, setShowEdit, setCurrTab, showClone, setShowClone } =
+    useCompSelectorContext();
+  const isTemplatedRead = useRef(false);
+  const [templateName, setTemplateName] = useState(promptTemplate.name);
 
-  const [createPromptTemplate, { data, loading, error }] = useMutation(
-    Queries.createPromptTemplate
+  const initialPrompts = [];
+
+  const [updateTemplate, { data, loading, error }] = useMutation(
+    Queries.updatePromptTemplate
   );
 
-  const getConversation = () => {
-    const conversation = [];
-    prompts.forEach((prompt) => {
-      conversation.push({ role: prompt.role, content: prompt.content });
-    });
-    return conversation;
-  };
-
-  const createNewPromptTemplate = async () => {
-    try {
-      await createPromptTemplate({
-        variables: {
-          name: templateName,
-          description: "Initial Prompt Template Description",
-          conversation: getConversation(),
-          experimentId: selectedExperimentInfo?.id,
-        },
-      });
-    } catch (err) {
-      return err;
-    }
-  };
-  if (data) {
-    setTimeout(() => {
-      setShowAdd(false);
-      setCurrTab(TabNames.PROMPTTEMPLATE);
-    }, 2000);
+  if (showAdd) {
+    initialPrompts.push({ id: uuid(), role: "system" });
   }
+
+  const [prompts, setPrompts] = useState(initialPrompts);
+  const [prevRole, setPrevRole] = useState("system");
 
   const addNewPrompt = (e) => {
     e.preventDefault();
     const newRole = prevRole === "system" ? "user" : "system";
-    const newPrompt = { id: uuid(), role: newRole, content: "" };
+    const newPrompt = { id: uuid(), role: newRole };
     setPrompts((prompts) => [...prompts, newPrompt]);
     setPrevRole(newRole);
   };
@@ -71,10 +49,58 @@ function CreatePromptTemplate() {
     <NewChat remove={removePrompt} prompt={prompt} key={prompt.id} />
   ));
 
+  const readPromptTemplate = () => {
+    promptTemplate.conversation.map((prompt) => {
+      const newPrompt = {
+        role: prompt.role,
+        content: prompt.content,
+        id: uuid(),
+      };
+      setPrompts((prompts) => [...prompts, newPrompt]);
+    });
+  };
+
+  const getConversation = () => {
+    const conversation = [];
+    prompts.forEach((prompt) => {
+      conversation.push({ role: prompt.role, content: prompt.content });
+    });
+    return conversation;
+  };
+
+  const updatePromptTemplate = async () => {
+    try {
+      await updateTemplate({
+        variables: {
+          name: templateName,
+          description: promptTemplate.description,
+          conversation: getConversation(),
+          id: promptTemplate?.id,
+        },
+      });
+    } catch (err) {
+      return err;
+    }
+  };
+
+  if (data) {
+    setTimeout(() => {
+      setShowEdit(false);
+      setCurrTab(TabNames.PROMPTTEMPLATE);
+    }, 2000);
+  }
+
+  useEffect(() => {
+    if (!isTemplatedRead.current) {
+      readPromptTemplate();
+    }
+    isTemplatedRead.current = true;
+  }, []);
+
   return (
     <>
-      {data && <Toast msg={MESSAGES.PROMPT_TEMPLATE.CREATED} />}
-
+      {data && <Toast msg={MESSAGES.PROMPT_TEMPLATE.UPDATED} type="success"/>}
+      {showClone && <Toast msg={MESSAGES.PROMPT_TEMPLATE.CLONED} type="success"/>}
       <div className={`${styles.experimentBox} overflow-auto`}>
         {error ? (
           <div className="flex items-center justify-center text-[20px] text-[#ff0000] tracking-[0.2px] h-[400px]">
@@ -83,15 +109,17 @@ function CreatePromptTemplate() {
         ) : (
           <>
             <div
-              className="flex items-center gap-[10px] cursor-pointer hover:opacity-100 opacity-80"
+              className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60"
               onClick={() => {
-                setShowAdd(false);
-                setCurrTab(TabNames.PROMPTTEMPLATE);
+                setShowEdit(false);
+                setShowClone(false);
               }}
+              variant="contained"
+              sx={{ ml: "10px", textTransform: "none" }}
             >
               <BackArrow />
-              <div className="text-[15px] opacity-80 py-[25px]">
-                Back to all Template
+              <div className="text-[15px] opacity-60 py-[25px]">
+                Back to all prompt templates
               </div>
             </div>
             <input
@@ -123,10 +151,10 @@ function CreatePromptTemplate() {
                   </Button>
                 </div>
                 <Button
-                  variant="contained"
                   onClick={() => {
-                    createNewPromptTemplate();
+                    updatePromptTemplate();
                   }}
+                  variant="contained"
                   className="bg-[#2196F3]"
                   sx={{
                     ml: "10px",
@@ -146,4 +174,4 @@ function CreatePromptTemplate() {
   );
 }
 
-export default CreatePromptTemplate;
+export default EditePromptTemplate;

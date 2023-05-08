@@ -4,11 +4,12 @@ import Rename from "../../../assets/Svg/Rename";
 import { useMutation } from "@apollo/client";
 import Queries from "../../../queries/Queries";
 import { useExpContext } from "../../../context/ExpContext";
+import { useCompSelectorContext } from "../../../context/compSelectorContext";
+import Link from "next/link";
 
 function ExperimentCell({
   id,
   experimentName,
-  key,
   index,
   selectedExperiment,
   setSelectedExperiment,
@@ -17,75 +18,109 @@ function ExperimentCell({
   const [editable, setEditable] = useState(false);
   const [newExperimentName, setNewExperimentName] = useState(experimentName);
   const { selectedExperimentInfo, setSelectedExperimentInfo } = useExpContext();
+  const { setShowReport, setShowAdd, setShowClone, setShowEdit } =
+    useCompSelectorContext();
 
   const [updateExperiment, { data, loading, error }] = useMutation(
     Queries.updateExperiment
   );
 
   useEffect(() => {
-    setNewExperimentName(experimentName);
+    if (
+      selectedExperimentInfo &&
+      Object.keys(selectedExperimentInfo).length !== 0 &&
+      selectedExperimentInfo?.id === id
+    )
+      setNewExperimentName(selectedExperimentInfo?.name);
   }, [selectedExperimentInfo]);
 
-  const handleUpdate = () => {
-    setSelectedExperimentInfo((prevState) => ({
-      ...prevState,
-      name: newExperimentName,
-    }));
-    updateExperiment({
-      variables: {
-        documentId: id,
+  const handleUpdate = async () => {
+    if (newExperimentName.length === 0) {
+      setNewExperimentName(selectedExperimentInfo?.name);
+      return;
+    }
+
+    try {
+      await updateExperiment({
+        variables: {
+          documentId: id,
+          name: newExperimentName,
+        },
+      });
+
+      setSelectedExperimentInfo((prevState) => ({
+        ...prevState,
         name: newExperimentName,
-      },
-    });
+      }));
+    } catch (err) {
+      setNewExperimentName(selectedExperimentInfo?.name);
+      return err;
+    }
   };
 
   return (
-    <div>
-      <div
-        className={`flex items-center gap-[10px] p-[10px] cursor-pointer hover:bg-[#F0F0F0] ${
-          selectedExperiment == index
-            ? "bg-[#F8FAFB] rounded-[4px]"
-            : "opacity-60"
-        }`}
-        onClick={() => {
-          setSelectedExperiment(index);
-        }}
-        onMouseEnter={() => setShowEditIcon(true)}
-        onMouseLeave={() => setShowEditIcon(false)}
-      >
-        <ExperimentsIcon />
-        {editable ? (
-          <input
-            type="text"
-            value={newExperimentName}
-            className="text-[13px] text-[#000] focus:outline-none outline-none"
-            onChange={(e) => setNewExperimentName(e.target.value)}
-            onBlur={() => {
-              setEditable(false);
-              handleUpdate();
+    <>
+      <Link href={`/experiments/${id}`}>
+        <a>
+          <div
+            className={`flex items-center gap-[10px] p-[12px] cursor-pointer ${
+              showEditIcon ? "bg-[#F0F0F0]" : ""
+            } ${
+              selectedExperiment == index ? "bg-[#F8FAFB] rounded-[4px]" : ""
+            }`}
+            onClick={() => {
+              setSelectedExperiment(index);
+              setShowReport(false);
+              setShowAdd(false);
+              setShowClone(false);
+              setShowEdit(false);
             }}
-          />
-        ) : (
-          <div className="text-[13px] text-[#000]">{newExperimentName}</div>
-        )}
-        <button
-          className={`ml-auto hover:bg-[#0000001A] p-[5px] ${
-            showEditIcon ? "opacity-100" : "opacity-0"
-          }`}
-          title="Rename"
-          onClick={() => {
-            setEditable(true);
-          }}
-        >
-          <Rename />
-        </button>
-      </div>
+            onMouseEnter={() => setShowEditIcon(true)}
+            onMouseLeave={() => setShowEditIcon(false)}
+          >
+            <div>
+              <ExperimentsIcon />
+            </div>
+
+            <input
+              type="text"
+              value={newExperimentName}
+              className={`text-md text-[#00000099] focus:outline-none outline-none text-ellipsis ${
+                showEditIcon
+                  ? selectedExperiment == index
+                    ? "bg-[#F8FAFB]"
+                    : ""
+                  : selectedExperiment == index
+                  ? "bg-[#F8FAFB]"
+                  : "bg-white"
+              }`}
+              onChange={(e) => setNewExperimentName(e.target.value)}
+              onBlur={() => {
+                setEditable(false);
+                handleUpdate();
+              }}
+              disabled={!editable}
+            />
+            <button
+              className={`ml-auto hover:bg-[#0000001A] p-[5px] ${
+                showEditIcon ? "opacity-100" : "opacity-0"
+              }`}
+              title="Rename"
+              onClick={() => {
+                setEditable(true);
+              }}
+            >
+              <Rename />
+            </button>
+          </div>
+        </a>
+      </Link>
       {error && (
-        <div className="text-[#f00] text-[14px] mt-[12px] break-all">
-          {error}
+        <div className="flex items-center text-[#f00] text-[14px] ml-[12px] mb-[12px] break-normal">
+          {error.message}
         </div>
       )}
-    </div>
+    </>
   );
 }
 

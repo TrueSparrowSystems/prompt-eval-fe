@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Button from "@mui/material/Button";
 import styles from "./ExperimentsDetails.module.scss";
 import PromptTemplate from "./PromptTemplate/PromptTemplate";
@@ -6,76 +6,64 @@ import TestCases from "./TestCases/TestCases";
 import AddIcon from "../../../assets/Svg/AddIcon";
 import CreatePromptTemplate from "./PromptTemplate/CreatePromptTemplate";
 import Report from "./Report/Report";
-import { useMutation } from "@apollo/client";
-import Queries from "../../../queries/Queries";
+import { useCompSelectorContext } from "../../../context/compSelectorContext";
+import EditePromptTemplate from "./PromptTemplate/EditPromptTemplate";
+import { TabNames } from "../../../constants/TabNames";
 import { useExpContext } from "../../../context/ExpContext";
+import { useQuery } from "@apollo/client";
+import Queries from "../../../queries/Queries";
+import { useRouter } from "next/router";
 
 function ExperimentsDetails() {
-  const experimentTypes = {
-    promptTemplate: "promptTemplate",
-    testCases: "testCases",
-  };
-  const [addNewTemplate, setAddnewTemplate] = useState(false);
-  const [showReport, setShowReport] = useState(false);
-  const [reportId, setReportId] = useState(null);
-  const [toggleState, setToggleState] = useState(
-    experimentTypes.promptTemplate
-  );
+  const {
+    showReport,
+    setShowReport,
+    showAdd,
+    setShowAdd,
+    showEdit,
+    currTab,
+    setCurrTab,
+    setAddTestCase,
+    showEmptyState,
+  } = useCompSelectorContext();
+
+  const { selectedExperimentInfo, testCase, setTestCase, setReportId } =
+    useExpContext();
+
+  const router = useRouter();
+
   const toggleTab = (type) => {
-    if (type != toggleState) {
-      setToggleState(type);
+    if (type != currTab) {
+      setCurrTab(type);
     }
   };
-
-  const [createPromptTemplate, { data, loading, error }] = useMutation(
-    Queries.createPromptTemplate
-  );
-  const [createTestCases, { dataTestCase, loadingTestCase, errorTestCase }] =
-    useMutation(Queries.createTestCases);
-
-  const { selectedExperimentInfo, setSelectedExperimentInfo } = useExpContext();
 
   useEffect(() => {
-    
-  }, [data,dataTestCase]);
+    if (!router.isReady) return;
 
-  const handleCreate = () => {
-    if (toggleState === "promptTemplate") {
-      createPromptTemplate({
-        variables: {
-          name: "Untitled Prompt Template",
-          description: "Initial Prompt Template Description",
-          conversation: { role: "system", content: "newone" },
-          experimentId: selectedExperimentInfo?.id,
-        },
-      });
-    } else {
-      createTestCases({
-        variables: {
-          name: "Untitled Test Case",
-          description: "Initial Test Case Description",
-          dynamicVarValues: { key: "hey", value: "value" },
-          expectedResult: ["hey", "hey10"],
-          experimentId: selectedExperimentInfo?.id,
-        },
-      });
+    if (router.query?.reportId) {
+      setReportId(router.query?.reportId);
+      setShowReport(true);
     }
-  };
+  }, [router.isReady]);
 
   const getExperimentUi = () => {
     if (showReport) {
-      toggleTab(experimentTypes.testCases);
+      toggleTab(TabNames.TESTCASES);
       return <Report />;
-    } else if (addNewTemplate) {
+    } else if (showAdd) {
       return <CreatePromptTemplate />;
-    } else if (toggleState === experimentTypes.promptTemplate) {
-      return (
-        <PromptTemplate
-          setShowReport={setShowReport}
-          setReportId={setReportId}
-        />
-      );
-    } else {
+    } else if (showEdit) {
+      return <EditePromptTemplate />;
+    } else if (currTab === TabNames.PROMPTTEMPLATE) {
+      return <PromptTemplate />;
+    } else if (currTab === TabNames.TESTCASES) {
+      if (testCase == null) {
+        const { data } = useQuery(Queries.getTestCaseById, {
+          variables: { experimentId: selectedExperimentInfo?.id },
+        });
+        if (data?.testCases.length > 0) setTestCase(data?.testCases[0]);
+      }
       return <TestCases />;
     }
   };
@@ -87,50 +75,52 @@ function ExperimentsDetails() {
           <div className="flex items-center uppercase border-b relative">
             <div
               className={`${
-                toggleState === experimentTypes.promptTemplate
-                  ? `${styles.selectedTab} text-[#2196F3] z-10`
-                  : `${styles.notSelectedtab}`
+                currTab === TabNames.PROMPTTEMPLATE
+                  ? `${styles.selectedTab} text-[#2196F3] z-[2]`
+                  : `${styles.notSelectedtab} ${styles.notSelectedPromptTemplate}`
               }
-              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative`}
+              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
               onClick={() => {
                 setShowReport(false);
-                setAddnewTemplate(false);
-                toggleTab(experimentTypes.promptTemplate);
+                setShowAdd(false);
+                toggleTab(TabNames.PROMPTTEMPLATE);
               }}
             >
               Prompt Template
             </div>
             <div
               className={`${
-                toggleState === experimentTypes.testCases
+                currTab === TabNames.TESTCASES
                   ? `${styles.selectedTab} text-[#2196F3] ml-[-20px]`
-                  : `${styles.notSelectedtab} ml-[-15px]`
+                  : `${styles.notSelectedtab} ml-[-15px] ${styles.notSelectedTestCase}`
               }
-              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative`}
+              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
               onClick={() => {
-                setAddnewTemplate(false);
-                toggleTab(experimentTypes.testCases);
+                setShowAdd(false);
+                toggleTab(TabNames.TESTCASES);
               }}
             >
               Test Cases
             </div>
           </div>
-          <div>
+          {!showEmptyState && (
             <Button
               size="large"
               style={{ textTransform: "none" }}
               onClick={() => {
-                setAddnewTemplate(true);
-                handleCreate();
+                if (currTab === TabNames.PROMPTTEMPLATE) setShowAdd(true);
+                else {
+                  setAddTestCase(true);
+                }
               }}
               sx={{ color: "#2196F3" }}
             >
               <AddIcon className="mr-[11px]" />
-              {toggleState === experimentTypes.promptTemplate
+              {currTab === TabNames.PROMPTTEMPLATE
                 ? "Add new template"
                 : "Add new test case"}
             </Button>
-          </div>
+          )}
         </div>
       </div>
       <div className="w-full">{getExperimentUi()}</div>

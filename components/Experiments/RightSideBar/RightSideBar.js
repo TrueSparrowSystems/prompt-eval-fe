@@ -3,55 +3,65 @@ import ExperimentsDetails from "./ExperimentsDetails";
 import { useMutation } from "@apollo/client";
 import Queries from "../../../queries/Queries";
 import { useEffect } from "react";
-import {useExpContext} from "../../../context/ExpContext";
+import { useExpContext } from "../../../context/ExpContext";
 
 function RightSideBar() {
   const { selectedExperimentInfo, setSelectedExperimentInfo } = useExpContext();
-  const [experimentName, setExperimentName] = useState("");
-  const [experimentDescription, setExperimentDescription] = useState("Copy Use this template to track your experiments. Click + Add new template to create a new prompt template on this board.");
-  
+  const [experimentName, setExperimentName] = useState("Untitled 1");
+  const [experimentDescription, setExperimentDescription] = useState(
+    "Copy Use this template to track your experiments. Click + Add new template to create a new prompt template on this board."
+  );
+
   const [updateExperiment, { data, loading, error }] = useMutation(
     Queries.updateExperiment
   );
-  
+
   useEffect(() => {
-    setExperimentName(selectedExperimentInfo?.name);
-    setExperimentDescription(selectedExperimentInfo?.description);
+    if (
+      selectedExperimentInfo &&
+      Object.keys(selectedExperimentInfo).length !== 0
+    ) {
+      setExperimentName(selectedExperimentInfo?.name);
+      setExperimentDescription(selectedExperimentInfo?.description);
+    }
   }, [selectedExperimentInfo]);
 
-  const handleUpdate = (isNameChanged) => {
-    
-    if(isNameChanged){
-      if(experimentName.length===0){
-        setExperimentName(selectedExperimentInfo?.name);
-        return;
-      }
-      setSelectedExperimentInfo((prevState)=>({...prevState, name:experimentName}));
-      updateExperiment({
-        variables: {
-          documentId: selectedExperimentInfo?.id,
-          name: experimentName,
-        }
-      })
+  const handleUpdate = async (isNameChanged) => {
+    if (experimentName?.length === 0) {
+      setExperimentName(selectedExperimentInfo?.name);
+      return;
     }
-    else{
-      if(experimentDescription.length===0){
-        setExperimentDescription(selectedExperimentInfo?.description);
-        return;
-      }
-      setSelectedExperimentInfo((prevState)=>({...prevState,description:experimentDescription}));
-      updateExperiment({
-        variables: {
-          documentId: selectedExperimentInfo?.id,
-          description:experimentDescription
-        }
-      })
-    }    
-  }
-  
+
+    if (experimentDescription?.length === 0) {
+      setExperimentDescription(selectedExperimentInfo?.description);
+      return;
+    }
+
+    let variables = { documentId: selectedExperimentInfo?.id };
+
+    if (isNameChanged) {
+      variables.name = experimentName;
+    } else {
+      variables.description = experimentDescription;
+    }
+
+    try {
+      await updateExperiment({
+        variables: variables,
+      });
+      setSelectedExperimentInfo((prevState) => ({
+        ...prevState,
+        name: experimentName,
+        description: experimentDescription,
+      }));
+    } catch (err) {
+      return err;
+    }
+  };
+
   return (
     <div>
-      <div className="step-three">
+      <div className="w-[80%] step-three">
         <div>
           <input
             value={experimentName}
@@ -59,27 +69,31 @@ function RightSideBar() {
               setExperimentName(e.target.value);
             }}
             onBlur={() => handleUpdate(true)}
-            className="font-bold text-[20px] text-[#000] pb-[10px] bg-transparent outline-none w-full"
+            className="font-semibold text-[20px] text-[#000] pb-[10px] bg-transparent outline-none w-full"
+            disabled={selectedExperimentInfo == null}
           />
           {error && (
-        <div className="text-[#f00] text-[14px] mt-[2px] break-all">
-          {error}
-        </div>
-      )}
+            <div className="text-[#f00] text-[14px] mt-[2px] break-all">
+              {error.message}
+            </div>
+          )}
         </div>
         <div>
-          <input
+          <textarea
             value={experimentDescription}
             onChange={(e) => {
               setExperimentDescription(e.target.value);
             }}
             onBlur={() => handleUpdate(false)}
-            className="text-[13px] opacity-60 pt-[5px] bg-transparent outline-none w-full"
+            className={` text-md opacity-60 pt-[5px] bg-transparent outline-none break-words resize-none w-full `}
+            maxLength={240}
+            disabled={selectedExperimentInfo == null}
           />
           {error && (
-          <div className="text-[#f00] text-[14px] mt-[2px] break-all">
-          {error}
-        </div>)}
+            <div className="text-[#f00] text-[14px] mt-[2px] break-all">
+              {error.message}
+            </div>
+          )}
         </div>
       </div>
       <ExperimentsDetails />

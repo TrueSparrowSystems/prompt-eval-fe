@@ -20,7 +20,7 @@ function Onboarding(props) {
             strokeLinejoin="round"
           />
         </svg>
-        <div className="text-[#000] text-[13px] w-[150px]">
+        <div className="text-[#000] text-md w-[150px]">
           <div className="font-bold">Create an experiment</div>
           <div className="opacity-60">
             Use our template to track your experiments
@@ -45,7 +45,7 @@ function Onboarding(props) {
           />
         </svg>
 
-        <div className="text-[#000] text-[13px] w-[150px]">
+        <div className="text-[#000] text-md w-[150px]">
           <div className="font-bold">Generate multiple prompts</div>
           <div className="opacity-60">Keep record of prompts</div>
         </div>
@@ -68,7 +68,7 @@ function Onboarding(props) {
           />
         </svg>
 
-        <div className="text-[#000] text-[13px] w-[150px]">
+        <div className="text-[#000] text-md w-[150px]">
           <div className="font-bold">Get accurate reports</div>
           <div className="opacity-60">
             Add test cases for your use case and compare

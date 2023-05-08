@@ -5,6 +5,8 @@ export default function VariableCell({
   variableName,
   variableValues,
   setVariableValues,
+  unsavedChanges,
+  setUnsavedChanges,
 }) {
   return (
     <div>
@@ -20,6 +22,7 @@ export default function VariableCell({
             ...variableValues,
             [variableName]: e.target.value,
           });
+          if (!unsavedChanges) setUnsavedChanges(true);
         }}
       />
     </div>

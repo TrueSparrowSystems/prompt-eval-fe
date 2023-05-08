@@ -1,23 +1,35 @@
-.inputStyle{
-    font-size:15px;
+.inputStyle {
+    font-size: 15px;
     font-weight: bold;
     padding-top: 12px;
     padding-bottom: 6px;
     outline: none;
 }
 
-.textareaStyle{
+.textareaStyle {
     width: 100%;
-    border-radius:4px;
-    height:120px;
-    padding:10px;
+    border-radius: 4px;
+    height: 120px;
+    padding: 10px;
     margin-top: 12px;
-    outline:none;
-    font-size:14px;
+    outline: none;
+    font-size: 14px;
     border-width: 1px;
     border: 1px solid #0000001A;
 }
 
-.scrollCont::-webkit-scrollbar{
+.scrollCont::-webkit-scrollbar {
     display: none;
+}
+
+.BoxHeight {
+    max-height: calc(100vh - 250px);
+}
+
+.subBoxHeightForTestList {
+    height: calc(100vh - 280px);
+}
+
+.subBoxHeightForTestContent {
+    height: calc(100vh - 350px);
 }

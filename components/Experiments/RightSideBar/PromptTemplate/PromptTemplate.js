@@ -67,7 +67,7 @@ function PromptTemplate() {
       {error || data?.promptListByPagination.prompts.length === 0 ? (
         <EmptyState />
       ) : (
-        <div className={`${styles.experimentBox}  max-h-[674px] overflow-auto`}>
+        <div className={`${styles.experimentBox}`}>
           <div
             className={`flex items-center text-[15px] tracking-[0.2px] font-semibold border-b-2`}
           >
@@ -87,7 +87,7 @@ function PromptTemplate() {
             </div>
           </div>
           <div>
-            <div className="max-h-[468px] overflow-auto">
+            <div className={`${styles.subBoxHeight} overflow-auto`}>
               {data?.promptListByPagination.prompts.map(
                 (PromptTemplate, index) => (
                   <PromptTemplateCells
@@ -100,7 +100,7 @@ function PromptTemplate() {
                 )
               )}
             </div>
-            <div className="flex justify-end px-[20px] py-[15px] border-b-2">
+            <div className="flex justify-end px-[20px] py-[15px] border-b-2 border-t-2">
               <div className="flex items-center text-md text-[#000]">
                 <div className="opacity-60 mr-[20px]">Rows per page:</div>
                 <Box

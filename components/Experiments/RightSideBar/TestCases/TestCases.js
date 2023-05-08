@@ -30,12 +30,15 @@ export default function TestCases() {
   const { addTestCase, setAddTestCase, setAddDynamicVars } =
     useCompSelectorContext();
 
+  const [unsavedChanges, setUnsavedChanges] = useState(false);
+
   useEffect(() => {
     if (addTestCase) {
       handleAddTestCase();
       setAddTestCase(false);
     }
-    if (Object.keys(testCase).length==0 && data?.testCases.length > 0) setTestCase(data?.testCases[0]);
+    if ((testCase==null || Object.keys(testCase).length == 0) && data?.testCases.length > 0)
+      setTestCase(data?.testCases[0]);
   }, [addTestCase, data, createTestCase]);
 
   useEffect(() => {
@@ -66,8 +69,8 @@ export default function TestCases() {
     }
   };
 
-  if(loading){
-    return <LoadingState />
+  if (loading) {
+    return <LoadingState />;
   }
   return (
     <div>
@@ -87,11 +90,14 @@ export default function TestCases() {
             </div>
           ) : (
             <>
-              <div className="basis-64 max-h-[674px] ">
-                <TestCasesList data={data} />
+              <div className={`basis-64 ${styles.subBoxHeight}`}>
+                <TestCasesList data={data} unsavedChanges={unsavedChanges} />
               </div>
-              <div className="mt-[13px] w-full">
-                <TestCaseTabs />
+              <div className="mt-[13px] w-full ">
+                <TestCaseTabs
+                  unsavedChanges={unsavedChanges}
+                  setUnsavedChanges={setUnsavedChanges}
+                />
               </div>
             </>
           )}

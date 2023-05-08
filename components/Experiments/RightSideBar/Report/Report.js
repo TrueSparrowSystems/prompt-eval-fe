@@ -48,12 +48,6 @@ function Report() {
 
   const [expanded, setExpanded] = useState("panel1");
 
-  useEffect(()=>{
-    if(data?.testCaseEvaluationReport?.length===0)
-    setShowReport(false);
-    setCurrTab(TabNames.PROMPTTEMPLATE);
-  },[data]);
-
   return (
     <div
       style={{
@@ -65,7 +59,6 @@ function Report() {
         zIndex: "100",
         top: "85px",
         width: "100%",
-        height: "674px",
       }}
       className={`${styles.experimentBox} `}
     >
@@ -88,16 +81,18 @@ function Report() {
         </div>
         <div className="px-[10px] py-[34px]">Status</div>
       </div>
-      <div className="h-[470px] overflow-auto">
-        {data?.getReport?.testCaseEvaluationReport.map((report, index) => (
-          <ReportCell
-            key={index}
-            report={report}
-            index={index + 1}
-            expanded={expanded}
-            setExpanded={setExpanded}
-          />
-        ))}
+      <div>
+        <div className={`${styles.subBoxHeightForReport} overflow-auto`}>
+          {data?.getReport?.testCaseEvaluationReport.map((report, index) => (
+            <ReportCell
+              key={index}
+              report={report}
+              index={index + 1}
+              expanded={expanded}
+              setExpanded={setExpanded}
+            />
+          ))}
+        </div>
         <div className="flex justify-end px-[20px] py-[15px] border-b-2 border-t-2">
           <div className="flex items-center text-md text-[#000]">
             <div className="opacity-60 mr-[20px]">Rows per page:</div>

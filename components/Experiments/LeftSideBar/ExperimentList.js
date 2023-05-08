@@ -10,7 +10,7 @@ export default function ExperimentList() {
   const experimentDetailsFetched = useRef(false);
   const [selectedExperiment, setSelectedExperiment] = useState(0);
   const { data, loading, error, refetch } = useQuery(Queries.experimentList);
-  const { setSelectedExperimentInfo } = useExpContext();
+  const { selectedExperimentInfo, setSelectedExperimentInfo } = useExpContext();
 
   const { addDynamicVars, setAddDynamicVars } = useCompSelectorContext();
 
@@ -32,7 +32,11 @@ export default function ExperimentList() {
   useEffect(() => {
     if (!experimentDetailsFetched.current && data?.experimentList.length) {
       experimentDetailsFetched.current = true;
-      setSelectedExperimentInfo(data.experimentList[0]);
+      if (
+        selectedExperimentInfo == null ||
+        Object.keys(selectedExperimentInfo).length === 0
+      )
+        setSelectedExperimentInfo(data.experimentList[0]);
     }
   }, [data]);
 

@@ -6,7 +6,7 @@ import { useCompSelectorContext } from "../../../../context/compSelectorContext"
 import styles from "./TestCaseTabs.module.scss";
 import { useExpContext } from "../../../../context/ExpContext";
 
-function TestCasesList({ data }) {
+function TestCasesList({ data , unsavedChanges}) {
 
   const { addTestCase, setAddTestCase } = useCompSelectorContext();
   const {testCase,setTestCase} = useExpContext();
@@ -14,12 +14,15 @@ function TestCasesList({ data }) {
   const [selectedTestCase,setSelectedTestCase] = useState(0);
 
   const handleSelection = (index) => {
+    if(unsavedChanges && !confirm('Your changes have not been saved. Are you sure you want to leave this page?')) {
+      return;
+    }
     setSelectedTestCase(index);
     setTestCase(data?.testCases[index]);
   };
 
   return (
-    <div className="flex item-center flex-col border-r pr-[12px] border-[F8FAFB] mr-[13px] h-[674px]">
+    <div className={`flex item-center flex-col border-r pr-[12px] border-[F8FAFB] mr-[13px] ${styles.subBoxHeightForTestList}`}>
       <Button
         sx={{
           borderRadius: "4px",
@@ -37,7 +40,7 @@ function TestCasesList({ data }) {
         <AddIcon className="mr-[11px]" />
         Add test case
       </Button>
-      <div className={`max-h-[580px] overflow-auto ${styles.scrollCont}`}>
+      <div className={`overflow-auto ${styles.scrollCont}`}>
       {data?.testCases.map((testCase, index) => (
         <TestCaseCell
           testCaseName={testCase.name}

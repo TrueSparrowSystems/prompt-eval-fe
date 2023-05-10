@@ -14,16 +14,37 @@ import { MESSAGES } from "../../../../constants/Messages";
 import AddIcon from "../../../../assets/Svg/AddIcon";
 
 function CreatePromptTemplate() {
-  const [templateName, setTemplateName] = useState("Untitled Template");
-  const [prompts, setPrompts] = useState([
-    { id: uuid(), role: "system", content: "" },
-  ]);
   const [prevRole, setPrevRole] = useState("system");
-  const { selectedExperimentInfo } = useExpContext();
-  const { setCurrTab, setShowAdd } = useCompSelectorContext();
+  const { selectedExperimentInfo, promptTemplate } = useExpContext();
+  const { showClone, setCurrTab, setShowAdd, setShowClone } =
+    useCompSelectorContext();
+
+  const [templateName, setTemplateName] = useState(
+    showClone ? promptTemplate.name + " Copy" : "Untitled Template"
+  );
 
   const [createPromptTemplate, { data, loading, error }] = useMutation(
     Queries.createPromptTemplate
+  );
+
+  const readConversation = (conversation) => {
+    let allChat = [];
+    conversation.forEach((convs, index) => {
+      const chat = {
+        id: uuid(),
+        role: convs.role,
+        content: convs.content,
+      };
+      allChat.push(chat);
+    });
+
+    return allChat;
+  };
+
+  const [prompts, setPrompts] = useState(
+    showClone
+      ? readConversation(promptTemplate.conversation)
+      : [{ id: uuid(), role: "system", content: "" }]
   );
 
   const getConversation = () => {
@@ -86,6 +107,7 @@ function CreatePromptTemplate() {
               className="flex items-center gap-[10px] cursor-pointer hover:opacity-100 opacity-80"
               onClick={() => {
                 setShowAdd(false);
+                setShowClone(false);
                 setCurrTab(TabNames.PROMPTTEMPLATE);
               }}
             >

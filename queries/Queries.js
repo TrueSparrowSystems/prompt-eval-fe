@@ -318,14 +318,36 @@ class Queries {
     `;
   }
 
-  get getEvalAndModels(){
+  get getEvalAndModels() {
     return gql`
-    query GetEvalAndModelType{
-      getEvalAndModels {
-        evals
-        models
+      query GetEvalAndModelType {
+        getEvalAndModels {
+          evals
+          models
+        }
       }
-    }
+    `;
+  }
+
+  get getStatusForRunPrompt() {
+    return gql`
+      query getStatusForRunPrompt(
+        $experimentId: String!
+        $limit: Int!
+        $page: Int!
+      ) {
+        promptListByPagination(
+          experimentId: $experimentId
+          limit: $limit
+          page: $page
+        ) {
+          prompts {
+            latestEvaluationReport {
+              status
+            }
+          }
+        }
+      }
     `;
   }
 }

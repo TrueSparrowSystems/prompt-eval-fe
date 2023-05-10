@@ -10,8 +10,6 @@ import { useCompSelectorContext } from "../../../context/compSelectorContext";
 import EditePromptTemplate from "./PromptTemplate/EditPromptTemplate";
 import { TabNames } from "../../../constants/TabNames";
 import { useExpContext } from "../../../context/ExpContext";
-import { useQuery } from "@apollo/client";
-import Queries from "../../../queries/Queries";
 import { useRouter } from "next/router";
 
 function ExperimentsDetails() {
@@ -21,6 +19,8 @@ function ExperimentsDetails() {
     showAdd,
     setShowAdd,
     showEdit,
+    setShowEdit,
+    setShowClone,
     currTab,
     setCurrTab,
     setAddTestCase,
@@ -58,12 +58,6 @@ function ExperimentsDetails() {
     } else if (currTab === TabNames.PROMPTTEMPLATE) {
       return <PromptTemplate />;
     } else if (currTab === TabNames.TESTCASES) {
-      if (testCase == null) {
-        const { data } = useQuery(Queries.getTestCaseById, {
-          variables: { experimentId: selectedExperimentInfo?.id },
-        });
-        if (data?.testCases.length > 0) setTestCase(data?.testCases[0]);
-      }
       return <TestCases />;
     }
   };
@@ -97,6 +91,8 @@ function ExperimentsDetails() {
               px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
               onClick={() => {
                 setShowAdd(false);
+                setShowEdit(false);
+                setShowClone(false);
                 toggleTab(TabNames.TESTCASES);
               }}
             >

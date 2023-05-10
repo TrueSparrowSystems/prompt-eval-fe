@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import RemoveIcon from "../../../../assets/Svg/RemoveIcon";
-import styles from "../../RightSideBar/PromptTemplate/NewChat.module.scss";
 
 function NewChat({ prompt, remove }) {
   const [isHover, setIsHover] = useState(false);
@@ -25,8 +24,8 @@ function NewChat({ prompt, remove }) {
       </div>
       <textarea
         className={`w-full border rounded-[4px] h-[120px] p-[10px] ml-[40px] mr-[10px] outline-none ${
-          styles.textareaStyle
-        } ${isHover ? "border-[#2196F380] bg-[#F8FAFB]" : ""} resize-none`}
+          isHover ? "border-[#2196F380] bg-[#F8FAFB]" : "border-[#0000001A]"
+        } resize-none`}
         value={ptomptMessage}
         onChange={(e) => {
           setPromptMessage(e.target.value);

@@ -18,11 +18,11 @@ Modal.setAppElement("*");
 export default function RunModal({
   showRunModal,
   setShowRunModal,
-  runSuccess,
-  setRunSuccess,
   modelOptions,
   evalOptions,
   isRunnable,
+  refetchList,
+  setStartRun,
 }) {
   const [model, setModel] = useState("");
   const [evaluation, setEvaluation] = useState("");
@@ -64,7 +64,7 @@ export default function RunModal({
           eval: evaluation,
         },
       });
-      setRunSuccess(true);
+      setErrorMsg(false);
     } catch (err) {
       setErrorMsg(err);
       return err;
@@ -74,6 +74,8 @@ export default function RunModal({
   const handleClose = () => {
     setShowRunModal(!showRunModal);
     setErrorMsg(null);
+    refetchList();
+    setStartRun(true);
   };
   return (
     <Modal
@@ -81,9 +83,13 @@ export default function RunModal({
       style={customStyle}
       className="flex item-center"
     >
-      {runSuccess && <Toast msg={MESSAGES.RUN.SUCCESS} type="success" /> &&
-        setTimeout(() => handleClose(), 1000)}
-      {errorMsg && <Toast msg={MESSAGES.RUN.FAILURE} type="error" />}
+      {errorMsg === false && (
+          <Toast msg={MESSAGES.RUN.SUCCESS} type="success" />
+        ) &&
+        setTimeout(() => handleClose(), 500)}
+      {errorMsg && errorMsg !== false && (
+        <Toast msg={MESSAGES.RUN.FAILURE} type="error" />
+      )}
       <div className="absolute w-[489px] h-[381px] bg-white py-[32px] px-[33px]">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row">

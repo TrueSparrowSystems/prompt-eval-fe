@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import RemoveIcon from "../../../../assets/Svg/RemoveIcon";
 import styles from "./TestCaseTabs.module.scss";
 
@@ -12,6 +12,12 @@ function ExpectedResult({
     expectedResult.result
   );
   const [isHover, setIsHover] = useState(false);
+
+  useEffect(() => {
+    if (expectedResult.result != null)
+      setExpectedResultMessage(expectedResult.result);
+  }, [expectedResult.result]);
+
   return (
     <li>
       <div
@@ -27,8 +33,7 @@ function ExpectedResult({
           value={expectedResultMessage}
           onChange={(e) => {
             setExpectedResultMessage(e.target.value);
-            if(!unsavedChanges)
-            setUnsavedChanges(true);
+            if (!unsavedChanges) setUnsavedChanges(true);
           }}
           onBlur={(e) => {
             expectedResult.result = e.target.value;

@@ -10,7 +10,7 @@ import { useCompSelectorContext } from "../../../../context/compSelectorContext"
 import { useMutation } from "@apollo/client";
 import { MESSAGES } from "../../../../constants/Messages";
 import Toast from "../../../ToastMessage/Toast";
-import LoadingState from "../../LoadingState";
+
 export default function TestCases() {
   const { selectedExperimentInfo, testCase, setTestCase } = useExpContext();
 
@@ -27,7 +27,7 @@ export default function TestCases() {
     },
   ] = useMutation(Queries.createTestCases);
 
-  const { addTestCase, setAddTestCase, setAddDynamicVars } =
+  const { addTestCase, setAddTestCase, setAddDynamicVars, setShowEmptyState } =
     useCompSelectorContext();
 
   const [unsavedChanges, setUnsavedChanges] = useState(false);
@@ -37,9 +37,16 @@ export default function TestCases() {
       handleAddTestCase();
       setAddTestCase(false);
     }
-    if ((testCase==null || Object.keys(testCase).length == 0) && data?.testCases.length > 0)
+    if (
+      (testCase == null || Object.keys(testCase).length == 0) &&
+      data?.testCases.length > 0
+    )
       setTestCase(data?.testCases[0]);
   }, [addTestCase, data, createTestCase]);
+
+  useEffect(() => {
+    setTestCase(data?.testCases[0]);
+  }, [data]);
 
   useEffect(() => {
     setAddDynamicVars(true);
@@ -69,9 +76,8 @@ export default function TestCases() {
     }
   };
 
-  if (loading) {
-    return <LoadingState />;
-  }
+  if (data?.testCases.length === 0) setShowEmptyState(true);
+
   return (
     <div>
       {createTestCase && (
@@ -80,7 +86,7 @@ export default function TestCases() {
       {errorCreateTestCase && (
         <Toast msg={MESSAGES.TEST_CASE.FAILED} type="error" />
       )}
-      {error || data?.testCases.length === 0 ? (
+      {loading || data?.testCases.length === 0 ? (
         <EmptyState />
       ) : (
         <div className={`flex ${styles.experimentBox}`}>

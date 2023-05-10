@@ -5,7 +5,7 @@ import EmptyState from "../EmptyState";
 import { useQuery } from "@apollo/client";
 import Queries from "../../../../queries/Queries";
 import { useExpContext } from "../../../../context/ExpContext";
-import LoadingState from "../../LoadingState";
+import { useCompSelectorContext } from "../../../../context/compSelectorContext";
 import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 import Select from "@mui/material/Select";
@@ -13,6 +13,7 @@ import Pagination from "../../../Pagination/Pagination";
 
 function PromptTemplate() {
   const { selectedExperimentInfo } = useExpContext();
+  const { setShowEmptyState } = useCompSelectorContext();
   const [recordPerPage, setRecordPerPage] = useState(6);
   const [currentPage, setCurrentPage] = useState(1);
   const totalCount = useRef(0);
@@ -32,7 +33,7 @@ function PromptTemplate() {
     setCurrentPage(selected + 1);
   };
 
-  const { data, loading, error, refetch } = useQuery(
+  const { data, loading, error, previousData, refetch } = useQuery(
     Queries.promptListByPagination,
     {
       variables: {
@@ -60,11 +61,22 @@ function PromptTemplate() {
     totalCount.current = data?.promptListByPagination.totalCount;
   }
 
-  if (loading) return <LoadingState />;
+  if (data?.promptListByPagination.prompts.length === 0)
+    setShowEmptyState(true);
+
+  if (error && previousData) {
+    return (
+      <div className={`flex ${styles.experimentBox}`}>
+        <div className="flex space-evenly text-[20px] text-[#ff0000] tracking-[0.2px] h-[400px]">
+          {error.message}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
-      {error || data?.promptListByPagination.prompts.length === 0 ? (
+      {error || loading || data?.promptListByPagination.prompts.length === 0 ? (
         <EmptyState />
       ) : (
         <div className={`${styles.experimentBox}`}>
@@ -92,10 +104,14 @@ function PromptTemplate() {
                 (PromptTemplate, index) => (
                   <PromptTemplateCells
                     key={index}
+                    index={index}
                     PromptTemplate={PromptTemplate}
                     runSuccess={runSuccess}
                     setRunSuccess={setRunSuccess}
                     isRunnable={isRunnable}
+                    currentPage={currentPage}
+                    recordPerPage={recordPerPage}
+                    refetchList={refetch}
                   />
                 )
               )}

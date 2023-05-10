@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import ViewReportArrow from "../../../../assets/Svg/ViewReportArrow";
 import Clone from "../../../../assets/Svg/Clone";
@@ -12,16 +12,22 @@ import Queries from "../../../../queries/Queries";
 import AccuracyBadge from "../../../../assets/Svg/AccuracyBadge";
 import { MESSAGES } from "../../../../constants/Messages";
 import Toast from "../../../ToastMessage/Toast";
+import Pass from "../../../../assets/Svg/Pass";
+import Fail from "../../../../assets/Svg/Fail";
+import RunningLoader from "../../../../assets/Svg/RunningLoader";
 
 function PromptTemplateCells({
+  index,
   PromptTemplate,
-  runSuccess,
   setRunSuccess,
   isRunnable,
+  currentPage,
+  recordPerPage,
+  refetchList,
 }) {
   const { setReportId, setPromptTemplate, selectedExperimentInfo } =
     useExpContext();
-  const { showClone, setShowClone, setShowReport, setShowEdit } =
+  const { showClone, setShowClone, setShowReport, setShowEdit, setShowAdd } =
     useCompSelectorContext();
   const [showRunModal, setShowRunModal] = useState(false);
   const accuracy = PromptTemplate.latestEvaluationReport[0]?.accuracy;
@@ -47,6 +53,40 @@ function PromptTemplateCells({
     error: errorForOptions,
   } = useQuery(Queries.getEvalAndModels);
 
+  const {
+    data: promptList,
+    startPolling,
+    stopPolling,
+  } = useQuery(Queries.getStatusForRunPrompt, {
+    variables: {
+      experimentId: selectedExperimentInfo?.id,
+      page: currentPage,
+      limit: recordPerPage,
+    },
+  });
+
+  const [startRun, setStartRun] = useState(false);
+
+  useEffect(() => {
+    if (startRun) {
+      startPolling(10000);
+    } else stopPolling();
+  }, [startRun]);
+
+  useEffect(() => {
+    if (!startRun) return;
+
+    if (
+      promptList?.promptListByPagination?.prompts[index]
+        ?.latestEvaluationReport[0].status === "Status.COMPLETED" ||
+      promptList?.promptListByPagination?.prompts[index]
+        ?.latestEvaluationReport[0].status === "Status.FAILED"
+    ) {
+      setStartRun(false);
+      setRunSuccess(true);
+    }
+  }, [promptList]);
+
   const getConversation = (prompts) => {
     const conversation = [];
     prompts.forEach((prompt) => {
@@ -56,21 +96,13 @@ function PromptTemplateCells({
   };
 
   const handleClone = () => {
-    createPromptTemplate({
-      variables: {
-        name: "Untitled Template copy",
-        description: PromptTemplate?.description,
-        conversation: getConversation(PromptTemplate?.conversation),
-        experimentId: selectedExperimentInfo?.id,
-      },
-    });
+    setShowClone(true);
+    setShowAdd(true);
   };
 
   if (data) {
     const templateData = data?.createPromptTemplate?.promptTemplate;
     setPromptTemplate(templateData);
-    setShowClone(true);
-    setShowEdit(true);
   }
 
   return (
@@ -88,17 +120,17 @@ function PromptTemplateCells({
           {PromptTemplate.name}
         </div>
         <div className="basis-1/5 px-[10px]">
-          {accuracy !== null && typeof accuracy === "number" ? (
+          {accuracy != null && typeof accuracy === "number" ? (
             <div
               className={`flex flex-row items-center max-w-[100px] rounded-[8px] h-[32px] px-[10px] ${bgColor} ${textColor}`}
             >
-              <AccuracyBadge accuracy={accuracy} />
+              <AccuracyBadge accuracy={accuracy * 100} />
             </div>
           ) : (
             "--"
           )}
         </div>
-        <div className="basis-1/5 px-[10px]">
+        <div className="basis-1/5 px-[10px] line-clamp-2 text-ellipsis">
           {PromptTemplate.latestEvaluationReport[0] !== null
             ? PromptTemplate.latestEvaluationReport[0].model
             : "--"}
@@ -111,15 +143,31 @@ function PromptTemplateCells({
                 getFormattedDate(PromptTemplate.createdAt)}
             </div>
           </div>
+          {PromptTemplate.latestEvaluationReport[0] ? (
+            <div className="flex items-center gap-[10px] my-[3px]">
+              {(PromptTemplate.latestEvaluationReport[0]?.status ===
+                "Status.COMPLETED" && <Pass />) ||
+                (PromptTemplate.latestEvaluationReport[0]?.status ===
+                  "Status.FAILED" && <Fail />) || <RunningLoader />}
+              {PromptTemplate.latestEvaluationReport[0]?.status.split(".")[1]}
+            </div>
+          ) : (
+            <div className="mb-[10px]"></div>
+          )}
+
           <div
-            className={`flex items-center gap-[10px] mt-[10px] z-10 ${
-              PromptTemplate.latestEvaluationReport[0] !== null
+            className={`flex items-center gap-[10px] z-10 ${
+              PromptTemplate.latestEvaluationReport[0]?.status ===
+              "Status.COMPLETED"
                 ? "cursor-pointer"
                 : "opacity-60 cursor-not-allowed"
             }`}
             onClick={(e) => {
               e.stopPropagation();
-              if (PromptTemplate.latestEvaluationReport[0] !== null) {
+              if (
+                PromptTemplate.latestEvaluationReport[0]?.status ===
+                "Status.COMPLETED"
+              ) {
                 setShowReport(true);
                 setReportId(PromptTemplate.latestEvaluationReport[0].id);
               }
@@ -154,6 +202,7 @@ function PromptTemplateCells({
               onClick={(e) => {
                 e.stopPropagation();
                 handleClone();
+                setPromptTemplate(PromptTemplate);
               }}
               title="Create Clone"
             >
@@ -165,11 +214,11 @@ function PromptTemplateCells({
       <RunModal
         showRunModal={showRunModal}
         setShowRunModal={setShowRunModal}
-        runSuccess={runSuccess}
-        setRunSuccess={setRunSuccess}
         modelOptions={evalsAndModelOptions?.getEvalAndModels?.models}
         evalOptions={evalsAndModelOptions?.getEvalAndModels?.evals}
         isRunnable={isRunnable}
+        refetchList={refetchList}
+        setStartRun={setStartRun}
       />
     </>
   );

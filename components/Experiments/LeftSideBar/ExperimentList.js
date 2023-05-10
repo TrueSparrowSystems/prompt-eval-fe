@@ -21,11 +21,12 @@ export default function ExperimentList() {
 
   useEffect(() => {
     handleChange(selectedExperiment);
-  }, []);
+  }, [data]);
 
   useEffect(() => {
     refetch();
-    experimentDetailsFetched.current = false;
+    handleChange(selectedExperiment);
+
     setAddDynamicVars(false);
   }, [addDynamicVars]);
 
@@ -53,7 +54,7 @@ export default function ExperimentList() {
   }
   return (
     <div
-      className="mt-[20px] second-step"
+      className="mt-[20px]"
       style={{
         height: `calc(100vh - 100px)`,
         overflow: "auto",

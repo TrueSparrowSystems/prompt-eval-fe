@@ -24,8 +24,7 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
   const { selectedExperimentInfo, testCase } = useExpContext();
 
   let interSectionFlag = false;
-  const isExpectedResultsPopulated = useRef(false);
-  const [value, setValue] = React.useState(0);
+  const [tabValue, setTabValue] = React.useState(0);
 
   const [expectedResultsArr, setExpectedResultsArr] = useState([]);
 
@@ -39,15 +38,7 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
   const [opacity, setOpacity] = useState("40");
 
   useEffect(() => {
-    if (!isExpectedResultsPopulated.current) {
-      readExpectedResults();
-    }
-    isExpectedResultsPopulated.current = true;
-  }, [testCase]);
-
-  useEffect(() => {
     if (testCase && Object.keys(testCase).length > 0) {
-
       setTestCaseName(testCase?.name);
       setTestCaseDescription(testCase?.description);
       setVariableValues(
@@ -55,7 +46,7 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
           testCase?.dynamicVarValues ? testCase?.dynamicVarValues : "{}"
         )
       );
-      isExpectedResultsPopulated.current = false;
+      readExpectedResults();
     }
 
     handleChange(null, 0);
@@ -71,7 +62,7 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
         entries.forEach((entry) => {
           if (!interSectionFlag && entry.isIntersecting) {
             interSectionFlag = true;
-            setValue(parseInt(entry.target.id));
+            setTabValue(parseInt(entry.target.id));
           }
         });
       },
@@ -99,7 +90,7 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
   }, []);
 
   const handleChange = (event, newValue) => {
-    setValue(parseInt(newValue));
+    setTabValue(parseInt(newValue));
     const section = document.querySelector(`#\\3${newValue}`);
 
     if (section) {
@@ -123,17 +114,15 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
   };
 
   const readExpectedResults = () => {
-    setExpectedResultsArr([]);
+    let resultArr = [];
+
     testCase?.expectedResult?.map((expectedResult, index) => {
-      const newExpectedResult = {
+      resultArr.push({
         id: uuid(),
         result: expectedResult,
-      };
-      setExpectedResultsArr((expectedResultsArr) => [
-        ...expectedResultsArr,
-        newExpectedResult,
-      ]);
+      });
     });
+    setExpectedResultsArr(resultArr);
   };
 
   const removeExpectedResult = (id) => {
@@ -157,6 +146,11 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
 
   const handleUpdate = async () => {
     try {
+      if (testCaseName.length === 0) {
+        alert("To proceed, please provide test case title.");
+        return;
+      }
+
       await updateTestCases({
         variables: {
           id: testCase?.id,
@@ -178,10 +172,16 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
     <>
       {data && <Toast msg={MESSAGES.TEST_CASE.UPDATED} type="success" />}
       {error && <Toast msg={MESSAGES.TEST_CASE.UPDATE_ERROR} type="error" />}
-      <Box sx={{ width: "100%", marginTop: "-20px", height:"calc(100vh - 280px)"}}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider"}}>
+      <Box
+        sx={{
+          width: "100%",
+          marginTop: "-20px",
+          height: "calc(100vh - 280px)",
+        }}
+      >
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs
-            value={value}
+            value={tabValue}
             onChange={handleChange}
             aria-label="basic tabs example"
           >
@@ -197,7 +197,7 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
         >
           <div id="0" className="tab ml-[20px]">
             <input
-              className={`text-[15px] font-bold opacity-${opacity} hover:opacity-80 outline-none pt-[27px]`}
+              className={`text-[15px] font-bold opacity-${opacity} hover:opacity-80 outline-none pt-[27px] w-full text-ellipsis`}
               type="text"
               value={testCaseName}
               onChange={(e) => {

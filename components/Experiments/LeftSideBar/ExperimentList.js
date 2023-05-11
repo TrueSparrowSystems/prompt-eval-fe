@@ -5,6 +5,7 @@ import Queries from "../../../queries/Queries";
 import ExperimentListSkeleton from "../../Skeletons/ExperimentListSkeleton";
 import { useExpContext } from "../../../context/ExpContext";
 import { useCompSelectorContext } from "../../../context/compSelectorContext";
+import { useRouter } from "next/router";
 
 export default function ExperimentList() {
   const experimentDetailsFetched = useRef(false);
@@ -15,13 +16,10 @@ export default function ExperimentList() {
   const { addDynamicVars, setAddDynamicVars } = useCompSelectorContext();
 
   const handleChange = (index) => {
+    if(data?.experimentList==null) return;
     setSelectedExperiment(index);
     setSelectedExperimentInfo(data?.experimentList[index]);
   };
-
-  useEffect(() => {
-    handleChange(selectedExperiment);
-  }, [data]);
 
   useEffect(() => {
     refetch();
@@ -31,7 +29,7 @@ export default function ExperimentList() {
   }, [addDynamicVars]);
 
   useEffect(() => {
-    if (!experimentDetailsFetched.current && data?.experimentList.length) {
+    if (!experimentDetailsFetched.current && data?.experimentList?.length) {
       experimentDetailsFetched.current = true;
       if (
         selectedExperimentInfo == null ||
@@ -39,7 +37,25 @@ export default function ExperimentList() {
       )
         setSelectedExperimentInfo(data.experimentList[0]);
     }
+    handleChange(selectedExperiment);
   }, [data]);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    if(data?.experimentList==null) return;
+    
+    if (router.query.reportId) {
+      let id = data?.experimentList.findIndex(
+        (experiment) => experiment.id === router.query["experiment-id"]
+      );
+      if (id != -1) {
+        setSelectedExperiment(id);
+        setSelectedExperimentInfo(data?.experimentList && data?.experimentList[id]);
+      }
+    }
+  }, [router.isReady]);
 
   if (loading) {
     return <ExperimentListSkeleton />;
@@ -60,7 +76,7 @@ export default function ExperimentList() {
         overflow: "auto",
       }}
     >
-      {data?.experimentList.length > 0 ? (
+      {data?.experimentList?.length > 0 ? (
         <>
           {data?.experimentList.map((experiment, index) => (
             <ExperimentCell

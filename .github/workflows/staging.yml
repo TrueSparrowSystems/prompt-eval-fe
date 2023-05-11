@@ -29,12 +29,12 @@ jobs:
       with:
         ref: ${{ github.event.inputs.branch }}
 
-    # - uses: actions/checkout@v2
-    #   with:
-    #     repository: "NFTorNOT/dev.secrets"
-    #     ref: "master"
-    #     token: ${{ secrets.PAT }}
-    #     path: "secrets"
+    - uses: actions/checkout@v2
+      with:
+        repository: "TrueSparrowSystems/dev.secrets"
+        ref: "master"
+        token: ${{ secrets.PAT }}
+        path: "secrets"
         
     - id: 'auth'
       uses: 'google-github-actions/auth@v1'
@@ -46,8 +46,8 @@ jobs:
       
     - name: Build and generate static page
       run: |-
-        # mv secrets/frontend.staging.env .env
-        # cat .env
+        mv secrets/prompt-eval-fe/frontend.staging.env .env
+        cat .env
         sudo apt install -y curl
         curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
         sudo apt install -y nodejs

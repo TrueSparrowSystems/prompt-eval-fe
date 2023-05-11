@@ -197,17 +197,16 @@ function PromptTemplateCells({
               Run
             </Button>
           </div>
-          <div className="flex items-center gap-[20px]">
-            <div
-              onClick={(e) => {
-                e.stopPropagation();
-                handleClone();
-                setPromptTemplate(PromptTemplate);
-              }}
-              title="Create Clone"
-            >
-              <Clone />
-            </div>
+          <div
+            className="flex items-center gap-[20px] py-[10px] px-[10px]"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClone();
+              setPromptTemplate(PromptTemplate);
+            }}
+            title="Create Clone"
+          >
+            <Clone />
           </div>
         </div>
       </div>

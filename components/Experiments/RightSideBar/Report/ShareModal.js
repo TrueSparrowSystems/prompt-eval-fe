@@ -20,7 +20,14 @@ export default function ShareModal({ showShareModal, setShowShareModal }) {
   const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
-    setLink(window.location.href + "?reportId=" + reportId);
+    let reportIdIndex = window.location.href.search("reportId");
+    if (reportIdIndex != -1) {
+      setLink(
+        window.location.href.substring(0, reportIdIndex - 1) +
+          "?reportId=" +
+          reportId
+      );
+    } else setLink(window.location.href + "?reportId=" + reportId);
   }, []);
 
   const customStyle = {

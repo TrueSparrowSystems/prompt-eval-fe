@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import RemoveIcon from "../../../../assets/Svg/RemoveIcon";
 
-function NewChat({ prompt, remove }) {
+function NewChat({ prompt, remove, selectedChat, setSelectedChat }) {
   const [isHover, setIsHover] = useState(false);
   const [ptomptMessage, setPromptMessage] = useState(prompt.content);
   const [promptRole, setPromptRole] = useState(prompt.role);
   return (
     <li
-      className="flex hover:bg-[#F8FAFB] p-2"
+      className={`flex ${isHover || selectedChat===prompt.id?"bg-[#F8FAFB]":""} p-2`}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
@@ -24,7 +24,7 @@ function NewChat({ prompt, remove }) {
       </div>
       <textarea
         className={`w-full border rounded-[4px] h-[120px] p-[10px] ml-[40px] mr-[10px] outline-none ${
-          isHover ? "border-[#2196F380] bg-[#F8FAFB]" : "border-[#0000001A]"
+          (isHover || selectedChat===prompt.id)? "border-[#2196F380] bg-[#F8FAFB]" : "border-[#0000001A]"
         } resize-none`}
         value={ptomptMessage}
         onChange={(e) => {
@@ -32,7 +32,9 @@ function NewChat({ prompt, remove }) {
         }}
         onBlur={(e) => {
           prompt.content = e.target.value;
+          setSelectedChat(null)
         }}
+        onClick={() => setSelectedChat(prompt.id)}
         placeholder="Define template variables in {‘variable_name’} format within the prompt."
       />
       <div

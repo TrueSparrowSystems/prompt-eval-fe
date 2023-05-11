@@ -88,10 +88,13 @@ function CreatePromptTemplate() {
     setPrompts(prompts.filter((prompt) => prompt.id !== id));
   };
 
+  const [selectedChat, setSelectedChat] = useState(prompts[0]?.id);
+
   const promptsList = prompts.map((prompt) => (
-    <NewChat remove={removePrompt} prompt={prompt} key={prompt.id} />
+    <NewChat remove={removePrompt} prompt={prompt} key={prompt.id} selectedChat={selectedChat} setSelectedChat={setSelectedChat}/>
   ));
 
+  
   return (
     <>
       {data && <Toast msg={MESSAGES.PROMPT_TEMPLATE.CREATED} />}

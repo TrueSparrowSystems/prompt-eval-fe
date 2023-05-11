@@ -9,13 +9,13 @@ export default function VariableCell({
   setUnsavedChanges,
 }) {
   return (
-    <div>
+    <div className="pr-[40px]">
       <div className={`${styles.inputStyle} opacity-40 cursor-auto`}>
         {variableName}
       </div>
       <textarea
         className={`${styles.textareaStyle} resize-none`}
-        placeholder="Define your template variable value here."
+        placeholder="Define value for your template variable here."
         value={variableValues[variableName] ? variableValues[variableName] : ""}
         onChange={(e) => {
           setVariableValues({

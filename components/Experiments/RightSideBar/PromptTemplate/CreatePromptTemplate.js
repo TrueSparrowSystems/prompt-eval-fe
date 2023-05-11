@@ -89,9 +89,10 @@ function CreatePromptTemplate() {
   };
 
   const [selectedChat, setSelectedChat] = useState(prompts[0]?.id);
+  const [unsavedChanges, setUnsavedChanges] = useState(false);
 
   const promptsList = prompts.map((prompt) => (
-    <NewChat remove={removePrompt} prompt={prompt} key={prompt.id} selectedChat={selectedChat} setSelectedChat={setSelectedChat}/>
+    <NewChat remove={removePrompt} prompt={prompt} key={prompt.id} selectedChat={selectedChat} setSelectedChat={setSelectedChat} unsavedChanges={unsavedChanges} setUnsavedChanges={setUnsavedChanges} />
   ));
 
   
@@ -109,6 +110,10 @@ function CreatePromptTemplate() {
             <div
               className="flex items-center gap-[10px] cursor-pointer hover:opacity-100 opacity-80"
               onClick={() => {
+                if(unsavedChanges){
+                  if(!confirm("Your changes have not been saved. Are you sure you want to discard this changes?")) return;
+                  setUnsavedChanges(false);
+                }
                 setShowAdd(false);
                 setShowClone(false);
                 setCurrTab(TabNames.PROMPTTEMPLATE);
@@ -151,6 +156,7 @@ function CreatePromptTemplate() {
                   variant="contained"
                   onClick={() => {
                     createNewPromptTemplate();
+                    setUnsavedChanges(false);
                   }}
                   className="bg-[#2196F3]"
                   sx={{

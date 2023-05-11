@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import RemoveIcon from "../../../../assets/Svg/RemoveIcon";
 
-function NewChat({ prompt, remove, selectedChat, setSelectedChat }) {
+function NewChat({ prompt, remove, selectedChat, setSelectedChat, unsavedChanges, setUnsavedChanges }) {
   const [isHover, setIsHover] = useState(false);
   const [ptomptMessage, setPromptMessage] = useState(prompt.content);
   const [promptRole, setPromptRole] = useState(prompt.role);
+
   return (
     <li
       className={`flex ${isHover || selectedChat===prompt.id?"bg-[#F8FAFB]":""} p-2`}
@@ -28,6 +29,7 @@ function NewChat({ prompt, remove, selectedChat, setSelectedChat }) {
         } resize-none`}
         value={ptomptMessage}
         onChange={(e) => {
+          if (!unsavedChanges) setUnsavedChanges(true);
           setPromptMessage(e.target.value);
         }}
         onBlur={(e) => {

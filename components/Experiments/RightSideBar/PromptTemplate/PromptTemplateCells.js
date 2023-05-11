@@ -32,15 +32,16 @@ function PromptTemplateCells({
   const [showRunModal, setShowRunModal] = useState(false);
   const accuracy = PromptTemplate.latestEvaluationReport[0]?.accuracy;
   const bgColor =
-    accuracy >= 75
+    accuracy >= 0.75
       ? "bg-[#2E7D321A]"
-      : accuracy >= 25
+      : accuracy >= 0.25
       ? "bg-[#FFE6001A]"
       : "bg-[#F4825E1A]";
+
   const textColor =
-    accuracy >= 75
+    accuracy >= 0.75
       ? "text-[#2E7D54]"
-      : accuracy >= 25
+      : accuracy >= 0.25
       ? "text-[#D9A900]"
       : "text-[#794839]";
 

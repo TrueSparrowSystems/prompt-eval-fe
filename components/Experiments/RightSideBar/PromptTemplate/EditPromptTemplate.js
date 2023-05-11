@@ -46,9 +46,10 @@ function EditePromptTemplate() {
   };
 
   const [selectedChat, setSelectedChat] = useState(prompts[0]?.id);
+  const [unsavedChanges, setUnsavedChanges] = useState(false);
 
   const promptsList = prompts.map((prompt) => (
-    <NewChat remove={removePrompt} prompt={prompt} key={prompt.id} selectedChat={selectedChat} setSelectedChat={setSelectedChat}/>
+    <NewChat remove={removePrompt} prompt={prompt} key={prompt.id} selectedChat={selectedChat} setSelectedChat={setSelectedChat} unsavedChanges={unsavedChanges} setUnsavedChanges={setUnsavedChanges} />
   ));
 
   const readPromptTemplate = () => {
@@ -113,8 +114,13 @@ function EditePromptTemplate() {
             <div
               className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60"
               onClick={() => {
+                if(unsavedChanges){
+                  if(!confirm("Your changes have not been saved. Are you sure you want to discard this changes?")) return;
+                  setUnsavedChanges(false);
+                }
                 setShowEdit(false);
                 setShowClone(false);
+                setCurrTab(TabNames.PROMPTTEMPLATE);
               }}
               variant="contained"
               sx={{ ml: "10px", textTransform: "none" }}
@@ -155,6 +161,7 @@ function EditePromptTemplate() {
                 <Button
                   onClick={() => {
                     updatePromptTemplate();
+                    setUnsavedChanges(false);
                   }}
                   variant="contained"
                   className="bg-[#2196F3]"

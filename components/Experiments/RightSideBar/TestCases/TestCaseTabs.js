@@ -13,6 +13,7 @@ import "intersection-observer";
 import { useMutation } from "@apollo/client";
 import Queries from "../../../../queries/Queries";
 import { useExpContext } from "../../../../context/ExpContext";
+import { useCompSelectorContext } from "../../../../context/compSelectorContext";
 import Toast from "../../../ToastMessage/Toast";
 import { MESSAGES } from "../../../../constants/Messages";
 import { CircularProgress } from "@mui/material";
@@ -21,7 +22,17 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
   const [updateTestCases, { data, loading, error }] = useMutation(
     Queries.updateTestCases
   );
+  const [
+    createTestCases,
+    {
+      data: createTestCase,
+      loading: loadingCreateTestCase,
+      error: errorCreateTestCase,
+    },
+  ] = useMutation(Queries.createTestCases);
+
   const { selectedExperimentInfo, testCase } = useExpContext();
+  const { addTestCase, setAddTestCase } = useCompSelectorContext();
 
   let interSectionFlag = false;
   const [tabValue, setTabValue] = React.useState(0);
@@ -38,7 +49,7 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
   const [opacity, setOpacity] = useState("40");
 
   useEffect(() => {
-    if (testCase && Object.keys(testCase).length > 0) {
+    if (!addTestCase && testCase && Object.keys(testCase).length > 0) {
       setTestCaseName(testCase?.name);
       setTestCaseDescription(testCase?.description);
       setVariableValues(
@@ -47,11 +58,17 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
         )
       );
       readExpectedResults();
+    }else if(addTestCase){
+      
+        setTestCaseName("Untitled Test Case");
+        setTestCaseDescription("");
+        setVariableValues({});
+        setExpectedResultsArr([]);
     }
 
     handleChange(null, 0);
     setUnsavedChanges(false);
-  }, [testCase]);
+  }, [addTestCase, testCase]);
 
   useEffect(() => {
     const root = document.querySelector("#testCaseContainer");
@@ -144,10 +161,31 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
     )
   );
 
-  const handleUpdate = async () => {
+  const handleCreateOrUpdate = async () => {
     try {
       if (testCaseName.length === 0) {
         alert("To proceed, please provide test case title.");
+        return;
+      }
+
+      if (expectedResultsArr.length === 0) {
+        alert("To proceed, please add at least one acceptable result.");
+        return;
+      }
+
+      if (addTestCase) {
+        await createTestCases({
+          variables: {
+            name: testCaseName,
+            description: testCaseDescription,
+            dynamicVarValues: JSON.stringify(variableValues),
+            experimentId: selectedExperimentInfo?.id,
+            expectedResult: expectedResultsArr.map(
+              (expectedResult) => expectedResult.result
+            ),
+          },
+        });
+        if(addTestCase) setAddTestCase(false);
         return;
       }
 
@@ -172,6 +210,12 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
     <>
       {data && <Toast msg={MESSAGES.TEST_CASE.UPDATED} type="success" />}
       {error && <Toast msg={MESSAGES.TEST_CASE.UPDATE_ERROR} type="error" />}
+      {createTestCase && (
+        <Toast msg={MESSAGES.TEST_CASE.CREATED} type="success" />
+      )}
+      {errorCreateTestCase && (
+        <Toast msg={MESSAGES.TEST_CASE.FAILED} type="error" />
+      )}
       <Box
         sx={{
           width: "100%",
@@ -211,15 +255,17 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
             <p className="text-[14px] font-[500px] leading-[24px] tracking-[0.17px] text-black/[0.8] pt-[12px] pb-[6px]">
               Description
             </p>
-            <textarea
-              className={`${styles.textareaStyle} resize-none`}
-              placeholder="Add a description for your test case."
-              value={testCaseDescription}
-              onChange={(e) => {
-                setTestCaseDescription(e.target.value);
-                if (!unsavedChanges) setUnsavedChanges(true);
-              }}
-            />
+            <div className="pr-[40px]">
+              <textarea
+                className={`${styles.textareaStyle} resize-none`}
+                placeholder="Add a description for your test case."
+                value={testCaseDescription}
+                onChange={(e) => {
+                  setTestCaseDescription(e.target.value);
+                  if (!unsavedChanges) setUnsavedChanges(true);
+                }}
+              />
+            </div>
           </div>
 
           <div className="tab ml-[20px]" id="1">
@@ -266,13 +312,9 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
                   addExpectedResult();
                 }}
                 sx={{ color: "#2196F3" }}
-                disabled={variableNames.length === 0}
               >
                 <AddIcon
                   className="mr-[11px]"
-                  style={{
-                    fill: variableNames.length === 0 ? "#00000042" : "#2196F3",
-                  }}
                 />
                 Add acceptable result
               </Button>
@@ -285,39 +327,46 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
                 variant="contained"
                 className="bg-[#2196F3] absolute left-0  top-0 "
                 sx={{
-                  ...(loading && {
-                    bgcolor: "#2196F3",
-                    "&:hover": {
+                  ...(loading ||
+                    (loadingCreateTestCase && {
                       bgcolor: "#2196F3",
-                    },
-                  }),
+                      "&:hover": {
+                        bgcolor: "#2196F3",
+                      },
+                    })),
                   ml: "10px",
                   textTransform: "none",
                   border: "1px solid rgba(0, 0, 0, 0.23)",
                 }}
                 onClick={() => {
-                  handleUpdate();
+                  handleCreateOrUpdate();
                   setUnsavedChanges(false);
                 }}
-                disabled={loading}
+                disabled={loading || loadingCreateTestCase}
               >
                 SAVE
               </Button>
 
-              {loading && (
-                <CircularProgress
-                  size={24}
-                  sx={{
-                    color: "#2196F3",
-                    position: "absolute",
-                    marginTop: "-12px",
-                    marginLeft: "-24px",
-                  }}
-                />
-              )}
+              {loading ||
+                (loadingCreateTestCase && (
+                  <CircularProgress
+                    size={24}
+                    sx={{
+                      color: "#2196F3",
+                      position: "absolute",
+                      marginTop: "-12px",
+                      marginLeft: "-24px",
+                    }}
+                  />
+                ))}
               {error && (
                 <div className="text-[#f00] text-[14px] pt-[50px] break-all">
                   {error.message}
+                </div>
+              )}
+              {errorCreateTestCase && (
+                <div className="text-[#f00] text-[14px] pt-[50px] break-all">
+                  {errorCreateTestCase.message}
                 </div>
               )}
             </div>

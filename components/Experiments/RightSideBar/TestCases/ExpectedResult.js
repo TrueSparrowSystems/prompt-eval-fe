@@ -30,7 +30,7 @@ function ExpectedResult({
             isHover ? "border-[#2196F380] bg-[#F8FAFB]" : ""
           } resize-none ml-[10px] mt-[10px]`}
           placeholder="Define acceptable result for this test case."
-          value={expectedResultMessage}
+          value={expectedResultMessage || ""}
           onChange={(e) => {
             setExpectedResultMessage(e.target.value);
             if (!unsavedChanges) setUnsavedChanges(true);
@@ -41,7 +41,7 @@ function ExpectedResult({
         />
         <div
           className={`cursor-pointer ml-[10px] pt-[15px] pb-[110px] pr-[10px] ${
-            isHover ? "opacity-40  hover:opacity-60" : "opacity-0"
+            isHover ? "opacity-40  hover:opacity-80" : "opacity-0"
           }`}
           onClick={(e) => {
             removeExpectedResult(expectedResult.id);

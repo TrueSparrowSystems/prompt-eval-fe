@@ -33,9 +33,10 @@ function PromptTemplate() {
     setCurrentPage(selected + 1);
   };
 
-  const { data, loading, error, previousData, refetch } = useQuery(
+  const { data, loading, error, refetch } = useQuery(
     Queries.promptListByPagination,
     {
+      skip: !selectedExperimentInfo?.id,
       variables: {
         experimentId: selectedExperimentInfo?.id,
         page: currentPage,
@@ -64,7 +65,7 @@ function PromptTemplate() {
   if (data?.promptListByPagination.prompts.length === 0)
     setShowEmptyState(true);
 
-  if (error && previousData) {
+  if (error && selectedExperimentInfo?.id) {
     return (
       <div className={`flex ${styles.experimentBox}`}>
         <div className="flex space-evenly text-[20px] text-[#ff0000] tracking-[0.2px] h-[400px]">

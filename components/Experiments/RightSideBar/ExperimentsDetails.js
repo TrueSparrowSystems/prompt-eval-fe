@@ -77,6 +77,7 @@ function ExperimentsDetails() {
               onClick={() => {
                 setShowReport(false);
                 setShowAdd(false);
+                setAddTestCase(false);
                 toggleTab(TabNames.PROMPTTEMPLATE);
               }}
             >

@@ -345,6 +345,7 @@ class Queries {
             latestEvaluationReport {
               status
             }
+          updatedAt
           }
         }
       }

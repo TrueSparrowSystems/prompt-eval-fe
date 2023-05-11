@@ -18,7 +18,7 @@ function ExperimentCell({
   const [editable, setEditable] = useState(false);
   const [newExperimentName, setNewExperimentName] = useState(experimentName);
   const { selectedExperimentInfo, setSelectedExperimentInfo } = useExpContext();
-  const { setShowReport, setShowAdd, setShowClone, setShowEdit } =
+  const { setShowReport, setShowAdd, setShowClone, setShowEdit, setAddTestCase } =
     useCompSelectorContext();
 
   const [updateExperiment, { data, loading, error }] = useMutation(
@@ -74,6 +74,7 @@ function ExperimentCell({
               setShowAdd(false);
               setShowClone(false);
               setShowEdit(false);
+              setAddTestCase(false);
             }}
             onMouseEnter={() => setShowEditIcon(true)}
             onMouseLeave={() => setShowEditIcon(false)}

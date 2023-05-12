@@ -25,6 +25,7 @@ function ExperimentsDetails() {
     setCurrTab,
     setAddTestCase,
     showEmptyState,
+    showLoadingState
   } = useCompSelectorContext();
 
   const { selectedExperimentInfo, testCase, setTestCase, setReportId } =
@@ -100,7 +101,7 @@ function ExperimentsDetails() {
               Test Cases
             </div>
           </div>
-          {!showEmptyState && (
+          {!showEmptyState && !showLoadingState && (
             <Button
               size="large"
               style={{ textTransform: "none" }}

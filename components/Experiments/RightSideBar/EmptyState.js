@@ -12,11 +12,14 @@ function EmptyState() {
     setAddTestCase,
     showEmptyState,
     setShowEmptyState,
+    showLoadingState,
+    setShowLoadingState
   } = useCompSelectorContext();
 
   useEffect(() => {
     return () => {
       if (showEmptyState) setShowEmptyState(false);
+      if (showLoadingState) setShowLoadingState(false);
     };
   }, []);
 

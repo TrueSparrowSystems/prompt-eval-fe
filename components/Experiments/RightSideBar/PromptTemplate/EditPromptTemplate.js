@@ -45,7 +45,7 @@ function EditePromptTemplate() {
     setPrompts(prompts.filter((prompt) => prompt.id !== id));
   };
 
-  const [selectedChat, setSelectedChat] = useState(prompts[0]?.id);
+  const [selectedChat, setSelectedChat] = useState(null);
   const [unsavedChanges, setUnsavedChanges] = useState(false);
 
   const promptsList = prompts.map((prompt) => (

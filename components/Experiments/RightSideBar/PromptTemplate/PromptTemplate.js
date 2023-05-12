@@ -13,7 +13,7 @@ import Pagination from "../../../Pagination/Pagination";
 
 function PromptTemplate() {
   const { selectedExperimentInfo } = useExpContext();
-  const { setShowEmptyState } = useCompSelectorContext();
+  const { setShowEmptyState, setShowLoadingState } = useCompSelectorContext();
   const [recordPerPage, setRecordPerPage] = useState(6);
   const [currentPage, setCurrentPage] = useState(1);
   const totalCount = useRef(0);
@@ -36,7 +36,7 @@ function PromptTemplate() {
   const { data, loading, error, refetch } = useQuery(
     Queries.promptListByPagination,
     {
-      skip: !selectedExperimentInfo?.id,
+      skip: Object.keys(selectedExperimentInfo).length === 0,
       variables: {
         experimentId: selectedExperimentInfo?.id,
         page: currentPage,
@@ -65,7 +65,7 @@ function PromptTemplate() {
   if (data?.promptListByPagination.prompts.length === 0)
     setShowEmptyState(true);
 
-  if (error && selectedExperimentInfo?.id) {
+  if (error && Object.keys(selectedExperimentInfo).length === 0) {
     return (
       <div className={`flex ${styles.experimentBox}`}>
         <div className="flex space-evenly text-[20px] text-[#ff0000] tracking-[0.2px] h-[400px]">
@@ -75,9 +75,18 @@ function PromptTemplate() {
     );
   }
 
+  let delayLoad = false;
+
+  if (loading) {
+    setShowLoadingState(true);
+    setTimeout(() => {
+      delayLoad = true;
+    }, 1000);
+  }else setShowLoadingState(false);
+
   return (
     <div>
-      {error || loading || data?.promptListByPagination.prompts.length === 0 ? (
+      {error || (delayLoad && loading) || data == null || data?.promptListByPagination.prompts.length === 0 ? (
         <EmptyState />
       ) : (
         <div className={`${styles.experimentBox}`}>

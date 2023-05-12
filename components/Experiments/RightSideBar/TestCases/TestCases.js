@@ -18,7 +18,7 @@ export default function TestCases() {
     variables: { experimentId: selectedExperimentInfo?.id },
   });
 
-  const { addTestCase, setAddTestCase, setAddDynamicVars, setShowEmptyState } =
+  const { addTestCase, setAddTestCase, setAddDynamicVars, setShowEmptyState, setShowLoadingState } =
     useCompSelectorContext();
 
   const [unsavedChanges, setUnsavedChanges] = useState(false);
@@ -48,9 +48,17 @@ export default function TestCases() {
 
   if (data?.testCases.length === 0) setShowEmptyState(true);
 
+  let delayLoad = false;
+  if (loading) {
+    setShowLoadingState(true);
+    setTimeout(() => {
+      delayLoad = true;
+    }, 1000);
+  }else setShowLoadingState(false);
+
   return (
     <div>
-      {!addTestCase && (loading || data?.testCases.length === 0) ? (
+      {!addTestCase && ((delayLoad && loading) || data==null || data?.testCases.length === 0) ? (
         <EmptyState />
       ) : (
         <div className={`flex ${styles.experimentBox}`}>

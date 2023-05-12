@@ -28,8 +28,7 @@ function ExperimentsDetails() {
     showLoadingState
   } = useCompSelectorContext();
 
-  const { selectedExperimentInfo, testCase, setTestCase, setReportId } =
-    useExpContext();
+  const { setReportId } = useExpContext();
 
   const router = useRouter();
 

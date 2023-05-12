@@ -43,7 +43,8 @@ function LeftSideBar() {
   useEffect(() => {
     if (
       !Onboarding.current &&
-      localStorage.getItem("onBoardingKey") === "false"
+      localStorage.getItem("onBoardingKey") === "false" &&
+      (dataList?.experimentList==null || dataList?.experimentList?.length === 0)
     ) {
       Onboarding.current = true;
       handleClick();

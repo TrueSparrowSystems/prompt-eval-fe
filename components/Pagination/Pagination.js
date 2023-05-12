@@ -11,7 +11,7 @@ const Pagination = ({ handlePaginationChange, pageCount, initialPage }) => {
         onPageChange={handlePaginationChange}
         marginPagesDisplayed={0}
         pageRangeDisplayed={-1}
-        pageCount={pageCount}
+        pageCount={pageCount===0?1:pageCount}
         initialPage={initialPage}
         disabledClassName={"text-[#5C696E99]"}
         containerClassName={

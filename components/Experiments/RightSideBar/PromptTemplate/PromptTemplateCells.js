@@ -7,7 +7,7 @@ import RunModal from "./RunModal";
 import { getFormattedDate } from "../../../../utils/DateFormates";
 import { useExpContext } from "../../../../context/ExpContext";
 import { useCompSelectorContext } from "../../../../context/compSelectorContext";
-import { useMutation, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import Queries from "../../../../queries/Queries";
 import AccuracyBadge from "../../../../assets/Svg/AccuracyBadge";
 import { MESSAGES } from "../../../../constants/Messages";
@@ -45,9 +45,6 @@ function PromptTemplateCells({
       ? "text-[#D9A900]"
       : "text-[#794839]";
 
-  const [createPromptTemplate, { data, loading, error }] = useMutation(
-    Queries.createPromptTemplate
-  );
   const {
     data: evalsAndModelOptions,
     loading: loadingOptions,
@@ -100,11 +97,6 @@ function PromptTemplateCells({
     setShowClone(true);
     setShowAdd(true);
   };
-
-  if (data) {
-    const templateData = data?.createPromptTemplate?.promptTemplate;
-    setPromptTemplate(templateData);
-  }
 
   return (
     <>

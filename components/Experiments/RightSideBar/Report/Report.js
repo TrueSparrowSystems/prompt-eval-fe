@@ -46,7 +46,7 @@ function Report() {
     totalCount.current = data?.getReport.totalCount;
   }
 
-  const [expanded, setExpanded] = useState("panel1");
+  const [expanded, setExpanded] = useState();
 
   return (
     <div

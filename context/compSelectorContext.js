@@ -18,6 +18,8 @@ export const CompSelectorContext = createContext({
   setAddDynamicVars: () => {},
   showEmptyState: {},
   setShowEmptyState: () => {},
+  showLoadingState: {},
+  setShowLoadingState: () => {}
 });
 
 export function useCompSelectorContext() {
@@ -38,6 +40,8 @@ export function useCompSelectorContext() {
     setAddDynamicVars,
     showEmptyState,
     setShowEmptyState,
+    showLoadingState,
+    setShowLoadingState
   } = useContext(CompSelectorContext);
 
   return {
@@ -57,6 +61,8 @@ export function useCompSelectorContext() {
     setAddDynamicVars,
     showEmptyState,
     setShowEmptyState,
+    showLoadingState,
+    setShowLoadingState
   };
 }
 
@@ -69,6 +75,7 @@ export const CompSelectorProvider = ({ children }) => {
   const [addTestCase, setAddTestCase] = useState(false);
   const [addDynamicVars, setAddDynamicVars] = useState(false);
   const [showEmptyState, setShowEmptyState] = useState(false);
+  const [showLoadingState, setShowLoadingState] = useState(false);
 
   return (
     <CompSelectorContext.Provider
@@ -89,6 +96,8 @@ export const CompSelectorProvider = ({ children }) => {
         setAddDynamicVars,
         showEmptyState,
         setShowEmptyState,
+        showLoadingState,
+        setShowLoadingState
       }}
     >
       {children}

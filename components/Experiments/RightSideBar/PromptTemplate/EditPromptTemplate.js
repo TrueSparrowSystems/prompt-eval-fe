@@ -39,7 +39,7 @@ function EditePromptTemplate() {
   const addNewPrompt = (e) => {
     e.preventDefault();
     const newRole = prevRole === "system" ? "user" : "system";
-    const newPrompt = { id: uuid(), role: newRole };
+    const newPrompt = { id: uuid(), role: newRole, content: "" };
     setPrompts((prompts) => [...prompts, newPrompt]);
     setPrevRole(newRole);
   };

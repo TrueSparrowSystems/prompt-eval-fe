@@ -21,10 +21,11 @@ export default function LandingPage() {
     }
 
     if (
-      localStorage.getItem("Onboarding") === "true" &&
-      Router.query?.reportId == null
+      localStorage.getItem("onBoardingKey") === "true"
     ) {
       Router.push("/experiments/1");
+    }else{
+      localStorage.setItem("onBoardingKey", "false");
     }
   }, []);
 

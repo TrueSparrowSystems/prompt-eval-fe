@@ -28,7 +28,7 @@ function EmptyState() {
       className={`relative ${styles.emptyState} bg-white flex justify-center items-center`}
     >
       <div className={`flex justify-center items-center flex-col`}>
-        {showEmptyState && (
+        {!showLoadingState && (
           <div className="step-four p-[20px]">
             <p className="flex items-center opacity-[60%] text-[15px] leading-[24px] font-[400px] mb-[14px]">
               {currTab === TabNames.PROMPTTEMPLATE

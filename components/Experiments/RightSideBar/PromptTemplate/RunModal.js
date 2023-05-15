@@ -9,9 +9,9 @@ import { Select, MenuItem } from "@mui/material";
 import Queries from "../../../../queries/Queries";
 import { useMutation } from "@apollo/client";
 import { useExpContext } from "../../../../context/ExpContext";
-import Toast from "../../../ToastMessage/Toast";
 import { MESSAGES } from "../../../../constants/Messages";
 import Tooltip from "@mui/material/Tooltip";
+import { useToastContext } from "../../../../context/ToastContext";
 
 Modal.setAppElement("*");
 
@@ -26,6 +26,7 @@ export default function RunModal({
 }) {
   const [model, setModel] = useState("");
   const [evaluation, setEvaluation] = useState("");
+  const { setShowToast, setToastMessage, setToastType } = useToastContext();
 
   useEffect(() => {
     if (modelOptions) setModel(modelOptions[0]);
@@ -64,9 +65,16 @@ export default function RunModal({
           eval: evaluation,
         },
       });
-      setErrorMsg(false);
+      handleClose();
+
+      setShowToast(true);
+      setToastMessage(MESSAGES.RUN.SUCCESS);
+      setToastType("success");
     } catch (err) {
-      setErrorMsg(err);
+      setShowToast(true);
+      setToastMessage(MESSAGES.RUN.FAILURE);
+      setToastType("error");
+      setErrorMsg(err.message);
       return err;
     }
   };
@@ -83,13 +91,6 @@ export default function RunModal({
       style={customStyle}
       className="flex item-center"
     >
-      {errorMsg === false && (
-          <Toast msg={MESSAGES.RUN.SUCCESS} type="success" />
-        ) &&
-        setTimeout(() => handleClose(), 500)}
-      {errorMsg && errorMsg !== false && (
-        <Toast msg={MESSAGES.RUN.FAILURE} type="error" />
-      )}
       <div className="absolute w-[489px] h-[381px] bg-white py-[32px] px-[33px]">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row">
@@ -198,9 +199,9 @@ export default function RunModal({
             </span>
           </Tooltip>
         </div>
-        {errorMsg && (
+        {error && (
           <div className="text-[#f00] text-[14px] mt-[6px] break-all text-ellipsis line-clamp-2 flex justify-center items-center">
-            {errorMsg?.message}
+            {errorMsg}
           </div>
         )}
       </div>

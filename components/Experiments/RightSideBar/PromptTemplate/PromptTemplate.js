@@ -51,10 +51,14 @@ function PromptTemplate() {
 
   useEffect(() => {
     refetch();
+  }, []);
 
+  useEffect(() => {
     if (data?.promptListByPagination.prompts.length === 0)
       setShowEmptyState(true);
-  }, []);
+    else if (data?.promptListByPagination.prompts.length > 0)
+      setShowEmptyState(false);
+  }, [data]);
 
   useEffect(() => {
     if (runSuccess) {

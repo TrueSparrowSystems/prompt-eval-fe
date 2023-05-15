@@ -7,6 +7,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "../theme";
 import { ExpContextProvider } from "../context/ExpContext";
 import { CompSelectorProvider } from "../context/compSelectorContext";
+import { ToastProvider } from "../context/ToastContext";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -15,7 +16,9 @@ function MyApp({ Component, pageProps }) {
         <Provider store={store}>
           <CompSelectorProvider>
             <ExpContextProvider>
-              <Component {...pageProps} />
+              <ToastProvider>
+                <Component {...pageProps} />
+              </ToastProvider>
             </ExpContextProvider>
           </CompSelectorProvider>
         </Provider>

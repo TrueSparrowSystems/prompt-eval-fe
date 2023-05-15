@@ -20,8 +20,6 @@ function LeftSideBar() {
     refetch,
   } = useQuery(Queries.experimentList);
 
-  const Onboarding = useRef(false);
-
   useEffect(() => {
     refetch();
   }, [data]);
@@ -39,17 +37,6 @@ function LeftSideBar() {
       return err;
     }
   };
-
-  useEffect(() => {
-    if (
-      !Onboarding.current &&
-      localStorage.getItem("onBoardingKey") === "false" &&
-      (dataList?.experimentList==null || dataList?.experimentList?.length === 0)
-    ) {
-      Onboarding.current = true;
-      handleClick();
-    }
-  }, []);
 
   const buttonSx = {
     ...((loading || loadingList) && {

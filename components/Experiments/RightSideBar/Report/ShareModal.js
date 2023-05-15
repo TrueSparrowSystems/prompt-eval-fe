@@ -5,19 +5,19 @@ import CopyLinkIcon from "../../../../assets/Svg/CopyLinkIcon";
 import Button from "@mui/material/Button";
 import { useExpContext } from "../../../../context/ExpContext";
 import { useEffect } from "react";
-import Toast from "../../../ToastMessage/Toast";
 import { MESSAGES } from "../../../../constants/Messages";
 import styles from "../TestCases/TestCaseTabs.module.scss";
+import { useToastContext } from "../../../../context/ToastContext";
+
 Modal.setAppElement("*");
 
 export default function ShareModal({ showShareModal, setShowShareModal }) {
   const { reportId } = useExpContext();
+  const { setShowToast, setToastMessage, setToastType } = useToastContext();
 
   const [link, setLink] = useState("");
 
   const [isHover, setIsHover] = useState(false);
-
-  const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
     let reportIdIndex = window.location.href.search("reportId");
@@ -53,7 +53,6 @@ export default function ShareModal({ showShareModal, setShowShareModal }) {
         className="flex item-center"
         onRequestClose={() => setShowShareModal(!showShareModal)}
       >
-        {isCopied && <Toast msg={MESSAGES.SHARE.SUCCESS} type="info" />}
         <div className="absolute w-[489px] h-[276px] bg-white py-[32px] px-[33px] tracking-[-0.18px]">
           <div className="flex flex-row gap-x-[10px] mb-[8px]">
             <Share className="flex flex-col" />
@@ -80,8 +79,9 @@ export default function ShareModal({ showShareModal, setShowShareModal }) {
             <CopyLinkIcon
               onClick={() => {
                 navigator.clipboard.writeText(link);
-                setIsCopied(true);
-                setTimeout(() => setIsCopied(false), 3000);
+                setShowToast(true);
+                setToastMessage(MESSAGES.SHARE.SUCCESS);
+                setToastType("info");
               }}
               className={`cursor-pointer`}
               fill={isHover ? "#1565c0" : "#2196F3"}

@@ -1,13 +1,16 @@
 import React, { useRef, useEffect } from "react";
 import MuiAlert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
+import { useToastContext } from "../../context/ToastContext";
 
 function Toast({ msg, type }) {
   const toastRef = useRef(null);
+  const { setShowToast } = useToastContext();
 
   useEffect(() => {
     const hideToast = setTimeout(() => {
       toastRef.current.style.display = "none";
+      setShowToast(false);
     }, 5000);
 
     return () => {
@@ -25,7 +28,7 @@ function Toast({ msg, type }) {
         horizontal: "center",
       }}
     >
-      <MuiAlert severity={type} sx={{ width: "100%", }} elevation={6}>
+      <MuiAlert severity={type} sx={{ width: "100%" }} elevation={6}>
         {msg}
       </MuiAlert>
     </Snackbar>

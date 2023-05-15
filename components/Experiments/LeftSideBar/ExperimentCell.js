@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import ExperimentsIcon from "../../../assets/Svg/ExperimentsIcon";
 import Rename from "../../../assets/Svg/Rename";
 import { useMutation } from "@apollo/client";
@@ -6,6 +6,7 @@ import Queries from "../../../queries/Queries";
 import { useExpContext } from "../../../context/ExpContext";
 import { useCompSelectorContext } from "../../../context/compSelectorContext";
 import Link from "next/link";
+import ErrorAlertToast from "../../ToastMessage/ErrorAlertToast"
 
 function ExperimentCell({
   id,
@@ -18,8 +19,14 @@ function ExperimentCell({
   const [editable, setEditable] = useState(false);
   const [newExperimentName, setNewExperimentName] = useState(experimentName);
   const { selectedExperimentInfo, setSelectedExperimentInfo } = useExpContext();
-  const { setShowReport, setShowAdd, setShowClone, setShowEdit, setAddTestCase } =
-    useCompSelectorContext();
+  const {
+    setShowReport,
+    setShowAdd,
+    setShowClone,
+    setShowEdit,
+    setAddTestCase,
+  } = useCompSelectorContext();
+  const inputRef = useRef(null);
 
   const [updateExperiment, { data, loading, error }] = useMutation(
     Queries.updateExperiment
@@ -33,6 +40,10 @@ function ExperimentCell({
     )
       setNewExperimentName(selectedExperimentInfo?.name);
   }, [selectedExperimentInfo]);
+
+  useEffect(() => {
+    if (editable) inputRef.current.focus();
+  }, [editable]);
 
   const handleUpdate = async () => {
     if (newExperimentName.length === 0) {
@@ -84,21 +95,29 @@ function ExperimentCell({
             </div>
 
             <input
+              ref={inputRef}
               type="text"
               value={newExperimentName}
-              className={`text-md text-[#00000099] focus:outline-none outline-none text-ellipsis ${
-                showEditIcon
-                  ? selectedExperiment == index
-                    ? "bg-[#F8FAFB]"
-                    : ""
-                  : selectedExperiment == index
-                  ? "bg-[#F8FAFB]"
+              className={`text-md text-[#00000099] focus:outline-none outline-none text-ellipsis pl-[5px] ${
+                selectedExperiment == index
+                  ? editable
+                    ? "bg-white"
+                    : "bg-[#F8FAFB]"
+                  : showEditIcon
+                  ? ""
                   : "bg-white"
               }`}
               onChange={(e) => setNewExperimentName(e.target.value)}
               onBlur={() => {
                 setEditable(false);
                 handleUpdate();
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  setEditable(false);
+                  handleUpdate();
+                }
               }}
               disabled={!editable}
             />
@@ -117,9 +136,7 @@ function ExperimentCell({
         </a>
       </Link>
       {error && (
-        <div className="flex items-center text-[#f00] text-[14px] ml-[12px] mb-[12px] break-normal">
-          {error.message}
-        </div>
+        <ErrorAlertToast message={error.message}/>
       )}
     </>
   );

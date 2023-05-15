@@ -112,6 +112,10 @@ function ReactJoyride() {
               textAlign: "left",
               padding: "16px",
             },
+            spotlight: {
+              margin: 0,
+              padding: 0,
+            },
             buttonClose: {
               display: showCross ? "block" : "none",
             },

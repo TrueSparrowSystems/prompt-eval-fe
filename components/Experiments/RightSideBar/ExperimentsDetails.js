@@ -25,7 +25,7 @@ function ExperimentsDetails() {
     setCurrTab,
     setAddTestCase,
     showEmptyState,
-    showLoadingState
+    showLoadingState,
   } = useCompSelectorContext();
 
   const { setReportId } = useExpContext();
@@ -105,8 +105,10 @@ function ExperimentsDetails() {
               size="large"
               style={{ textTransform: "none" }}
               onClick={() => {
-                if (currTab === TabNames.PROMPTTEMPLATE) setShowAdd(true);
-                else {
+                if (currTab === TabNames.PROMPTTEMPLATE) {
+                  setShowEdit(false);
+                  setShowAdd(true);
+                } else {
                   setAddTestCase(true);
                 }
               }}

@@ -54,6 +54,7 @@ function PromptTemplate() {
 
     if (data?.promptListByPagination.prompts.length === 0)
       setShowEmptyState(true);
+    else setShowEmptyState(false);
   }, []);
 
   useEffect(() => {

@@ -100,7 +100,6 @@ function PromptTemplateCells({
 
   return (
     <>
-      {showClone && <Toast msg={MESSAGES.PROMPT_TEMPLATE.CLONED} />}
       <div
         className={`flex items-center text-md border-b-2 cursor-pointer`}
         onClick={() => {

@@ -37,6 +37,7 @@ export default function TestCases() {
     refetch();
 
     if (data?.testCases.length === 0) setShowEmptyState(true);
+    else setShowEmptyState(false);
   }, []);
 
   let delayLoad = false;

@@ -14,9 +14,10 @@ import { useMutation } from "@apollo/client";
 import Queries from "../../../../queries/Queries";
 import { useExpContext } from "../../../../context/ExpContext";
 import { useCompSelectorContext } from "../../../../context/compSelectorContext";
-import Toast from "../../../ToastMessage/Toast";
 import { MESSAGES } from "../../../../constants/Messages";
 import { CircularProgress } from "@mui/material";
+import { useToastContext } from "../../../../context/ToastContext";
+import ErrorAlertToast from "../../../ToastMessage/ErrorAlertToast";
 
 export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
   const [updateTestCases, { data, loading, error }] = useMutation(
@@ -33,6 +34,7 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
 
   const { selectedExperimentInfo, testCase } = useExpContext();
   const { addTestCase, setAddTestCase } = useCompSelectorContext();
+  const { setShowToast, setToastMessage, setToastType } = useToastContext();
 
   let interSectionFlag = false;
   const [tabValue, setTabValue] = React.useState(0);
@@ -58,12 +60,11 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
         )
       );
       readExpectedResults();
-    }else if(addTestCase){
-      
-        setTestCaseName("Untitled Test Case");
-        setTestCaseDescription("");
-        setVariableValues({});
-        setExpectedResultsArr([]);
+    } else if (addTestCase) {
+      setTestCaseName("Untitled Test Case");
+      setTestCaseDescription("");
+      setVariableValues({});
+      setExpectedResultsArr([]);
     }
 
     handleChange(null, 0);
@@ -185,22 +186,35 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
             ),
           },
         });
-        if(addTestCase) setAddTestCase(false);
-        return;
+        setAddTestCase(false);
+      } else {
+        await updateTestCases({
+          variables: {
+            id: testCase?.id,
+            name: testCaseName,
+            dynamicVarValues: JSON.stringify(variableValues),
+            description: testCaseDescription,
+            expectedResult: expectedResultsArr.map(
+              (expectedResult) => expectedResult.result
+            ),
+          },
+        });
       }
 
-      await updateTestCases({
-        variables: {
-          id: testCase?.id,
-          name: testCaseName,
-          dynamicVarValues: JSON.stringify(variableValues),
-          description: testCaseDescription,
-          expectedResult: expectedResultsArr.map(
-            (expectedResult) => expectedResult.result
-          ),
-        },
-      });
+      setShowToast(true);
+      setToastMessage(
+        addTestCase ? MESSAGES.TEST_CASE.CREATED : MESSAGES.TEST_CASE.UPDATED
+      );
+      setToastType("success");
     } catch (err) {
+      setShowToast(true);
+      setToastMessage(
+        addTestCase
+          ? MESSAGES.TEST_CASE.FAILED
+          : MESSAGES.TEST_CASE.UPDATE_ERROR
+      );
+      setToastType("error");
+
       console.log(err);
       return err;
     }
@@ -208,14 +222,6 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
 
   return (
     <>
-      {data && <Toast msg={MESSAGES.TEST_CASE.UPDATED} type="success" />}
-      {error && <Toast msg={MESSAGES.TEST_CASE.UPDATE_ERROR} type="error" />}
-      {createTestCase && (
-        <Toast msg={MESSAGES.TEST_CASE.CREATED} type="success" />
-      )}
-      {errorCreateTestCase && (
-        <Toast msg={MESSAGES.TEST_CASE.FAILED} type="error" />
-      )}
       <Box
         sx={{
           width: "100%",
@@ -250,6 +256,12 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
               }}
               onFocus={() => setOpacity("80")}
               onBlur={() => setOpacity("40")}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  e.target.blur();
+                }
+              }}
             />
 
             <p className="text-[14px] font-[500px] leading-[24px] tracking-[0.17px] text-black/[0.8] pt-[12px] pb-[6px]">
@@ -313,9 +325,7 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
                 }}
                 sx={{ color: "#2196F3" }}
               >
-                <AddIcon
-                  className="mr-[11px]"
-                />
+                <AddIcon className="mr-[11px]" />
                 Add acceptable result
               </Button>
             </div>
@@ -347,29 +357,24 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
                 SAVE
               </Button>
 
-              {(loading ||
-                loadingCreateTestCase) && (
-                  <CircularProgress
-                    size={24}
-                    sx={{
-                      color: "#2196F3",
-                      position: "absolute",
-                      marginTop: "-24px",
-                      marginLeft: "-24px",
-                    }}
-                  />
-                )}
-              {error && (
-                <div className="text-[#f00] text-[14px] pt-[50px] break-all">
-                  {error.message}
-                </div>
-              )}
-              {errorCreateTestCase && (
-                <div className="text-[#f00] text-[14px] pt-[50px] break-all">
-                  {errorCreateTestCase.message}
-                </div>
+              {(loading || loadingCreateTestCase) && (
+                <CircularProgress
+                  size={24}
+                  sx={{
+                    color: "#2196F3",
+                    position: "absolute",
+                    marginTop: "-24px",
+                    marginLeft: "-24px",
+                  }}
+                />
               )}
             </div>
+          </div>
+          <div className="mt-[35px] ml-[20px]">
+            {error && <ErrorAlertToast message={error.message} />}
+            {errorCreateTestCase && (
+              <ErrorAlertToast message={errorCreateTestCase.message} />
+            )}
           </div>
         </div>
       </Box>

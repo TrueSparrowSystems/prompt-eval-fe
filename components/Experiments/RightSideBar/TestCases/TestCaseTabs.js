@@ -259,7 +259,7 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
               <textarea
                 className={`${styles.textareaStyle} resize-none`}
                 placeholder="Add a description for your test case."
-                value={testCaseDescription}
+                value={testCaseDescription || ""}
                 onChange={(e) => {
                   setTestCaseDescription(e.target.value);
                   if (!unsavedChanges) setUnsavedChanges(true);
@@ -347,18 +347,18 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
                 SAVE
               </Button>
 
-              {loading ||
-                (loadingCreateTestCase && (
+              {(loading ||
+                loadingCreateTestCase) && (
                   <CircularProgress
                     size={24}
                     sx={{
                       color: "#2196F3",
                       position: "absolute",
-                      marginTop: "-12px",
+                      marginTop: "-24px",
                       marginLeft: "-24px",
                     }}
                   />
-                ))}
+                )}
               {error && (
                 <div className="text-[#f00] text-[14px] pt-[50px] break-all">
                   {error.message}

@@ -57,7 +57,7 @@ function ReportCell({ report, index, setExpanded, expanded }) {
               className={`w-full rounded-[4px] h-[120px] p-[10px] outline-none border ${
                 report.accuracy < 60 ? "border-[#B3261E]" : "border-[#2E7D32]"
               } resize-none`}
-              placeholder="Define template variables in {‘variable_name’} format within the prompt."
+              placeholder="No actual result found."
               disabled={true}
             />
             <div className="border border-dashed border-[#00000033] my-[30px]"></div>
@@ -72,7 +72,7 @@ function ReportCell({ report, index, setExpanded, expanded }) {
                 <textarea
                   className={`w-full border rounded-[4px] h-[120px] p-[10px] outline-none resize-none`}
                   value={result}
-                  placeholder="Define template variables in {‘variable_name’} format within the prompt."
+                  placeholder="No expected result found."
                   disabled={true}
                 />
               </div>

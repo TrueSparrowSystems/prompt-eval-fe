@@ -36,7 +36,9 @@ function PromptTemplate() {
   const { data, loading, error, refetch } = useQuery(
     Queries.promptListByPagination,
     {
-      skip: Object.keys(selectedExperimentInfo).length === 0,
+      skip:
+        selectedExperimentInfo == null ||
+        Object.keys(selectedExperimentInfo).length === 0,
       variables: {
         experimentId: selectedExperimentInfo?.id,
         page: currentPage,
@@ -49,6 +51,9 @@ function PromptTemplate() {
 
   useEffect(() => {
     refetch();
+
+    if (data?.promptListByPagination.prompts.length === 0)
+      setShowEmptyState(true);
   }, []);
 
   useEffect(() => {
@@ -58,14 +63,22 @@ function PromptTemplate() {
     }
   }, [runSuccess]);
 
+  let delayLoad = false;
+
+  useEffect(() => {
+    if (loading) {
+      setShowLoadingState(true);
+      setTimeout(() => {
+        delayLoad = true;
+      }, 1000);
+    } else setShowLoadingState(false);
+  }, [loading]);
+
   if (data?.promptListByPagination?.totalCount) {
     totalCount.current = data?.promptListByPagination.totalCount;
   }
 
-  if (data?.promptListByPagination.prompts.length === 0)
-    setShowEmptyState(true);
-
-  if (error && Object.keys(selectedExperimentInfo).length === 0) {
+  if (error && selectedExperimentInfo != null) {
     return (
       <div className={`flex ${styles.experimentBox}`}>
         <div className="flex space-evenly text-[20px] text-[#ff0000] tracking-[0.2px] h-[400px]">
@@ -75,18 +88,12 @@ function PromptTemplate() {
     );
   }
 
-  let delayLoad = false;
-
-  if (loading) {
-    setShowLoadingState(true);
-    setTimeout(() => {
-      delayLoad = true;
-    }, 1000);
-  }else setShowLoadingState(false);
-
   return (
     <div>
-      {error || (delayLoad && loading) || data == null || data?.promptListByPagination.prompts.length === 0 ? (
+      {error ||
+      (delayLoad && loading) ||
+      data == null ||
+      data?.promptListByPagination.prompts.length === 0 ? (
         <EmptyState />
       ) : (
         <div className={`${styles.experimentBox}`}>

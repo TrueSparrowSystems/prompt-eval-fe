@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import ExperimentList from "./ExperimentList";
 import Button from "@mui/material/Button";
 import ReactJoyride from "../../Onboarding/ReactJoyride";
@@ -13,6 +13,7 @@ function LeftSideBar() {
   const [createExperiment, { data, loading, error }] = useMutation(
     Queries.createExperiment
   );
+  const [selectedExperiment, setSelectedExperiment] = useState(0);
   const {
     data: dataList,
     loading: loadingList,
@@ -33,6 +34,8 @@ function LeftSideBar() {
             "Use this template to track your experiments. Add your experiment description here. \nClick + Add new template to create a new prompt template on this board.",
         },
       });
+
+      setSelectedExperiment((prevCount) => prevCount + 1);
     } catch (err) {
       return err;
     }
@@ -87,7 +90,10 @@ function LeftSideBar() {
             )}
           </Box>
         </div>
-        <ExperimentList />
+        <ExperimentList
+          selectedExperiment={selectedExperiment}
+          setSelectedExperiment={setSelectedExperiment}
+        />
         {true && <ReactJoyride />}
       </div>
     </div>

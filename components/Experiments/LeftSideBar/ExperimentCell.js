@@ -33,6 +33,10 @@ function ExperimentCell({
   );
 
   useEffect(() => {
+    setNewExperimentName(experimentName);
+  }, [experimentName]);
+
+  useEffect(() => {
     if (
       selectedExperimentInfo &&
       Object.keys(selectedExperimentInfo).length !== 0 &&

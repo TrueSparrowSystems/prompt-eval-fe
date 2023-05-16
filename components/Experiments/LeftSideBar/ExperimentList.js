@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import ExperimentCell from "./ExperimentCell";
 import { useQuery } from "@apollo/client";
 import Queries from "../../../queries/Queries";
@@ -7,16 +7,18 @@ import { useExpContext } from "../../../context/ExpContext";
 import { useCompSelectorContext } from "../../../context/compSelectorContext";
 import { useRouter } from "next/router";
 
-export default function ExperimentList() {
+export default function ExperimentList({
+  selectedExperiment,
+  setSelectedExperiment,
+}) {
   const experimentDetailsFetched = useRef(false);
-  const [selectedExperiment, setSelectedExperiment] = useState(0);
   const { data, loading, error, refetch } = useQuery(Queries.experimentList);
   const { selectedExperimentInfo, setSelectedExperimentInfo } = useExpContext();
 
   const { addDynamicVars, setAddDynamicVars } = useCompSelectorContext();
 
   const handleChange = (index) => {
-    if(data?.experimentList==null) return;
+    if (data?.experimentList == null) return;
     setSelectedExperiment(index);
     setSelectedExperimentInfo(data?.experimentList[index]);
   };
@@ -44,15 +46,17 @@ export default function ExperimentList() {
 
   useEffect(() => {
     if (!router.isReady) return;
-    if(data?.experimentList==null) return;
-    
+    if (data?.experimentList == null) return;
+
     if (router.query.reportId) {
       let id = data?.experimentList.findIndex(
         (experiment) => experiment.id === router.query["experiment-id"]
       );
       if (id != -1) {
         setSelectedExperiment(id);
-        setSelectedExperimentInfo(data?.experimentList && data?.experimentList[id]);
+        setSelectedExperimentInfo(
+          data?.experimentList && data?.experimentList[id]
+        );
       }
     }
   }, [router.isReady]);

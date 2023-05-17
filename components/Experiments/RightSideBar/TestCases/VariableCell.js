@@ -14,7 +14,7 @@ export default function VariableCell({
         {variableName}
       </div>
       <textarea
-        className={`${styles.textareaStyle} resize-none`}
+        className={`${styles.textareaStyle}`}
         placeholder="Define value for your template variable here."
         value={variableValues[variableName] ? variableValues[variableName] : ""}
         onChange={(e) => {

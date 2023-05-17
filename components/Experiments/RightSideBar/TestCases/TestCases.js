@@ -40,23 +40,18 @@ export default function TestCases() {
     else setShowEmptyState(false);
   }, []);
 
-  let delayLoad = false;
-
   useEffect(() => {
     if (loading) {
       setShowLoadingState(true);
-      setTimeout(() => {
-        delayLoad = true;
-      }, 1000);
     } else setShowLoadingState(false);
   }, [loading]);
 
   return (
     <div>
       {!addTestCase &&
-      ((delayLoad && loading) ||
+      ((loading) ||
         data == null ||
-        data?.testCases.length === 0) ? (
+        data?.testCases.length === 0) || selectedExperimentInfo == null? (
         <EmptyState />
       ) : (
         <div className={`flex ${styles.experimentBox}`}>

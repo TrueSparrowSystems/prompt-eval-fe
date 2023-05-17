@@ -110,14 +110,10 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
   const handleChange = (event, newValue) => {
     setTabValue(parseInt(newValue));
     const section = document.querySelector(`#\\3${newValue}`);
+    const innerContainer = document.getElementById("testCaseContainer");
+    const elementOffsetTop = section.offsetTop;
 
-    if (section) {
-      section.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-        inline: "nearest",
-      });
-    }
+    innerContainer.scrollTop = elementOffsetTop;
   };
 
   const addExpectedResult = () => {
@@ -226,7 +222,7 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
         sx={{
           width: "100%",
           marginTop: "-20px",
-          height: "calc(100vh - 280px)",
+          minHeight: "calc(100vh - 172px)",
         }}
       >
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -243,7 +239,7 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
 
         <div
           id="testCaseContainer"
-          className={` relative mb-[30px]  ${styles.subBoxHeightForTestContent} overflow-auto`}
+          className={`relative ${styles.subBoxHeightForTestContent} overflow-auto scroll-smooth`}
         >
           <div id="0" className="tab ml-[20px]">
             <input
@@ -269,7 +265,7 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
             </p>
             <div className="pr-[40px]">
               <textarea
-                className={`${styles.textareaStyle} resize-none`}
+                className={`${styles.textareaStyle}`}
                 placeholder="Add a description for your test case."
                 value={testCaseDescription || ""}
                 onChange={(e) => {

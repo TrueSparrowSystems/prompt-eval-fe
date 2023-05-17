@@ -35,15 +35,11 @@
   border: 1px solid white;
   position: relative;
   margin-top: -5px;
-  height: calc(100vh - 250px);
+  min-height: calc(100vh - 250px);
 }
 
 .subBoxHeight {
-  height: calc(100vh - 455px);
-}
-
-.subBoxHeightForReport {
-  height: calc(100vh - 529px);
+  min-height: calc(100vh - 455px);
 }
 
 .experimentBox:after {

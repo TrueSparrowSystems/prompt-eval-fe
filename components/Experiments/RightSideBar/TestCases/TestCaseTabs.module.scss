@@ -22,14 +22,10 @@
     display: none;
 }
 
-.BoxHeight {
-    max-height: calc(100vh - 250px);
-}
-
 .subBoxHeightForTestList {
-    height: calc(100vh - 280px);
+    height: calc(100vh - 180px);
 }
 
 .subBoxHeightForTestContent {
-    height: calc(100vh - 350px);
+    height: calc(100vh - 250px);
 }

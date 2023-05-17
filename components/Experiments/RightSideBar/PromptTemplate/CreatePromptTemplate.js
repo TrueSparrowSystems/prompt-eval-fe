@@ -15,7 +15,7 @@ import AddIcon from "../../../../assets/Svg/AddIcon";
 import CircularProgress from "@mui/material/CircularProgress";
 import ErrorAlertToast from "../../../ToastMessage/ErrorAlertToast";
 
-function CreatePromptTemplate() {
+function CreatePromptTemplate({ setCurrentPage }) {
   const [prevRole, setPrevRole] = useState("system");
   const [titleOpacity, setTitleOpacity] = useState("40");
   const { selectedExperimentInfo, promptTemplate } = useExpContext();
@@ -69,6 +69,7 @@ function CreatePromptTemplate() {
           experimentId: selectedExperimentInfo?.id,
         },
       });
+      setCurrentPage(1);
     } catch (err) {
       return err;
     }

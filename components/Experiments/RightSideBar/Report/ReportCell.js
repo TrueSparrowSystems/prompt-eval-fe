@@ -15,7 +15,9 @@ function ReportCell({ report, index, setExpanded, expanded }) {
     <>
       <Accordion
         expanded={expanded === `panel${index}`}
-        staus={report.accuracy!=null && report.accuracy < 0.60 ? "failed" : "pass"}
+        staus={
+          report.accuracy != null && report.accuracy < 0.6 ? "failed" : "pass"
+        }
         onChange={handleChange(`panel${index}`)}
       >
         <AccordionSummary
@@ -30,13 +32,19 @@ function ReportCell({ report, index, setExpanded, expanded }) {
               {report?.testCaseDescription}
             </div>
             <div className="px-[10px] py-[34px] ml-[10px]">
-              <StatusBadge status={report.accuracy!=null && report.accuracy < 0.60 ? "failed" : "pass"} />
+              <StatusBadge
+                status={
+                  report.accuracy != null && report.accuracy < 0.6
+                    ? "failed"
+                    : "pass"
+                }
+              />
             </div>
           </div>
         </AccordionSummary>
         <AccordionDetails
           sx={
-            report.accuracy!=null && report.accuracy < 0.60
+            report.accuracy != null && report.accuracy < 0.6
               ? { borderLeft: `2px solid rgba(179, 38, 30, 1)` }
               : { borderLeft: `2px solid rgba(46, 125, 50, 1)` }
           }
@@ -55,8 +63,10 @@ function ReportCell({ report, index, setExpanded, expanded }) {
             <textarea
               value={actualResult}
               className={`w-full rounded-[4px] h-[120px] p-[10px] outline-none border ${
-                report.accuracy!=null && report.accuracy < 0.60 ? "border-[#B3261E]" : "border-[#2E7D32]"
-              } resize-none`}
+                report.accuracy != null && report.accuracy < 0.6
+                  ? "border-[#B3261E]"
+                  : "border-[#2E7D32]"
+              }`}
               placeholder="No actual result found."
               disabled={true}
             />
@@ -70,7 +80,7 @@ function ReportCell({ report, index, setExpanded, expanded }) {
                   Acceptable Result {index + 1}
                 </div>
                 <textarea
-                  className={`w-full border rounded-[4px] h-[120px] p-[10px] outline-none resize-none`}
+                  className={`w-full border rounded-[4px] h-[120px] p-[10px] outline-none`}
                   value={result}
                   placeholder="No expected result found."
                   disabled={true}

@@ -10,11 +10,11 @@ import { useCompSelectorContext } from "../../../../context/compSelectorContext"
 import { useQuery } from "@apollo/client";
 import Queries from "../../../../queries/Queries";
 import AccuracyBadge from "../../../../assets/Svg/AccuracyBadge";
-import { MESSAGES } from "../../../../constants/Messages";
-import Toast from "../../../ToastMessage/Toast";
 import Pass from "../../../../assets/Svg/Pass";
 import Fail from "../../../../assets/Svg/Fail";
 import RunningLoader from "../../../../assets/Svg/RunningLoader";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 function PromptTemplateCells({
   index,
@@ -27,7 +27,7 @@ function PromptTemplateCells({
 }) {
   const { setReportId, setPromptTemplate, selectedExperimentInfo } =
     useExpContext();
-  const { showClone, setShowClone, setShowReport, setShowEdit, setShowAdd } =
+  const { setShowClone, setShowReport, setShowEdit, setShowAdd } =
     useCompSelectorContext();
   const [showRunModal, setShowRunModal] = useState(false);
   const accuracy = PromptTemplate.latestEvaluationReport[0]?.accuracy;
@@ -64,6 +64,7 @@ function PromptTemplateCells({
   });
 
   const [startRun, setStartRun] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (startRun) {
@@ -76,9 +77,9 @@ function PromptTemplateCells({
 
     if (
       promptList?.promptListByPagination?.prompts[index]
-        ?.latestEvaluationReport[0].status === "Status.COMPLETED" ||
+        ?.latestEvaluationReport[0]?.status === "Status.COMPLETED" ||
       promptList?.promptListByPagination?.prompts[index]
-        ?.latestEvaluationReport[0].status === "Status.FAILED"
+        ?.latestEvaluationReport[0]?.status === "Status.FAILED"
     ) {
       setStartRun(false);
       setRunSuccess(true);
@@ -146,30 +147,43 @@ function PromptTemplateCells({
           ) : (
             <div className="mb-[10px]"></div>
           )}
-
-          <div
-            className={`flex items-center gap-[10px] z-10 ${
-              PromptTemplate.latestEvaluationReport[0]?.status ===
-              "Status.COMPLETED"
-                ? "cursor-pointer"
-                : "opacity-60 cursor-not-allowed"
-            }`}
-            onClick={(e) => {
-              e.stopPropagation();
-              if (
-                PromptTemplate.latestEvaluationReport[0]?.status ===
-                "Status.COMPLETED"
-              ) {
-                setShowReport(true);
-                setReportId(PromptTemplate.latestEvaluationReport[0].id);
-              }
-            }}
-          >
-            <div className="underline">View Report</div>
-            <div>
-              <ViewReportArrow />
+          {PromptTemplate.latestEvaluationReport[0]?.status ===
+          "Status.COMPLETED" ? (
+            <Link
+              href={{
+                pathname: `/experiments/${selectedExperimentInfo?.id}`,
+                query: {
+                  reportId: PromptTemplate.latestEvaluationReport[0]?.id,
+                },
+              }}
+            >
+              <div
+                className={`flex items-center gap-[10px] z-10 cursor-pointer`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowReport(true);
+                  setReportId(PromptTemplate.latestEvaluationReport[0].id);
+                }}
+              >
+                <div className="underline">View Report</div>
+                <div>
+                  <ViewReportArrow />
+                </div>
+              </div>
+            </Link>
+          ) : (
+            <div
+              className={`flex items-center gap-[10px] z-10 opacity-60 cursor-not-allowed`}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <div className="underline">View Report</div>
+              <div>
+                <ViewReportArrow />
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         <div className="basis-1/5 flex items-center justify-around px-[10px] z-10">

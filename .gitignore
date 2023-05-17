@@ -1,0 +1,11 @@
+node_modules
+.DS_Store
+package-lock.json
+.env.test
+.env.local
+.env
+.next
+.vscode
+.idea
+out
+/coverage

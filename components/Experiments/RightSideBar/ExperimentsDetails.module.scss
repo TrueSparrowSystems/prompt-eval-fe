@@ -1,0 +1,81 @@
+.notSelectedtab {
+  background: #F9F9F9;
+  box-shadow: -8px 4px 24px rgba(0, 0, 0, 0.11);
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.selectedTab {
+  background: #ffffff;
+  box-shadow: 8px 4px 24px rgba(0, 0, 0, 0.11);
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.textareaStyle {
+  border: 1px solid #0000001A;
+}
+
+.notSelectedTestCase {
+  box-shadow: 8px 4px 24px rgba(0, 0, 0, 0.11);
+}
+
+.notSelectedPromptTemplate {
+  box-shadow: -8px 4px 24px rgba(0, 0, 0, 0.11);
+}
+
+.experimentBox {
+  background: #ffffff;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.14),
+    0px 2px 1px -1px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 25px;
+  z-index: 10;
+  width: 100%;
+  border: 1px solid white;
+  position: relative;
+  margin-top: -5px;
+  height: calc(100vh - 250px);
+}
+
+.subBoxHeight {
+  height: calc(100vh - 455px);
+}
+
+.subBoxHeightForReport {
+  height: calc(100vh - 529px);
+}
+
+.experimentBox:after {
+  content: "";
+  position: absolute;
+  width: 470px;
+  top: 0px;
+  left: 36px;
+  border: 1px solid #0000001A;
+}
+
+.emptyState {
+  background-image: url("../../../assets/Svg/EmptyPage.svg");
+  background-size: cover;
+  background-position: top;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.14),
+    0px 2px 1px -1px rgba(0, 0, 0, 0.2);
+  height: 100%;
+  width: 100%;
+  border-radius: 8px;
+  min-height: 70vh;
+  height: calc(100vh - 250px);
+  z-index: 10;
+  margin-top: -5px;
+  border: 1px solid white;
+}
+
+.emptyState::after {
+  content: "";
+  position: absolute;
+  width: 470px;
+  top: -2px;
+  left: 36px;
+  border: 1px solid #0000001A;
+}

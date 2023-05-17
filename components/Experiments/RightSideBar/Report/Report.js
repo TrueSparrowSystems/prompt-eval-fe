@@ -34,15 +34,31 @@ function Report() {
     setCurrentPage(selected + 1);
   };
 
-  const { data, loading, error } = useQuery(Queries.getReportByReportId, {
-    variables: {
-      reportId: reportId,
-      page: 1,
-      limit: 10,
-    },
-  });
+  const { data, loading, error, refetch } = useQuery(
+    Queries.getReportByReportId,
+    {
+      variables: {
+        reportId: reportId,
+        page: currentPage,
+        limit: recordPerPage,
+      },
+    }
+  );
 
-  if (data?.getReport.totalCount) {
+  useEffect(() => {
+    if (
+      data?.getReport?.testCaseEvaluationReport.length === 0 &&
+      currentPage > 1
+    ) {
+      setCurrentPage(currentPage - 1);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    refetch();
+  }, [currentPage, recordPerPage]);
+
+  if (data?.getReport?.totalCount) {
     totalCount.current = data?.getReport.totalCount;
   }
 

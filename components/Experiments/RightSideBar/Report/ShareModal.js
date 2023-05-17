@@ -8,26 +8,24 @@ import { useEffect } from "react";
 import { MESSAGES } from "../../../../constants/Messages";
 import styles from "../TestCases/TestCaseTabs.module.scss";
 import { useToastContext } from "../../../../context/ToastContext";
+import { useRouter } from "next/router";
 
 Modal.setAppElement("*");
 
 export default function ShareModal({ showShareModal, setShowShareModal }) {
-  const { reportId } = useExpContext();
+  const { reportId, selectedExperimentInfo } = useExpContext();
   const { setShowToast, setToastMessage, setToastType } = useToastContext();
 
   const [link, setLink] = useState("");
 
   const [isHover, setIsHover] = useState(false);
 
+  const router = useRouter();
+
   useEffect(() => {
-    let reportIdIndex = window.location.href.search("reportId");
-    if (reportIdIndex != -1) {
-      setLink(
-        window.location.href.substring(0, reportIdIndex - 1) +
-          "?reportId=" +
-          reportId
-      );
-    } else setLink(window.location.href + "?reportId=" + reportId);
+    setLink(
+      `${window.location.origin}/experiments/${selectedExperimentInfo.id}?reportId=${reportId}`
+    );
   }, []);
 
   const customStyle = {

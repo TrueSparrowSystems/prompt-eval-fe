@@ -3,7 +3,7 @@ import Alert from "@mui/material/Alert";
 import { Collapse, IconButton } from "@mui/material";
 import CrossIcon from "../../assets/Svg/CrossIcon";
 
-export default function ErrorAlertToast({ message }) {
+export default function ErrorAlertToast({ message, showCrossIcon = true }) {
   const [open, setOpen] = useState(true);
 
   return (
@@ -20,7 +20,7 @@ export default function ErrorAlertToast({ message }) {
                 setOpen(false);
               }}
             >
-              <CrossIcon fontSize="inherit" />
+              {showCrossIcon && <CrossIcon fontSize="inherit" />}
             </IconButton>
           }
           sx={{ mt: 2, mb: 2 }}

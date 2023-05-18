@@ -163,6 +163,7 @@ function EditePromptTemplate() {
                 e.target.blur();
               }
             }}
+            maxLength={70}
           />
           <ul>{promptsList}</ul>
           <div className="flex gap-[25px]">

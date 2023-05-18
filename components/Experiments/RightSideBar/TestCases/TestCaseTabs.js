@@ -258,6 +258,7 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
                   e.target.blur();
                 }
               }}
+              maxLength={70}
             />
 
             <p className="text-[14px] font-[500px] leading-[24px] tracking-[0.17px] text-black/[0.8] pt-[12px] pb-[6px]">

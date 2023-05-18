@@ -52,6 +52,7 @@ export default function TestCases() {
       ((loading) ||
         data == null ||
         data?.testCases.length === 0) || selectedExperimentInfo == null? (
+
         <EmptyState />
       ) : (
         <div className={`flex ${styles.experimentBox}`}>

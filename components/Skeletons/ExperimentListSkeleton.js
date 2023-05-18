@@ -16,6 +16,7 @@ function ExperimentListSkeleton(props) {
       <Skeleton animation="wave" height={60} width={252}/>
       <Skeleton animation="wave" height={60} width={252}/>
       <Skeleton animation="wave" height={60} width={252}/>
+
     </Box>
   );
 }

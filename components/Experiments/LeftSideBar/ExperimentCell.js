@@ -76,7 +76,6 @@ function ExperimentCell({
   return (
     <>
       <Link href={`/experiments/${id}`}>
-        <a>
           <div
             className={`flex items-center gap-[10px] p-[12px] cursor-pointer ${
               showEditIcon ? "bg-[#F0F0F0]" : ""
@@ -138,7 +137,6 @@ function ExperimentCell({
               <Rename />
             </button>
           </div>
-        </a>
       </Link>
       {error && (
         <ErrorAlertToast message={error.message}/>

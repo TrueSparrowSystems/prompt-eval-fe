@@ -124,6 +124,7 @@ function ExperimentCell({
                 }
               }}
               disabled={!editable}
+              maxLength={70}
             />
             <button
               className={`ml-auto hover:bg-[#0000001A] p-[5px] ${

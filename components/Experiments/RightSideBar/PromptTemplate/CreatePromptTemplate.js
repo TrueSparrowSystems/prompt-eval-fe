@@ -15,6 +15,7 @@ import AddIcon from "../../../../assets/Svg/AddIcon";
 import CircularProgress from "@mui/material/CircularProgress";
 import ErrorAlertToast from "../../../ToastMessage/ErrorAlertToast";
 
+
 function CreatePromptTemplate({ setCurrentPage }) {
   const [prevRole, setPrevRole] = useState("system");
   const [titleOpacity, setTitleOpacity] = useState("40");

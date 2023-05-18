@@ -53,7 +53,6 @@ function ExperimentsDetails() {
 
   const getExperimentUi = () => {
     if (showReport) {
-      toggleTab(TabNames.TESTCASES);
       return <Report />;
     } else if (showAdd) {
       return <CreatePromptTemplate setCurrentPage={setCurrentPage} />;
@@ -91,7 +90,7 @@ function ExperimentsDetails() {
                   router.push(`/experiments/${selectedExperimentInfo.id}`);
                   setShowReport(false);
                 }
-
+                
                 setShowAdd(false);
                 setAddTestCase(false);
                 toggleTab(TabNames.PROMPTTEMPLATE);
@@ -107,6 +106,10 @@ function ExperimentsDetails() {
               }
               px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
               onClick={() => {
+                if (showReport) {
+                  router.push(`/experiments/${selectedExperimentInfo.id}`);
+                  setShowReport(false);
+                }
                 setShowAdd(false);
                 setShowEdit(false);
                 setShowClone(false);

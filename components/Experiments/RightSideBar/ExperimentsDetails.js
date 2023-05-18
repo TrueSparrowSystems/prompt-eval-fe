@@ -90,7 +90,6 @@ function ExperimentsDetails() {
                   router.push(`/experiments/${selectedExperimentInfo.id}`);
                   setShowReport(false);
                 }
-                
                 setShowAdd(false);
                 setAddTestCase(false);
                 toggleTab(TabNames.PROMPTTEMPLATE);

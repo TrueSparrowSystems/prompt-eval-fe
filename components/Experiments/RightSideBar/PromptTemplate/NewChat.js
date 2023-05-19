@@ -33,7 +33,7 @@ function NewChat({
         {promptRole}
       </div>
       <textarea
-        className={`w-full border rounded-[4px] h-[120px] p-[10px] ml-[40px] mr-[10px] outline-none ${
+        className={`w-full border rounded-[4px] h-[220px] p-[10px] ml-[40px] mr-[10px] outline-none ${
           isHover || selectedChat === prompt.id
             ? "border-[#2196F380] bg-[#F8FAFB]"
             : "border-[#0000001A]"
@@ -50,15 +50,18 @@ function NewChat({
         onClick={() => setSelectedChat(prompt.id)}
         placeholder="Define template variables in {{variable_name}} format within the prompt."
       />
+      <div className={`cursor-pointer ${
+          isHover ? "opacity-40  hover:opacity-80" : "opacity-0"
+        } cursor-pointer hover:bg-[#CDE6F8] p-[5px] h-[35px] w-[40px] rounded-[4px] flex items-center justify-center`}
+        >
       <div
-        className={`cursor-pointer ${
-          isHover ? "opacity-40  hover:opacity-60" : "opacity-0"
-        }`}
+        
         onClick={(e) => {
           remove(prompt.id);
         }}
       >
         <RemoveIcon />
+      </div>
       </div>
     </li>
   );

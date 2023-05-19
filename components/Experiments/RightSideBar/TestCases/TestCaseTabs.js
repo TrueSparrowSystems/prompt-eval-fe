@@ -351,7 +351,7 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
                 }}
                 disabled={loading || loadingCreateTestCase}
               >
-                SAVE
+                {addTestCase?"CREATE":"SAVE"}
               </Button>
 
               {(loading || loadingCreateTestCase) && (

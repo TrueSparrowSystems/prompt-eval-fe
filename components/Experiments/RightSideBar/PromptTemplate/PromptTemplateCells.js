@@ -15,6 +15,7 @@ import Fail from "../../../../assets/Svg/Fail";
 import RunningLoader from "../../../../assets/Svg/RunningLoader";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { Tooltip } from "@mui/material";
 
 function PromptTemplateCells({
   index,
@@ -117,7 +118,9 @@ function PromptTemplateCells({
             <div
               className={`flex flex-row items-center max-w-[100px] rounded-[8px] h-[32px] px-[10px] ${bgColor} ${textColor}`}
             >
-              <AccuracyBadge accuracy={accuracy * 100} />
+              <AccuracyBadge
+                accuracy={parseFloat((accuracy * 100).toFixed(2))}
+              />
             </div>
           ) : (
             "--"
@@ -147,43 +150,54 @@ function PromptTemplateCells({
           ) : (
             <div className="mb-[10px]"></div>
           )}
-          {PromptTemplate.latestEvaluationReport[0]?.status ===
-          "Status.COMPLETED" ? (
-            <Link
-              href={{
-                pathname: `/experiments/${selectedExperimentInfo?.id}`,
-                query: {
-                  reportId: PromptTemplate.latestEvaluationReport[0]?.id,
-                },
-              }}
-            >
-              <div
-                className={`flex items-center gap-[10px] z-10 cursor-pointer`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setShowReport(true);
-                  setReportId(PromptTemplate.latestEvaluationReport[0].id);
-                }}
-              >
-                <div className="underline">View Report</div>
-                <div>
-                  <ViewReportArrow />
+          <Tooltip
+            title={
+              PromptTemplate.latestEvaluationReport[0]?.status ===
+              "Status.COMPLETED"
+                ? "Click here to access your report"
+                : "No report generated yet"
+            }
+          >
+            <span>
+              {PromptTemplate.latestEvaluationReport[0]?.status ===
+              "Status.COMPLETED" ? (
+                <Link
+                  href={{
+                    pathname: `/experiments/${selectedExperimentInfo?.id}`,
+                    query: {
+                      reportId: PromptTemplate.latestEvaluationReport[0]?.id,
+                    },
+                  }}
+                >
+                  <div
+                    className={`flex items-center gap-[10px] z-10 cursor-pointer opacity-80 hover:opacity-100`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowReport(true);
+                      setReportId(PromptTemplate.latestEvaluationReport[0].id);
+                    }}
+                  >
+                    <div className="underline">View Report</div>
+                    <div>
+                      <ViewReportArrow />
+                    </div>
+                  </div>
+                </Link>
+              ) : (
+                <div
+                  className={`flex items-center gap-[10px] z-10 opacity-60 cursor-not-allowed`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
+                  <div className="underline">View Report</div>
+                  <div>
+                    <ViewReportArrow />
+                  </div>
                 </div>
-              </div>
-            </Link>
-          ) : (
-            <div
-              className={`flex items-center gap-[10px] z-10 opacity-60 cursor-not-allowed`}
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            >
-              <div className="underline">View Report</div>
-              <div>
-                <ViewReportArrow />
-              </div>
-            </div>
-          )}
+              )}
+            </span>
+          </Tooltip>
         </div>
 
         <div className="basis-1/5 flex items-center justify-around px-[10px] z-10">
@@ -204,7 +218,7 @@ function PromptTemplateCells({
             </Button>
           </div>
           <div
-            className="flex items-center gap-[20px] py-[10px] px-[10px]"
+            className="flex items-center gap-[20px] py-[10px] px-[10px] hover:bg-[#F8FAFB] rounded-[4px] opacity-60 hover:opacity-100"
             onClick={(e) => {
               e.stopPropagation();
               handleClone();

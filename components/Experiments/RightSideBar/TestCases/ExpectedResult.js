@@ -41,15 +41,16 @@ function ExpectedResult({
           }}
           rows={10}
         />
+        <div className={`cursor-pointer ${
+          isHover ? "opacity-40  hover:opacity-80" : "opacity-0"
+        } cursor-pointer hover:bg-[#CDE6F8] mx-[5px] p-[5px] h-[35px] w-[40px] rounded-[4px] flex items-center justify-center`}>
         <div
-          className={`cursor-pointer ml-[10px] pb-[110px] pr-[10px] ${
-            isHover ? "opacity-40  hover:opacity-80" : "opacity-0"
-          }`}
           onClick={(e) => {
             removeExpectedResult(expectedResult.id);
           }}
         >
           <RemoveIcon />
+        </div>
         </div>
       </div>
     </li>

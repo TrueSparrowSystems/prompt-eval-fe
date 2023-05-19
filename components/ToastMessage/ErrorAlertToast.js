@@ -3,14 +3,14 @@ import Alert from "@mui/material/Alert";
 import { Collapse, IconButton } from "@mui/material";
 import CrossIcon from "../../assets/Svg/CrossIcon";
 
-export default function ErrorAlertToast({ message, showCrossIcon = true }) {
+export default function ErrorAlertToast({ message, showCrossIcon = true, severity="error" }) {
   const [open, setOpen] = useState(true);
 
   return (
     <div>
       <Collapse in={open}>
         <Alert
-          severity="error"
+          severity={severity}
           action={
             <IconButton
               aria-label="close"

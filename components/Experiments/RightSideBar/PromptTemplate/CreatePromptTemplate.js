@@ -20,7 +20,7 @@ function CreatePromptTemplate({ setCurrentPage }) {
   const [prevRole, setPrevRole] = useState("system");
   const [titleOpacity, setTitleOpacity] = useState("40");
   const { selectedExperimentInfo, promptTemplate } = useExpContext();
-  const { showClone, setCurrTab, setShowAdd, setShowClone } =
+  const { showClone, setCurrTab, showAdd, setShowAdd, setShowClone } =
     useCompSelectorContext();
   const { setShowToast, setToastMessage, setToastType } = useToastContext();
 
@@ -151,7 +151,7 @@ function CreatePromptTemplate({ setCurrentPage }) {
           >
             <BackArrow />
             <div className="text-[15px] opacity-80 py-[25px]">
-              Back to all Template
+              Back
             </div>
           </div>
           <input
@@ -207,7 +207,7 @@ function CreatePromptTemplate({ setCurrentPage }) {
                 }}
                 disabled={loading}
               >
-                Save
+                {showAdd && !showClone ? "Create" : "Clone template"}
                 {loading && (
                   <CircularProgress
                     size={24}

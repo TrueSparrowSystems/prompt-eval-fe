@@ -83,7 +83,7 @@ function RightSideBar() {
       borderBottom: "1px solid black",
     },
     "& .MuiInput-underline:hover:after": {
-      borderBottom: "1px solid black",
+      borderBottom: "none",
     },
   };
   return (

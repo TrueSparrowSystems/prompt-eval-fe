@@ -351,20 +351,17 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
                 }}
                 disabled={loading || loadingCreateTestCase}
               >
-                {addTestCase?"CREATE":"SAVE"}
+                {addTestCase ? "CREATE" : "SAVE"}
+                {(loading || loadingCreateTestCase) && (
+                  <CircularProgress
+                    size={24}
+                    sx={{
+                      color: "#2196F3",
+                      position: "absolute",
+                    }}
+                  />
+                )}
               </Button>
-
-              {(loading || loadingCreateTestCase) && (
-                <CircularProgress
-                  size={24}
-                  sx={{
-                    color: "#2196F3",
-                    position: "absolute",
-                    marginTop: "-24px",
-                    marginLeft: "-24px",
-                  }}
-                />
-              )}
             </div>
           </div>
           <div className="mt-[35px] ml-[20px]">

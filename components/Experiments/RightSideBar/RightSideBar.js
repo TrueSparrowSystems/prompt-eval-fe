@@ -4,6 +4,7 @@ import { useMutation } from "@apollo/client";
 import Queries from "../../../queries/Queries";
 import { useEffect } from "react";
 import { useExpContext } from "../../../context/ExpContext";
+import { TextField } from "@mui/material";
 
 function RightSideBar() {
   const { selectedExperimentInfo, setSelectedExperimentInfo } = useExpContext();
@@ -59,31 +60,94 @@ function RightSideBar() {
     }
   };
 
+  const textFieldStyles = {
+    "& .MuiInputBase-root.Mui-disabled:before": {
+      borderBottom: "none",
+      color: "black",
+    },
+    "& .MuiInputBase-root.Mui-disabled:hover:before": {
+      borderBottom: "none",
+      color: "black",
+    },
+    "& .MuiInput-underline:before": {
+      borderBottom: "none",
+    },
+    "& .MuiInput-underline:after": {
+      borderBottom: "1px solid black",
+    },
+    "& .MuiInput-underline:hover": {
+      borderBottom: "none",
+      outline: "none",
+    },
+    "& .MuiInput-underline:hover:before": {
+      borderBottom: "1px solid black",
+    },
+    "& .MuiInput-underline:hover:after": {
+      borderBottom: "1px solid black",
+    },
+  };
   return (
     <div>
       <div className="w-[80%] step-three">
         <div>
-          <input
+          <TextField
+            sx={textFieldStyles}
+            id="standard-basic"
+            variant="standard"
             value={experimentName}
             onChange={(e) => {
               setExperimentName(e.target.value);
             }}
-            onBlur={() => handleUpdate(true)}
-            className="font-semibold text-[20px] text-[#000] pb-[10px] bg-transparent outline-none w-full"
+            className={`text-[#000] bg-transparent outline-none w-full`}
             disabled={selectedExperimentInfo == null}
-            maxLength={70}
+            onBlur={() => handleUpdate(true)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                e.target.blur();
+                handleUpdate(true);
+              }
+            }}
+            inputProps={{
+              maxLength: 70,
+              style: {
+                fontSize: "20px",
+                fontWeight: "600",
+                lineHeight: "32px",
+              },
+            }}
           />
         </div>
         <div>
-          <textarea
+          <TextField
+            sx={textFieldStyles}
+            id="standard-basic"
+            variant="standard"
             value={experimentDescription}
             onChange={(e) => {
               setExperimentDescription(e.target.value);
             }}
-            onBlur={() => handleUpdate(false)}
-            className={` text-md opacity-60 pt-[5px] bg-transparent outline-none break-words resize-none w-full `}
-            maxLength={240}
+            className={`bg-transparent outline-none break-words resize-none w-full`}
             disabled={selectedExperimentInfo == null}
+            onBlur={() => {
+              handleUpdate(false);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.target.blur();
+                handleUpdate(false);
+              }
+            }}
+            inputProps={{
+              maxLength: 240,
+              style: {
+                fontSize: "14px",
+                fontWeight: "400",
+                color: "#00000099",
+              },
+            }}
+            multiline
+            maxRows={2}
           />
           {error && (
             <div className="text-[#f00] text-[14px] mt-[2px] break-all">

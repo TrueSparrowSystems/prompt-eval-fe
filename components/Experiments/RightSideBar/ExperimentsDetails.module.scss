@@ -34,7 +34,7 @@
   width: 100%;
   border: 1px solid white;
   position: relative;
-  margin-top: -5px;
+  margin-top: -10px;
   min-height: calc(100vh - 250px);
 }
 
@@ -60,10 +60,9 @@
   height: 100%;
   width: 100%;
   border-radius: 8px;
-  min-height: 70vh;
   height: calc(100vh - 250px);
   z-index: 10;
-  margin-top: -5px;
+  margin-top: -10px;
   border: 1px solid white;
 }
 

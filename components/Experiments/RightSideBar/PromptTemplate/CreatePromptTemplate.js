@@ -15,7 +15,6 @@ import AddIcon from "../../../../assets/Svg/AddIcon";
 import CircularProgress from "@mui/material/CircularProgress";
 import ErrorAlertToast from "../../../ToastMessage/ErrorAlertToast";
 
-
 function CreatePromptTemplate({ setCurrentPage }) {
   const [prevRole, setPrevRole] = useState("system");
   const [titleOpacity, setTitleOpacity] = useState("40");
@@ -132,27 +131,31 @@ function CreatePromptTemplate({ setCurrentPage }) {
     <>
       <div className={`${styles.experimentBox} overflow-auto`}>
         <>
-          <div
-            className="flex items-center gap-[10px] cursor-pointer hover:opacity-100 opacity-80"
-            onClick={() => {
-              if (unsavedChanges) {
-                if (
-                  !confirm(
-                    "Your changes have not been saved. Are you sure you want to discard this changes?"
+          <div className=" pb-[10px]">
+            <Button
+              className="flex items-center gap-[5px] pl-0"
+              onClick={() => {
+                if (unsavedChanges) {
+                  if (
+                    !confirm(
+                      "Your changes have not been saved. Are you sure you want to discard this changes?"
+                    )
                   )
-                )
-                  return;
-                setUnsavedChanges(false);
-              }
-              setShowAdd(false);
-              setShowClone(false);
-              setCurrTab(TabNames.PROMPTTEMPLATE);
-            }}
-          >
-            <BackArrow />
-            <div className="text-[15px] opacity-80 py-[25px]">
-              Back
-            </div>
+                    return;
+                  setUnsavedChanges(false);
+                }
+                setShowAdd(false);
+                setShowClone(false);
+                setCurrTab(TabNames.PROMPTTEMPLATE);
+              }}
+              sx={{
+                textTransform: "none",
+                color: "#2196F3",
+              }}
+            >
+              <BackArrow isBlue={true} />
+              Back to Prompt Templates
+            </Button>
           </div>
           <input
             className={`text-[20px] font-bold outline-none pb-[25px] w-full opacity-${titleOpacity} hover:opacity-80`}

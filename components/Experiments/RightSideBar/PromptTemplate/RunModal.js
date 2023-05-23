@@ -95,7 +95,7 @@ export default function RunModal({
       style={customStyle}
       className="flex item-center"
     >
-      <div className="absolute w-[489px] bg-white py-[32px] px-[33px]">
+      <div className="absolute w-[489px] bg-white py-[32px] px-[33px] rounded-[8px]">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row">
             <RunPromptIcon />
@@ -171,39 +171,39 @@ export default function RunModal({
               </Select>
             </div>
             <div className="flex flex-row item-center">
-                  <Button
-                    variant="contained"
-                    style={{
-                      background: "#2196F3",
-                    }}
+              <Button
+                variant="contained"
+                style={{
+                  background: "#2196F3",
+                }}
+                sx={{
+                  ...(loading && {
+                    bgcolor: "#2196F3",
+                  }),
+                  mt: "32px",
+                  textTransform: "none",
+                  width: "425px",
+                  height: "36px",
+                  boxShadow:
+                    "0px 1px 5px rgba(0, 0, 0, 0.12), 0px 2px 2px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2)",
+                  bordeRadius: "4px",
+                }}
+                disabled={loading}
+                onClick={() => {
+                  handleRun();
+                }}
+              >
+                {loading ? (
+                  <CircularProgress
+                    size={24}
                     sx={{
-                      ...((loading) && {
-                        bgcolor:"#2196F3",
-                      }),
-                      mt: "32px",
-                      textTransform: "none",
-                      width: "425px",
-                      height: "36px",
-                      boxShadow:
-                        "0px 1px 5px rgba(0, 0, 0, 0.12), 0px 2px 2px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2)",
-                      bordeRadius: "4px",
+                      color: "white",
                     }}
-                    disabled={loading}
-                    onClick={() => {
-                      handleRun();
-                    }}
-                  >
-                    {loading ? (
-                      <CircularProgress
-                        size={24}
-                        sx={{
-                          color: "white",
-                        }}
-                      />
-                    ) : (
-                      "Run"
-                    )}
-                  </Button>
+                  />
+                ) : (
+                  "Run"
+                )}
+              </Button>
             </div>
             {error && (
               <div className="text-[#f00] text-[14px] mt-[6px] break-all text-ellipsis line-clamp-2 flex justify-center items-center">
@@ -213,24 +213,23 @@ export default function RunModal({
           </>
         ) : (
           <div className="flex flex-col">
-            <ErrorAlertToast
-              message="There are no test cases available. Please click on the button below to create new test case"
-              severity="info"
-              showCrossIcon={false}
-            />
+            <div className="py-[20px] text-[13px]">
+              There are no test cases available. Please click on the button
+              below to create a new test case.
+            </div>
             <div className={`flex items-end justify-center`}>
-            <Button
-              variant="outlined"
-              sx={{ color: "#2196F3", textTransform: "none" }}
-              onClick={() => {
-                setCurrTab("testCases");
-                setAddTestCase(true);
-                handleClose();
-              }}
-            >
-              <AddIcon className="mr-[11px]" />
+              <Button
+                variant="outlined"
+                sx={{ color: "#2196F3", textTransform: "none" }}
+                onClick={() => {
+                  setCurrTab("testCases");
+                  setAddTestCase(true);
+                  handleClose();
+                }}
+              >
+                <AddIcon className="mr-[11px]" />
                 Add new test case
-            </Button>
+              </Button>
             </div>
           </div>
         )}

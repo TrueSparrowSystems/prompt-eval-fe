@@ -94,21 +94,21 @@ function ExperimentCell({
             onMouseLeave={() => setShowEditIcon(false)}
           >
             <div>
-              <ExperimentsIcon />
+              <ExperimentsIcon selected={selectedExperiment===index}/>
             </div>
 
             <input
               ref={inputRef}
               type="text"
               value={newExperimentName}
-              className={`text-md text-[#00000099] focus:outline-none outline-none text-ellipsis pl-[5px] ${
+              className={`text-md focus:outline-none outline-none text-ellipsis pl-[5px] ${
                 selectedExperiment == index
                   ? editable
-                    ? "bg-white"
-                    : "bg-[#F8FAFB]"
+                    ? "bg-white text-[#000000]"
+                    : "bg-[#F8FAFB] text-[#000000]"
                   : showEditIcon
-                  ? ""
-                  : "bg-white"
+                  ? "text-[#00000099]"
+                  : "bg-white text-[#00000099]"
               }`}
               onChange={(e) => setNewExperimentName(e.target.value)}
               onBlur={() => {

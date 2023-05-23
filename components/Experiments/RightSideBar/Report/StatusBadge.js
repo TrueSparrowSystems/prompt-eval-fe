@@ -4,7 +4,7 @@ function StatusBadge({ status }) {
   return (
     <>
       {status === "failed" ? (
-        <div className="border border-[#B3261E] bg-[#B3261E1A] rounded-[100px] flex items-center px-[15px] py-[2px] gap-[5px] ml-[2px]">
+        <div className="border bg-[#B3261E1A] rounded-[8px] flex items-center px-[10px] py-[2px] gap-[5px] ml-[2px]">
           <svg
             width="10"
             height="10"
@@ -23,7 +23,7 @@ function StatusBadge({ status }) {
           <span className="text-md">Failed</span>
         </div>
       ) : (
-        <div className="border border-[#2E7D32] bg-[#2E7D321A] rounded-[100px] flex items-center px-[15px] py-[2px] gap-[5px]">
+        <div className="border bg-[#2E7D321A] rounded-[8px] flex items-center px-[10px] py-[2px] gap-[5px]">
           <svg
             width="10"
             height="8"

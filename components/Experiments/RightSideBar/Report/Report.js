@@ -14,7 +14,7 @@ import styles from "../ExperimentsDetails.module.scss";
 import { useRouter } from "next/router";
 import EmptyState from "../EmptyState";
 import ErrorAlertToast from "../../../ToastMessage/ErrorAlertToast";
-
+import { Button } from "@mui/material";
 function Report() {
   const { reportId } = useExpContext();
 
@@ -85,31 +85,34 @@ function Report() {
         <EmptyState />
       ) : (
         <div
-          style={(error==null) ? {height:"auto"}:{}}
+          style={error == null ? { height: "auto" } : {}}
           className={`${styles.experimentBox}`}
         >
-          {error? (
-            <div style={{height:`calc(100vh - 300px)`, overflow:"auto"}}
-            className="break-all">
-              <ErrorAlertToast
-                message={error?.message}
-                showCrossIcon={false}
-              />
+          {error ? (
+            <div
+              style={{ height: `calc(100vh - 300px)`, overflow: "auto" }}
+              className="break-all"
+            >
+              <ErrorAlertToast message={error?.message} showCrossIcon={false} />
             </div>
           ) : (
             <>
-              <div
-                className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60 px-[30px]"
-                onClick={() => {
-                  setShowReport(false);
-                  setCurrTab(TabNames.PROMPTTEMPLATE);
-                  router.back();
-                }}
-              >
-                <BackArrow />
-                <div className="text-[15px] opacity-60 py-[25px]">
-                  View Report
-                </div>
+              <div className=" pb-[10px]">
+                <Button
+                  className="flex items-center gap-[5px] pl-0"
+                  onClick={() => {
+                    setShowReport(false);
+                    setCurrTab(TabNames.PROMPTTEMPLATE);
+                    router.back();
+                  }}
+                  sx={{
+                    textTransform: "none",
+                    color: "#2196F3",
+                  }}
+                >
+                  <BackArrow isBlue={true} />
+                  Back to Prompt Templates
+                </Button>
               </div>
               <div
                 className={`flex items-center text-[15px] tracking-[0.2px] font-semibold border-t`}

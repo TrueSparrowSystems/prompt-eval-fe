@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Joyride from "react-joyride";
+import CloseTooltip from "../../assets/Svg/CloseTooltip";
 
 function ReactJoyride() {
   const [showCross, setShowCross] = useState(false);
@@ -37,8 +38,18 @@ function ReactJoyride() {
       disableBeacon: true,
       content: (
         <div className="text-[#000] text-md">
-          <div className="font-bold opacity-80 mb-[8px]">
-            Add new experiment
+          <div className="flex flex-row justify-between items-baseline">
+            <div className="font-bold opacity-80 mb-[8px]">
+              Add new experiment
+            </div>
+            <button
+              onClick={() => {
+                setShowJoyRide(false);
+                localStorage.setItem("onBoardingKey", "true");
+              }}
+            >
+              <CloseTooltip />
+            </button>
           </div>
 
           <div className="opacity-40">
@@ -52,8 +63,18 @@ function ReactJoyride() {
       placement: "right",
       content: (
         <div className="text-[#000] text-md">
-          <div className="font-bold opacity-80 mb-[8px]">
-            These are your active experiments
+          <div className="flex flex-row justify-between items-baseline">
+            <div className="font-bold opacity-80 mb-[8px]">
+              These are your active experiments
+            </div>
+            <button
+              onClick={() => {
+                setShowJoyRide(false);
+                localStorage.setItem("onBoardingKey", "true");
+              }}
+            >
+              <CloseTooltip />
+            </button>
           </div>
           <div className="opacity-40">
             You can create, add and keep track of all your experiments here, you
@@ -67,8 +88,18 @@ function ReactJoyride() {
       placement: "right",
       content: (
         <div className="text-[#000] text-md">
-          <div className="font-bold opacity-80 mb-[8px]">
-            Name & description
+          <div className="flex flex-row justify-between items-baseline">
+            <div className="font-bold opacity-80 mb-[8px]">
+              Name & description
+            </div>
+            <button
+              onClick={() => {
+                setShowJoyRide(false);
+                localStorage.setItem("onBoardingKey", "true");
+              }}
+            >
+              <CloseTooltip />
+            </button>
           </div>{" "}
           <div className="opacity-40">
             Click to add your experiment name and description here.
@@ -80,8 +111,18 @@ function ReactJoyride() {
       target: ".step-four",
       content: (
         <div className="text-[#000] text-md">
-          <div className="font-bold opacity-80 mb-[8px]">
-            Create prompt template
+          <div className="flex flex-row justify-between items-baseline">
+            <div className="font-bold opacity-80 mb-[8px]">
+              Create prompt template
+            </div>
+            <button
+              onClick={() => {
+                setShowJoyRide(false);
+                localStorage.setItem("onBoardingKey", "true");
+              }}
+            >
+              <CloseTooltip />
+            </button>
           </div>{" "}
           <div className="opacity-40">
             Click on + Add new template to get started.
@@ -101,6 +142,7 @@ function ReactJoyride() {
           steps={steps}
           locale={{ last: "Great", next: "Next", back: "", close: "" }}
           disableOverlayClose={true}
+          hideBackButton={true}
           styles={{
             options: {
               arrowColor: "#FFFFFF",
@@ -117,7 +159,7 @@ function ReactJoyride() {
               padding: 0,
             },
             buttonClose: {
-              display: showCross ? "block" : "none",
+              display: "none",
             },
             tooltipContent: {
               padding: "0px",
@@ -130,13 +172,16 @@ function ReactJoyride() {
               fontWeight: 600,
               color: "#FFF",
               outline: "none",
+              flexDirection: "column",
               lineHeight: 1,
-              margin: "0 5px",
               paddingLeft: 70,
               paddingRight: 70,
               paddingTop: 10,
               paddingBottom: 10,
               WebkitAppearance: "none",
+              position: "relative",
+              margin: "auto",
+              width: "100%",
             },
             tooltip: {
               borderRadius: 8,

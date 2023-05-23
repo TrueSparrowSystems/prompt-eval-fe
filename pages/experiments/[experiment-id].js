@@ -13,7 +13,7 @@ function Experiments() {
       <div className="basis-3/13 py-[26px]">
         <LeftSideBar />
       </div>
-      <div className="overflow-scroll w-full bg-[#F3F4F6]">
+      <div className="overflow-auto w-full bg-[#F3F4F6]">
       <div className="w-full md:px-[20px] lg:px-[35px] pt-[26px] pb-[38px]">
         <RightSideBar />
       </div>

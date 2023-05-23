@@ -51,7 +51,7 @@ export default function ShareModal({ showShareModal, setShowShareModal }) {
         className="flex item-center"
         onRequestClose={() => setShowShareModal(!showShareModal)}
       >
-        <div className="absolute w-[489px] h-[276px] bg-white py-[32px] px-[33px] tracking-[-0.18px]">
+        <div className="absolute w-[489px] h-[276px] bg-white py-[32px] px-[33px] tracking-[-0.18px] rounded-[8px]">
           <div className="flex flex-row gap-x-[10px] mb-[8px]">
             <Share className="flex flex-col" />
             <div className="font-semibold tracking-[-0.18px] text-[15px]">

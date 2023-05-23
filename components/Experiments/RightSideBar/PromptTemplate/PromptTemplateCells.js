@@ -14,7 +14,6 @@ import Pass from "../../../../assets/Svg/Pass";
 import Fail from "../../../../assets/Svg/Fail";
 import RunningLoader from "../../../../assets/Svg/RunningLoader";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import { Tooltip } from "@mui/material";
 
 function PromptTemplateCells({
@@ -67,6 +66,7 @@ function PromptTemplateCells({
   const [startRun, setStartRun] = useState(false);
   const router = useRouter();
 
+  const [isHover, setIsHover] = useState(false);
   useEffect(() => {
     if (startRun) {
       startPolling(10000);
@@ -116,7 +116,7 @@ function PromptTemplateCells({
         <div className="basis-1/5 px-[10px]">
           {accuracy != null && typeof accuracy === "number" ? (
             <div
-              className={`flex flex-row items-center max-w-[100px] rounded-[8px] h-[32px] px-[10px] ${bgColor} ${textColor}`}
+              className={`flex flex-row items-center w-max rounded-[8px] h-[32px] p-[10px] ${bgColor} ${textColor}`}
             >
               <AccuracyBadge
                 accuracy={parseFloat((accuracy * 100).toFixed(2))}
@@ -131,7 +131,22 @@ function PromptTemplateCells({
             ? PromptTemplate.latestEvaluationReport[0].model
             : "--"}
         </div>
-        <div className="basis-1/5 px-[10px]">
+        <div
+          className="basis-1/5 px-[10px]"
+          onMouseEnter={() => setIsHover(true)}
+          onMouseLeave={() => setIsHover(false)}
+          onClick={(e) => {
+            router.push({
+              pathname: `/experiments/${selectedExperimentInfo?.id}`,
+              query: {
+                reportId: PromptTemplate.latestEvaluationReport[0]?.id,
+              },
+            });
+            e.stopPropagation();
+            setShowReport(true);
+            setReportId(PromptTemplate.latestEvaluationReport[0].id);
+          }}
+        >
           <div className="flex items-center gap-[10px]">
             <Calendar />
             <div>
@@ -145,7 +160,11 @@ function PromptTemplateCells({
                 "Status.COMPLETED" && <Pass />) ||
                 (PromptTemplate.latestEvaluationReport[0]?.status ===
                   "Status.FAILED" && <Fail />) || <RunningLoader />}
-              {PromptTemplate.latestEvaluationReport[0]?.status.split(".")[1]}
+              <div className="capitalize">
+                {PromptTemplate.latestEvaluationReport[0]?.status
+                  .split(".")[1]
+                  .toLowerCase()}
+              </div>
             </div>
           ) : (
             <div className="mb-[10px]"></div>
@@ -161,28 +180,16 @@ function PromptTemplateCells({
             <span>
               {PromptTemplate.latestEvaluationReport[0]?.status ===
               "Status.COMPLETED" ? (
-                <Link
-                  href={{
-                    pathname: `/experiments/${selectedExperimentInfo?.id}`,
-                    query: {
-                      reportId: PromptTemplate.latestEvaluationReport[0]?.id,
-                    },
-                  }}
+                <div
+                  className={`flex items-center gap-[5px] z-10 cursor-pointer `}
                 >
-                  <div
-                    className={`flex items-center gap-[10px] z-10 cursor-pointer opacity-80 hover:opacity-100`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setShowReport(true);
-                      setReportId(PromptTemplate.latestEvaluationReport[0].id);
-                    }}
-                  >
-                    <div className="underline">View Report</div>
-                    <div>
-                      <ViewReportArrow />
-                    </div>
+                  <div className={`underline ${isHover && "text-[#2196F3]"}`}>
+                    View Report
                   </div>
-                </Link>
+                  <div>
+                    <ViewReportArrow isHover={isHover} />
+                  </div>
+                </div>
               ) : (
                 <div
                   className={`flex items-center gap-[10px] z-10 opacity-60 cursor-not-allowed`}
@@ -217,17 +224,21 @@ function PromptTemplateCells({
               Run
             </Button>
           </div>
-          <div
-            className="flex items-center gap-[20px] py-[10px] px-[10px] hover:bg-[#F8FAFB] rounded-[4px] opacity-60 hover:opacity-100"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleClone();
-              setPromptTemplate(PromptTemplate);
-            }}
-            title="Create Clone"
-          >
-            <Clone />
-          </div>
+          <Tooltip title="Create Clone">
+            <span>
+              <div
+                className="flex items-center gap-[20px] py-[10px] px-[10px] hover:bg-[#F8FAFB] rounded-[4px] opacity-60 hover:opacity-100"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleClone();
+                  setPromptTemplate(PromptTemplate);
+                }}
+                title="Create Clone"
+              >
+                <Clone />
+              </div>
+            </span>
+          </Tooltip>
         </div>
       </div>
       <RunModal

@@ -6,6 +6,7 @@ import ExperimentListSkeleton from "../../Skeletons/ExperimentListSkeleton";
 import { useExpContext } from "../../../context/ExpContext";
 import { useCompSelectorContext } from "../../../context/compSelectorContext";
 import { useRouter } from "next/router";
+import { getUnsanitizedValue, decodeHTML } from "../../../utils/DecodeString";
 
 export default function ExperimentList({
   selectedExperiment,
@@ -20,7 +21,7 @@ export default function ExperimentList({
   const handleChange = (index) => {
     if (data?.experimentList == null) return;
     setSelectedExperiment(index);
-    setSelectedExperimentInfo(data?.experimentList[index]);
+    setSelectedExperimentInfo(getUnsanitizedValue(data?.experimentList[index]));
   };
 
   useEffect(() => {
@@ -37,7 +38,7 @@ export default function ExperimentList({
         selectedExperimentInfo == null ||
         Object.keys(selectedExperimentInfo).length === 0
       )
-        setSelectedExperimentInfo(data.experimentList[0]);
+        setSelectedExperimentInfo(getUnsanitizedValue(data.experimentList[0]));
     }
     handleChange(selectedExperiment);
   }, [data]);
@@ -55,7 +56,7 @@ export default function ExperimentList({
       if (id != -1) {
         setSelectedExperiment(id);
         setSelectedExperimentInfo(
-          data?.experimentList && data?.experimentList[id]
+          data?.experimentList && getUnsanitizedValue(data?.experimentList[id])
         );
       }
     }
@@ -85,7 +86,7 @@ export default function ExperimentList({
           {data?.experimentList.map((experiment, index) => (
             <ExperimentCell
               id={experiment.id}
-              experimentName={experiment.name}
+              experimentName={decodeHTML(experiment.name)}
               key={index}
               index={index}
               selectedExperiment={selectedExperiment}

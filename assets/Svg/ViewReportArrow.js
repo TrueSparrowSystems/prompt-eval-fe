@@ -1,6 +1,6 @@
 import React from "react";
 
-function ViewReportArrow(props) {
+function ViewReportArrow({isHover=false}) {
   return (
     <svg
       width="16"
@@ -11,7 +11,7 @@ function ViewReportArrow(props) {
     >
       <path
         d="M5.6386 4.72053L11.3199 4.72045M11.3199 4.72045L11.3199 10.321M11.3199 4.72045L4.72026 11.3201"
-        stroke="black"
+        stroke={isHover?"#2196F3":"#000"}
         strokeWidth="1.2"
         strokeLinecap="round"
         strokeLinejoin="round"

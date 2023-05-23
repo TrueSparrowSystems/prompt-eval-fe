@@ -63,7 +63,7 @@ function RightSideBar() {
     <div>
       <div className="w-[80%] step-three">
         <div>
-          <input
+        <input
             value={experimentName}
             onChange={(e) => {
               setExperimentName(e.target.value);
@@ -71,15 +71,18 @@ function RightSideBar() {
             onBlur={() => handleUpdate(true)}
             className="font-semibold text-[20px] text-[#000] pb-[10px] bg-transparent outline-none w-full"
             disabled={selectedExperimentInfo == null}
+            maxLength={70}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                e.target.blur();
+                handleUpdate(true);
+              }
+            }}
           />
-          {error && (
-            <div className="text-[#f00] text-[14px] mt-[2px] break-all">
-              {error.message}
-            </div>
-          )}
         </div>
         <div>
-          <textarea
+        <textarea
             value={experimentDescription}
             onChange={(e) => {
               setExperimentDescription(e.target.value);
@@ -88,6 +91,13 @@ function RightSideBar() {
             className={` text-md opacity-60 pt-[5px] bg-transparent outline-none break-words resize-none w-full `}
             maxLength={240}
             disabled={selectedExperimentInfo == null}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.target.blur();
+                handleUpdate(false);
+              }
+            }}
+            rows={2}
           />
           {error && (
             <div className="text-[#f00] text-[14px] mt-[2px] break-all">

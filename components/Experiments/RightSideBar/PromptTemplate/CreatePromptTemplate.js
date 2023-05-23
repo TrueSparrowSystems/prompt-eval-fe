@@ -15,11 +15,11 @@ import AddIcon from "../../../../assets/Svg/AddIcon";
 import CircularProgress from "@mui/material/CircularProgress";
 import ErrorAlertToast from "../../../ToastMessage/ErrorAlertToast";
 
-function CreatePromptTemplate() {
+function CreatePromptTemplate({ setCurrentPage }) {
   const [prevRole, setPrevRole] = useState("system");
   const [titleOpacity, setTitleOpacity] = useState("40");
   const { selectedExperimentInfo, promptTemplate } = useExpContext();
-  const { showClone, setCurrTab, setShowAdd, setShowClone } =
+  const { showClone, setCurrTab, showAdd, setShowAdd, setShowClone } =
     useCompSelectorContext();
   const { setShowToast, setToastMessage, setToastType } = useToastContext();
 
@@ -69,6 +69,7 @@ function CreatePromptTemplate() {
           experimentId: selectedExperimentInfo?.id,
         },
       });
+      setCurrentPage(1);
     } catch (err) {
       return err;
     }
@@ -130,27 +131,31 @@ function CreatePromptTemplate() {
     <>
       <div className={`${styles.experimentBox} overflow-auto`}>
         <>
-          <div
-            className="flex items-center gap-[10px] cursor-pointer hover:opacity-100 opacity-80"
-            onClick={() => {
-              if (unsavedChanges) {
-                if (
-                  !confirm(
-                    "Your changes have not been saved. Are you sure you want to discard this changes?"
+          <div className=" pb-[10px]">
+            <Button
+              className="flex items-center gap-[5px] pl-0"
+              onClick={() => {
+                if (unsavedChanges) {
+                  if (
+                    !confirm(
+                      "Your changes have not been saved. Are you sure you want to discard this changes?"
+                    )
                   )
-                )
-                  return;
-                setUnsavedChanges(false);
-              }
-              setShowAdd(false);
-              setShowClone(false);
-              setCurrTab(TabNames.PROMPTTEMPLATE);
-            }}
-          >
-            <BackArrow />
-            <div className="text-[15px] opacity-80 py-[25px]">
-              Back to all Template
-            </div>
+                    return;
+                  setUnsavedChanges(false);
+                }
+                setShowAdd(false);
+                setShowClone(false);
+                setCurrTab(TabNames.PROMPTTEMPLATE);
+              }}
+              sx={{
+                textTransform: "none",
+                color: "#2196F3",
+              }}
+            >
+              <BackArrow isBlue={true} />
+              Back to Prompt Templates
+            </Button>
           </div>
           <input
             className={`text-[20px] font-bold outline-none pb-[25px] w-full opacity-${titleOpacity} hover:opacity-80`}
@@ -168,6 +173,7 @@ function CreatePromptTemplate() {
                 e.target.blur();
               }
             }}
+            maxLength={70}
           />
           <ul>{promptsList}</ul>
           <div className="flex gap-[25px]">
@@ -204,7 +210,7 @@ function CreatePromptTemplate() {
                 }}
                 disabled={loading}
               >
-                Save
+                {showAdd && !showClone ? "Create" : "Clone template"}
                 {loading && (
                   <CircularProgress
                     size={24}

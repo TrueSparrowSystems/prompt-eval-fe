@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import PromptTemplateCells from "./PromptTemplateCells";
 import styles from "../ExperimentsDetails.module.scss";
 import EmptyState from "../EmptyState";
@@ -11,12 +11,15 @@ import Box from "@mui/material/Box";
 import Select from "@mui/material/Select";
 import Pagination from "../../../Pagination/Pagination";
 
-function PromptTemplate() {
+function PromptTemplate({
+  recordPerPage,
+  currentPage,
+  setRecordPerPage,
+  setCurrentPage,
+  totalCount,
+}) {
   const { selectedExperimentInfo } = useExpContext();
   const { setShowEmptyState, setShowLoadingState } = useCompSelectorContext();
-  const [recordPerPage, setRecordPerPage] = useState(6);
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalCount = useRef(0);
   const [runSuccess, setRunSuccess] = useState(false);
 
   const startCount = (currentPage - 1) * recordPerPage + 1;
@@ -51,9 +54,13 @@ function PromptTemplate() {
 
   useEffect(() => {
     refetch();
-  }, []);
+  }, [currentPage, recordPerPage]);
 
   useEffect(() => {
+    if (data?.promptListByPagination?.prompts.length === 0 && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+
     if (data?.promptListByPagination.prompts.length === 0)
       setShowEmptyState(true);
     else if (data?.promptListByPagination.prompts.length > 0)
@@ -67,14 +74,9 @@ function PromptTemplate() {
     }
   }, [runSuccess]);
 
-  let delayLoad = false;
-
   useEffect(() => {
     if (loading) {
       setShowLoadingState(true);
-      setTimeout(() => {
-        delayLoad = true;
-      }, 1000);
     } else setShowLoadingState(false);
   }, [loading]);
 
@@ -95,9 +97,10 @@ function PromptTemplate() {
   return (
     <div>
       {error ||
-      (delayLoad && loading) ||
+      loading ||
       data == null ||
-      data?.promptListByPagination.prompts.length === 0 ? (
+      data?.promptListByPagination.prompts.length === 0 ||
+      selectedExperimentInfo == null ? (
         <EmptyState />
       ) : (
         <div className={`${styles.experimentBox}`}>

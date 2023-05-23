@@ -98,7 +98,7 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
     const containerPosition =
       ele.getBoundingClientRect().top + window.pageYOffset;
     let extraPadding = ele.getBoundingClientRect().height - containerPosition;
-    ele.style.paddingBottom = extraPadding + 100 + "px";
+    ele.style.paddingBottom = extraPadding + "px";
 
     return () => {
       sections.forEach((section) => {
@@ -110,14 +110,10 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
   const handleChange = (event, newValue) => {
     setTabValue(parseInt(newValue));
     const section = document.querySelector(`#\\3${newValue}`);
+    const innerContainer = document.getElementById("testCaseContainer");
+    const elementOffsetTop = section.offsetTop;
 
-    if (section) {
-      section.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-        inline: "nearest",
-      });
-    }
+    innerContainer.scrollTop = elementOffsetTop;
   };
 
   const addExpectedResult = () => {
@@ -226,7 +222,7 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
         sx={{
           width: "100%",
           marginTop: "-20px",
-          height: "calc(100vh - 280px)",
+          minHeight: "calc(100vh - 172px)",
         }}
       >
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -243,7 +239,7 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
 
         <div
           id="testCaseContainer"
-          className={` relative mb-[30px]  ${styles.subBoxHeightForTestContent} overflow-auto`}
+          className={`relative ${styles.subBoxHeightForTestContent} overflow-auto scroll-smooth`}
         >
           <div id="0" className="tab ml-[20px]">
             <input
@@ -262,6 +258,7 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
                   e.target.blur();
                 }
               }}
+              maxLength={70}
             />
 
             <p className="text-[14px] font-[500px] leading-[24px] tracking-[0.17px] text-black/[0.8] pt-[12px] pb-[6px]">
@@ -269,7 +266,7 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
             </p>
             <div className="pr-[40px]">
               <textarea
-                className={`${styles.textareaStyle} resize-none`}
+                className={`${styles.textareaStyle}`}
                 placeholder="Add a description for your test case."
                 value={testCaseDescription || ""}
                 onChange={(e) => {
@@ -354,20 +351,17 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
                 }}
                 disabled={loading || loadingCreateTestCase}
               >
-                SAVE
+                {addTestCase ? "CREATE" : "SAVE"}
+                {(loading || loadingCreateTestCase) && (
+                  <CircularProgress
+                    size={24}
+                    sx={{
+                      color: "#2196F3",
+                      position: "absolute",
+                    }}
+                  />
+                )}
               </Button>
-
-              {(loading || loadingCreateTestCase) && (
-                <CircularProgress
-                  size={24}
-                  sx={{
-                    color: "#2196F3",
-                    position: "absolute",
-                    marginTop: "-24px",
-                    marginLeft: "-24px",
-                  }}
-                />
-              )}
             </div>
           </div>
           <div className="mt-[35px] ml-[20px]">

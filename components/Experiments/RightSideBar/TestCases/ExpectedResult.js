@@ -21,14 +21,15 @@ function ExpectedResult({
   return (
     <li>
       <div
-        className="flex hover:bg-[#F8FAFB] rounded-[8px]"
+        className="flex hover:bg-[#F8FAFB] rounded-[8px] pt-[15px] pl-[15px] pb-[15px]"
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >
         <textarea
+          style={{ height: "auto", marginTop: "0px" }}
           className={`${styles.textareaStyle} ${
             isHover ? "border-[#2196F380] bg-[#F8FAFB]" : ""
-          } resize-none ml-[10px] mt-[10px]`}
+          }`}
           placeholder="Define acceptable result for this test case."
           value={expectedResultMessage || ""}
           onChange={(e) => {
@@ -38,16 +39,18 @@ function ExpectedResult({
           onBlur={(e) => {
             expectedResult.result = e.target.value;
           }}
+          rows={10}
         />
+        <div className={`cursor-pointer ${
+          isHover ? "opacity-40  hover:opacity-80" : "opacity-0"
+        } cursor-pointer hover:bg-[#CDE6F8] mx-[5px] p-[5px] h-[35px] w-[40px] rounded-[4px] flex items-center justify-center`}>
         <div
-          className={`cursor-pointer ml-[10px] pt-[15px] pb-[110px] pr-[10px] ${
-            isHover ? "opacity-40  hover:opacity-80" : "opacity-0"
-          }`}
           onClick={(e) => {
             removeExpectedResult(expectedResult.id);
           }}
         >
           <RemoveIcon />
+        </div>
         </div>
       </div>
     </li>

@@ -124,28 +124,30 @@ function EditePromptTemplate() {
     <>
       <div className={`${styles.experimentBox} overflow-auto`}>
         <>
-          <div
-            className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60"
-            onClick={() => {
-              if (unsavedChanges) {
-                if (
-                  !confirm(
-                    "Your changes have not been saved. Are you sure you want to discard this changes?"
+          <div className="pb-[10px]">
+            <Button
+              className="flex items-center gap-[5px] pl-0"
+              onClick={() => {
+                if (unsavedChanges) {
+                  if (
+                    !confirm(
+                      "Your changes have not been saved. Are you sure you want to discard this changes?"
+                    )
                   )
-                )
-                  return;
-                setUnsavedChanges(false);
-              }
-              setShowEdit(false);
-              setCurrTab(TabNames.PROMPTTEMPLATE);
-            }}
-            variant="contained"
-            sx={{ ml: "10px", textTransform: "none" }}
-          >
-            <BackArrow />
-            <div className="text-[15px] opacity-60 py-[25px]">
-              Back to all prompt templates
-            </div>
+                    return;
+                  setUnsavedChanges(false);
+                }
+                setShowEdit(false);
+                setCurrTab(TabNames.PROMPTTEMPLATE);
+              }}
+              sx={{
+                textTransform: "none",
+                color: "#2196F3",
+              }}
+            >
+              <BackArrow isBlue={true} />
+              Back to Prompt Templates
+            </Button>
           </div>
           <input
             className={`text-[20px] font-bold opacity-${titleOpacity} hover:opacity-80 outline-none pb-[25px] w-full`}
@@ -163,6 +165,7 @@ function EditePromptTemplate() {
                 e.target.blur();
               }
             }}
+            maxLength={70}
           />
           <ul>{promptsList}</ul>
           <div className="flex gap-[25px]">

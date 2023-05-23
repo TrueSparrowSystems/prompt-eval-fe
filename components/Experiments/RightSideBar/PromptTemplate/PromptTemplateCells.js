@@ -10,11 +10,11 @@ import { useCompSelectorContext } from "../../../../context/compSelectorContext"
 import { useQuery } from "@apollo/client";
 import Queries from "../../../../queries/Queries";
 import AccuracyBadge from "../../../../assets/Svg/AccuracyBadge";
-import { MESSAGES } from "../../../../constants/Messages";
-import Toast from "../../../ToastMessage/Toast";
 import Pass from "../../../../assets/Svg/Pass";
 import Fail from "../../../../assets/Svg/Fail";
 import RunningLoader from "../../../../assets/Svg/RunningLoader";
+import { useRouter } from "next/router";
+import { Tooltip } from "@mui/material";
 
 function PromptTemplateCells({
   index,
@@ -27,7 +27,7 @@ function PromptTemplateCells({
 }) {
   const { setReportId, setPromptTemplate, selectedExperimentInfo } =
     useExpContext();
-  const { showClone, setShowClone, setShowReport, setShowEdit, setShowAdd } =
+  const { setShowClone, setShowReport, setShowEdit, setShowAdd } =
     useCompSelectorContext();
   const [showRunModal, setShowRunModal] = useState(false);
   const accuracy = PromptTemplate.latestEvaluationReport[0]?.accuracy;
@@ -64,7 +64,9 @@ function PromptTemplateCells({
   });
 
   const [startRun, setStartRun] = useState(false);
+  const router = useRouter();
 
+  const [isHover, setIsHover] = useState(false);
   useEffect(() => {
     if (startRun) {
       startPolling(10000);
@@ -76,9 +78,9 @@ function PromptTemplateCells({
 
     if (
       promptList?.promptListByPagination?.prompts[index]
-        ?.latestEvaluationReport[0].status === "Status.COMPLETED" ||
+        ?.latestEvaluationReport[0]?.status === "Status.COMPLETED" ||
       promptList?.promptListByPagination?.prompts[index]
-        ?.latestEvaluationReport[0].status === "Status.FAILED"
+        ?.latestEvaluationReport[0]?.status === "Status.FAILED"
     ) {
       setStartRun(false);
       setRunSuccess(true);
@@ -114,9 +116,11 @@ function PromptTemplateCells({
         <div className="basis-1/5 px-[10px]">
           {accuracy != null && typeof accuracy === "number" ? (
             <div
-              className={`flex flex-row items-center max-w-[100px] rounded-[8px] h-[32px] px-[10px] ${bgColor} ${textColor}`}
+              className={`flex flex-row items-center w-max rounded-[8px] h-[32px] p-[10px] ${bgColor} ${textColor}`}
             >
-              <AccuracyBadge accuracy={accuracy * 100} />
+              <AccuracyBadge
+                accuracy={parseFloat((accuracy * 100).toFixed(2))}
+              />
             </div>
           ) : (
             "--"
@@ -127,7 +131,22 @@ function PromptTemplateCells({
             ? PromptTemplate.latestEvaluationReport[0].model
             : "--"}
         </div>
-        <div className="basis-1/5 px-[10px]">
+        <div
+          className="basis-1/5 px-[10px]"
+          onMouseEnter={() => setIsHover(true)}
+          onMouseLeave={() => setIsHover(false)}
+          onClick={(e) => {
+            router.push({
+              pathname: `/experiments/${selectedExperimentInfo?.id}`,
+              query: {
+                reportId: PromptTemplate.latestEvaluationReport[0]?.id,
+              },
+            });
+            e.stopPropagation();
+            setShowReport(true);
+            setReportId(PromptTemplate.latestEvaluationReport[0].id);
+          }}
+        >
           <div className="flex items-center gap-[10px]">
             <Calendar />
             <div>
@@ -141,35 +160,51 @@ function PromptTemplateCells({
                 "Status.COMPLETED" && <Pass />) ||
                 (PromptTemplate.latestEvaluationReport[0]?.status ===
                   "Status.FAILED" && <Fail />) || <RunningLoader />}
-              {PromptTemplate.latestEvaluationReport[0]?.status.split(".")[1]}
+              <div className="capitalize">
+                {PromptTemplate.latestEvaluationReport[0]?.status
+                  .split(".")[1]
+                  .toLowerCase()}
+              </div>
             </div>
           ) : (
             <div className="mb-[10px]"></div>
           )}
-
-          <div
-            className={`flex items-center gap-[10px] z-10 ${
+          <Tooltip
+            title={
               PromptTemplate.latestEvaluationReport[0]?.status ===
               "Status.COMPLETED"
-                ? "cursor-pointer"
-                : "opacity-60 cursor-not-allowed"
-            }`}
-            onClick={(e) => {
-              e.stopPropagation();
-              if (
-                PromptTemplate.latestEvaluationReport[0]?.status ===
-                "Status.COMPLETED"
-              ) {
-                setShowReport(true);
-                setReportId(PromptTemplate.latestEvaluationReport[0].id);
-              }
-            }}
+                ? "Click here to access your report"
+                : "No report generated yet"
+            }
           >
-            <div className="underline">View Report</div>
-            <div>
-              <ViewReportArrow />
-            </div>
-          </div>
+            <span>
+              {PromptTemplate.latestEvaluationReport[0]?.status ===
+              "Status.COMPLETED" ? (
+                <div
+                  className={`flex items-center gap-[5px] z-10 cursor-pointer `}
+                >
+                  <div className={`underline ${isHover && "text-[#2196F3]"}`}>
+                    View Report
+                  </div>
+                  <div>
+                    <ViewReportArrow isHover={isHover} />
+                  </div>
+                </div>
+              ) : (
+                <div
+                  className={`flex items-center gap-[10px] z-10 opacity-60 cursor-not-allowed`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
+                  <div className="underline">View Report</div>
+                  <div>
+                    <ViewReportArrow />
+                  </div>
+                </div>
+              )}
+            </span>
+          </Tooltip>
         </div>
 
         <div className="basis-1/5 flex items-center justify-around px-[10px] z-10">
@@ -189,17 +224,21 @@ function PromptTemplateCells({
               Run
             </Button>
           </div>
-          <div
-            className="flex items-center gap-[20px] py-[10px] px-[10px]"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleClone();
-              setPromptTemplate(PromptTemplate);
-            }}
-            title="Create Clone"
-          >
-            <Clone />
-          </div>
+          <Tooltip title="Create Clone">
+            <span>
+              <div
+                className="flex items-center gap-[20px] py-[10px] px-[10px] hover:bg-[#F8FAFB] rounded-[4px] opacity-60 hover:opacity-100"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleClone();
+                  setPromptTemplate(PromptTemplate);
+                }}
+                title="Create Clone"
+              >
+                <Clone />
+              </div>
+            </span>
+          </Tooltip>
         </div>
       </div>
       <RunModal

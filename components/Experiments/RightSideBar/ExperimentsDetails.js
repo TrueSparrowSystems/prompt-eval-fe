@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Button from "@mui/material/Button";
 import styles from "./ExperimentsDetails.module.scss";
 import PromptTemplate from "./PromptTemplate/PromptTemplate";
@@ -28,7 +28,11 @@ function ExperimentsDetails() {
     showLoadingState,
   } = useCompSelectorContext();
 
-  const { setReportId } = useExpContext();
+  const { setReportId, selectedExperimentInfo } = useExpContext();
+
+  const [recordPerPage, setRecordPerPage] = useState(6);
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalCount = useRef(0);
 
   const router = useRouter();
 
@@ -49,14 +53,21 @@ function ExperimentsDetails() {
 
   const getExperimentUi = () => {
     if (showReport) {
-      toggleTab(TabNames.TESTCASES);
       return <Report />;
     } else if (showAdd) {
-      return <CreatePromptTemplate />;
+      return <CreatePromptTemplate setCurrentPage={setCurrentPage} />;
     } else if (showEdit) {
       return <EditePromptTemplate />;
     } else if (currTab === TabNames.PROMPTTEMPLATE) {
-      return <PromptTemplate />;
+      return (
+        <PromptTemplate
+          recordPerPage={recordPerPage}
+          currentPage={currentPage}
+          setRecordPerPage={setRecordPerPage}
+          setCurrentPage={setCurrentPage}
+          totalCount={totalCount}
+        />
+      );
     } else if (currTab === TabNames.TESTCASES) {
       return <TestCases />;
     }
@@ -75,7 +86,10 @@ function ExperimentsDetails() {
               }
               px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
               onClick={() => {
-                setShowReport(false);
+                if (showReport) {
+                  router.push(`/experiments/${selectedExperimentInfo.id}`);
+                  setShowReport(false);
+                }
                 setShowAdd(false);
                 setAddTestCase(false);
                 toggleTab(TabNames.PROMPTTEMPLATE);
@@ -91,6 +105,10 @@ function ExperimentsDetails() {
               }
               px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
               onClick={() => {
+                if (showReport) {
+                  router.push(`/experiments/${selectedExperimentInfo.id}`);
+                  setShowReport(false);
+                }
                 setShowAdd(false);
                 setShowEdit(false);
                 setShowClone(false);

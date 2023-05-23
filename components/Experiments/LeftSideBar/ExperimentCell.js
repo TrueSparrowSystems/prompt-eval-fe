@@ -76,7 +76,6 @@ function ExperimentCell({
   return (
     <>
       <Link href={`/experiments/${id}`}>
-        <a>
           <div
             className={`flex items-center gap-[10px] p-[12px] cursor-pointer ${
               showEditIcon ? "bg-[#F0F0F0]" : ""
@@ -95,21 +94,21 @@ function ExperimentCell({
             onMouseLeave={() => setShowEditIcon(false)}
           >
             <div>
-              <ExperimentsIcon />
+              <ExperimentsIcon selected={selectedExperiment===index}/>
             </div>
 
             <input
               ref={inputRef}
               type="text"
               value={newExperimentName}
-              className={`text-md text-[#00000099] focus:outline-none outline-none text-ellipsis pl-[5px] ${
+              className={`text-md focus:outline-none outline-none text-ellipsis pl-[5px] ${
                 selectedExperiment == index
                   ? editable
-                    ? "bg-white"
-                    : "bg-[#F8FAFB]"
+                    ? "bg-white text-[#000000]"
+                    : "bg-[#F8FAFB] text-[#000000]"
                   : showEditIcon
-                  ? ""
-                  : "bg-white"
+                  ? "text-[#00000099]"
+                  : "bg-white text-[#00000099]"
               }`}
               onChange={(e) => setNewExperimentName(e.target.value)}
               onBlur={() => {
@@ -124,6 +123,7 @@ function ExperimentCell({
                 }
               }}
               disabled={!editable}
+              maxLength={70}
             />
             <button
               className={`ml-auto hover:bg-[#0000001A] p-[5px] ${
@@ -137,7 +137,6 @@ function ExperimentCell({
               <Rename />
             </button>
           </div>
-        </a>
       </Link>
       {error && (
         <ErrorAlertToast message={error.message}/>

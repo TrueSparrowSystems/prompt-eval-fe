@@ -5,17 +5,18 @@ import Skeleton from "@mui/material/Skeleton";
 function ExperimentListSkeleton(props) {
   return (
     <Box>
-      <Skeleton animation="wave" height={60} width={248}/>
-      <Skeleton animation="wave" height={60} width={248}/>
-      <Skeleton animation="wave" height={60} width={248}/>
-      <Skeleton animation="wave" height={60} width={248}/>
-      <Skeleton animation="wave" height={60} width={248}/>
-      <Skeleton animation="wave" height={60} width={248}/>
-      <Skeleton animation="wave" height={60} width={248}/>
-      <Skeleton animation="wave" height={60} width={248}/>
-      <Skeleton animation="wave" height={60} width={248}/>
-      <Skeleton animation="wave" height={60} width={248}/>
-      <Skeleton animation="wave" height={60} width={248}/>
+      <Skeleton animation="wave" height={60} width={252}/>
+      <Skeleton animation="wave" height={60} width={252}/>
+      <Skeleton animation="wave" height={60} width={252}/>
+      <Skeleton animation="wave" height={60} width={252}/>
+      <Skeleton animation="wave" height={60} width={252}/>
+      <Skeleton animation="wave" height={60} width={252}/>
+      <Skeleton animation="wave" height={60} width={252}/>
+      <Skeleton animation="wave" height={60} width={252}/>
+      <Skeleton animation="wave" height={60} width={252}/>
+      <Skeleton animation="wave" height={60} width={252}/>
+      <Skeleton animation="wave" height={60} width={252}/>
+
     </Box>
   );
 }

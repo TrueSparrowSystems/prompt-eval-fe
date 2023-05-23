@@ -11,10 +11,15 @@ import Select from "@mui/material/Select";
 import { useCompSelectorContext } from "../../../../context/compSelectorContext";
 import { TabNames } from "../../../../constants/TabNames";
 import styles from "../ExperimentsDetails.module.scss";
+import { useRouter } from "next/router";
+import EmptyState from "../EmptyState";
+import ErrorAlertToast from "../../../ToastMessage/ErrorAlertToast";
+import { Button } from "@mui/material";
 function Report() {
   const { reportId } = useExpContext();
 
-  const { setShowReport, setCurrTab } = useCompSelectorContext();
+  const { setShowReport, setCurrTab, setShowLoadingState } =
+    useCompSelectorContext();
 
   const [recordPerPage, setRecordPerPage] = useState(6);
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,99 +39,142 @@ function Report() {
     setCurrentPage(selected + 1);
   };
 
-  const { data, loading, error } = useQuery(Queries.getReportByReportId, {
-    variables: {
-      reportId: reportId,
-      page: 1,
-      limit: 10,
-    },
-  });
+  const { data, loading, error, refetch } = useQuery(
+    Queries.getReportByReportId,
+    {
+      variables: {
+        reportId: reportId,
+        page: currentPage,
+        limit: recordPerPage,
+      },
+    }
+  );
 
-  if (data?.getReport.totalCount) {
+  useEffect(() => {
+    if (
+      data?.getReport?.testCaseEvaluationReport.length === 0 &&
+      currentPage > 1
+    ) {
+      setCurrentPage(currentPage - 1);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    refetch();
+  }, [currentPage, recordPerPage]);
+
+  if (data?.getReport?.totalCount) {
     totalCount.current = data?.getReport.totalCount;
   }
 
   const [expanded, setExpanded] = useState();
 
-  return (
-    <div
-      style={{
-        background: " #ffffff",
-        boxShadow:
-          "0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.14),0px 2px 1px -1px rgba(0, 0, 0, 0.2)",
-        borderRadius: "8px",
-        position: "absolute",
-        zIndex: "100",
-        top: "85px",
-        width: "100%",
-      }}
-      className={`${styles.experimentBox} `}
-    >
-      <div
-        className="flex items-center gap-[10px] cursor-pointer hover:opacity-80 opacity-60 px-[30px]"
-        onClick={() => {
-          setShowReport(false);
-          setCurrTab(TabNames.PROMPTTEMPLATE);
-        }}
-      >
-        <BackArrow />
-        <div className="text-[15px] opacity-60 py-[25px]">View Report</div>
-      </div>
-      <div
-        className={`flex items-center text-[15px] tracking-[0.2px] font-semibold border-t`}
-      >
-        <div className="w-1/6 py-[34px] px-[10px]">Test Case Name</div>
-        <div className="w-4/6 pr-[10px] pl-[20px] py-[34px] border-l-2">
-          Description
-        </div>
-        <div className="px-[10px] py-[34px]">Status</div>
-      </div>
-      <div>
-        <div className={`${styles.subBoxHeightForReport} overflow-auto`}>
-          {data?.getReport?.testCaseEvaluationReport.map((report, index) => (
-            <ReportCell
-              key={index}
-              report={report}
-              index={index + 1}
-              expanded={expanded}
-              setExpanded={setExpanded}
-            />
-          ))}
-        </div>
-        <div className="flex justify-end px-[20px] py-[15px] border-b-2 border-t-2">
-          <div className="flex items-center text-md text-[#000]">
-            <div className="opacity-60 mr-[20px]">Rows per page:</div>
-            <Box
-              sx={{
-                minWidth: 60,
-              }}
-            >
-              <Select
-                value={recordPerPage}
-                onChange={handleChange}
-                sx={{ "& > fieldset": { border: "none" } }}
-              >
-                <MenuItem value={6}>6</MenuItem>
-                <MenuItem value={10}>10</MenuItem>
-                <MenuItem value={20}>20</MenuItem>
-                <MenuItem value={30}>30</MenuItem>
-                <MenuItem value={40}>40</MenuItem>
-              </Select>
-            </Box>
-            <div className="mx-[25px]">
-              {startCount}-{endCount} of {totalCount.current}
-            </div>
+  const router = useRouter();
 
-            <Pagination
-              handlePaginationChange={handlePaginationChange}
-              pageCount={Math.ceil(
-                totalCount.current && totalCount.current / recordPerPage
-              )}
-              initialPage={currentPage - 1}
-            />
-          </div>
+  useEffect(() => {
+    if (loading) {
+      setShowLoadingState(true);
+    } else setShowLoadingState(false);
+  }, [loading]);
+
+  return (
+    <div>
+      {loading ||
+      data == null ||
+      data?.getReport.testCaseEvaluationReport?.length === 0 ? (
+        <EmptyState />
+      ) : (
+        <div
+          style={error == null ? { height: "auto" } : {}}
+          className={`${styles.experimentBox}`}
+        >
+          {error ? (
+            <div
+              style={{ height: `calc(100vh - 300px)`, overflow: "auto" }}
+              className="break-all"
+            >
+              <ErrorAlertToast message={error?.message} showCrossIcon={false} />
+            </div>
+          ) : (
+            <>
+              <div className=" pb-[10px]">
+                <Button
+                  className="flex items-center gap-[5px] pl-0"
+                  onClick={() => {
+                    setShowReport(false);
+                    setCurrTab(TabNames.PROMPTTEMPLATE);
+                    router.back();
+                  }}
+                  sx={{
+                    textTransform: "none",
+                    color: "#2196F3",
+                  }}
+                >
+                  <BackArrow isBlue={true} />
+                  Back to Prompt Templates
+                </Button>
+              </div>
+              <div
+                className={`flex items-center text-[15px] tracking-[0.2px] font-semibold border-t`}
+              >
+                <div className="w-1/6 py-[34px] px-[10px]">Test Case Name</div>
+                <div className="w-4/6 pr-[10px] pl-[20px] py-[34px] border-l-2">
+                  Description
+                </div>
+                <div className="px-[10px] py-[34px]">Status</div>
+              </div>
+              <div>
+                <div>
+                  {data?.getReport?.testCaseEvaluationReport.map(
+                    (report, index) => (
+                      <ReportCell
+                        key={index}
+                        report={report}
+                        index={index + 1}
+                        expanded={expanded}
+                        setExpanded={setExpanded}
+                      />
+                    )
+                  )}
+                </div>
+                <div className="flex justify-end px-[20px] py-[15px] border-b-2 border-t-2">
+                  <div className="flex items-center text-md text-[#000]">
+                    <div className="opacity-60 mr-[20px]">Rows per page:</div>
+                    <Box
+                      sx={{
+                        minWidth: 60,
+                      }}
+                    >
+                      <Select
+                        value={recordPerPage}
+                        onChange={handleChange}
+                        sx={{ "& > fieldset": { border: "none" } }}
+                      >
+                        <MenuItem value={6}>6</MenuItem>
+                        <MenuItem value={10}>10</MenuItem>
+                        <MenuItem value={20}>20</MenuItem>
+                        <MenuItem value={30}>30</MenuItem>
+                        <MenuItem value={40}>40</MenuItem>
+                      </Select>
+                    </Box>
+                    <div className="mx-[25px]">
+                      {startCount}-{endCount} of {totalCount.current}
+                    </div>
+
+                    <Pagination
+                      handlePaginationChange={handlePaginationChange}
+                      pageCount={Math.ceil(
+                        totalCount.current && totalCount.current / recordPerPage
+                      )}
+                      initialPage={currentPage - 1}
+                    />
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
         </div>
-      </div>
+      )}
     </div>
   );
 }

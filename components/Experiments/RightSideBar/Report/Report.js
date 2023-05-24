@@ -127,7 +127,7 @@ function Report() {
               </div>
               </div>
               <div className={`${styles.experimentBox1}`}>
-                <div>
+                <div className={`${styles.Box}`}>
                   {data?.getReport?.testCaseEvaluationReport.map(
                     (report, index) => (
                       <ReportCell

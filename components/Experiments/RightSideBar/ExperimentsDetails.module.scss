@@ -100,13 +100,16 @@
   border: 1px solid #0000001A;
 }
 
+.Box{
+  min-height: calc(100vh - 250px);
+}
+
 .experimentBox1 {
   background: #ffffff;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   padding: 0 25px;
   width: 100%;
-  min-height: calc(100vh - 250px);
   box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.12), 0px 1px 0px rgba(0, 0, 0, 0.14),
     0px 2px 0px -1px rgba(0, 0, 0, 0.2);
 }

@@ -128,7 +128,7 @@ function PromptTemplate({
           <div 
           className={`${styles.experimentBox1}`}
           >
-            <div>
+            <div className={`${styles.Box}`}>
               {data?.promptListByPagination.prompts.map(
                 (PromptTemplate, index) => (
                   <PromptTemplateCells

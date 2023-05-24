@@ -92,7 +92,7 @@ function Report() {
           {error ? (
             <div
               style={{ height: `calc(100vh - 300px)`, overflow: "auto" }}
-              className="break-all"
+              className={`break-all ${styles.experimentBox}`}
             >
               <ErrorAlertToast message={error?.message} showCrossIcon={false} />
             </div>

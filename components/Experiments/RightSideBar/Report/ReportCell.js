@@ -29,7 +29,11 @@ function ReportCell({ report, index, setExpanded, expanded }) {
               {report?.testCaseName}
             </div>
             <div className="pr-[10px] pl-[20px] py-[34px] w-4/6 border-l-2">
-              {report?.testCaseDescription}
+              {report?.testCaseDescription == null ? (
+                <div className="text-white">{"No description found."}</div>
+              ) : (
+                <div>{report?.testCaseDescription}</div>
+              )}
             </div>
             <div className="px-[10px] py-[34px] ml-[10px]">
               <StatusBadge

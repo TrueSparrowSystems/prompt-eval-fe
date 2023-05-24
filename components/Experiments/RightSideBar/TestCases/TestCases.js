@@ -7,6 +7,7 @@ import { useQuery } from "@apollo/client";
 import Queries from "../../../../queries/Queries";
 import { useExpContext } from "../../../../context/ExpContext";
 import { useCompSelectorContext } from "../../../../context/compSelectorContext";
+import { getUnsanitizedValue } from "../../../../utils/DecodeString";
 
 export default function TestCases() {
   const { selectedExperimentInfo, setTestCase } = useExpContext();
@@ -25,7 +26,7 @@ export default function TestCases() {
   const [unsavedChanges, setUnsavedChanges] = useState(false);
 
   useEffect(() => {
-    setTestCase(data?.testCases[0]);
+    setTestCase(getUnsanitizedValue(data?.testCases[0]));
   }, [data]);
 
   useEffect(() => {

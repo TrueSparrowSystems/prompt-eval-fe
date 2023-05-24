@@ -15,6 +15,7 @@ import Fail from "../../../../assets/Svg/Fail";
 import RunningLoader from "../../../../assets/Svg/RunningLoader";
 import { useRouter } from "next/router";
 import { Tooltip } from "@mui/material";
+import { getUnsanitizedValue } from "../../../../utils/DecodeString";
 
 function PromptTemplateCells({
   index,
@@ -105,7 +106,7 @@ function PromptTemplateCells({
       <div
         className={`flex items-center text-md border-b-2 cursor-pointer`}
         onClick={() => {
-          setPromptTemplate(PromptTemplate);
+          setPromptTemplate(getUnsanitizedValue(PromptTemplate));
           setShowClone(false);
           setShowEdit(true);
         }}
@@ -207,18 +208,17 @@ function PromptTemplateCells({
           </Tooltip>
         </div>
 
-        <div className="basis-1/5 flex items-center justify-around px-[10px] z-10">
+        <div className="basis-1/5 flex items-center justify-around px-[10px]">
           <div>
             <Button
               variant="outlined"
-              className="z-10"
               sx={{
                 textTransform: "none",
               }}
               onClick={(e) => {
                 e.stopPropagation();
                 setShowRunModal(!showRunModal);
-                setPromptTemplate(PromptTemplate);
+                setPromptTemplate(getUnsanitizedValue(PromptTemplate));
               }}
             >
               Run
@@ -231,7 +231,7 @@ function PromptTemplateCells({
                 onClick={(e) => {
                   e.stopPropagation();
                   handleClone();
-                  setPromptTemplate(PromptTemplate);
+                  setPromptTemplate(getUnsanitizedValue(PromptTemplate));
                 }}
                 title="Create Clone"
               >

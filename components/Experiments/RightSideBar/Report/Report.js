@@ -15,6 +15,8 @@ import { useRouter } from "next/router";
 import EmptyState from "../EmptyState";
 import ErrorAlertToast from "../../../ToastMessage/ErrorAlertToast";
 import { Button } from "@mui/material";
+import { getUnsanitizedValue } from "../../../../utils/DecodeString";
+
 function Report() {
   const { reportId } = useExpContext();
 
@@ -86,7 +88,6 @@ function Report() {
       ) : (
         <div
           style={error == null ? { height: "auto" } : {}}
-          className={`${styles.experimentBox}`}
         >
           {error ? (
             <div
@@ -97,7 +98,8 @@ function Report() {
             </div>
           ) : (
             <>
-              <div className=" pb-[10px]">
+            <div className={`${styles.heading}`}>
+              <div className="py-[15px]">
                 <Button
                   className="flex items-center gap-[5px] pl-0"
                   onClick={() => {
@@ -115,7 +117,7 @@ function Report() {
                 </Button>
               </div>
               <div
-                className={`flex items-center text-[15px] tracking-[0.2px] font-semibold border-t`}
+                className={`flex items-center text-[15px] tracking-[0.2px] font-semibold border-t border-b`}
               >
                 <div className="w-1/6 py-[34px] px-[10px]">Test Case Name</div>
                 <div className="w-4/6 pr-[10px] pl-[20px] py-[34px] border-l-2">
@@ -123,13 +125,14 @@ function Report() {
                 </div>
                 <div className="px-[10px] py-[34px]">Status</div>
               </div>
-              <div>
+              </div>
+              <div className={`${styles.experimentBox1}`}>
                 <div>
                   {data?.getReport?.testCaseEvaluationReport.map(
                     (report, index) => (
                       <ReportCell
                         key={index}
-                        report={report}
+                        report={getUnsanitizedValue(report)}
                         index={index + 1}
                         expanded={expanded}
                         setExpanded={setExpanded}
@@ -137,7 +140,7 @@ function Report() {
                     )
                   )}
                 </div>
-                <div className="flex justify-end px-[20px] py-[15px] border-b-2 border-t-2">
+                <div className="flex justify-end px-[20px] py-[15px] border-t-2">
                   <div className="flex items-center text-md text-[#000]">
                     <div className="opacity-60 mr-[20px]">Rows per page:</div>
                     <Box

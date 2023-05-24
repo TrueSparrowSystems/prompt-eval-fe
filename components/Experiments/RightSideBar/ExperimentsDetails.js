@@ -74,71 +74,69 @@ function ExperimentsDetails() {
   };
 
   return (
-    <div className="relative">
-      <div>
-        <div className="pt-[25px] flex items-center justify-between ">
-          <div className="flex items-center uppercase border-b relative">
-            <div
-              className={`${
-                currTab === TabNames.PROMPTTEMPLATE
-                  ? `${styles.selectedTab} text-[#2196F3] z-[2]`
-                  : `${styles.notSelectedtab} ${styles.notSelectedPromptTemplate}`
-              }
+    <div>
+      <div className="pt-[25px] flex items-center justify-between sticky top-0 z-[10] bg-[#F3F4F6]">
+        <div className="flex items-center uppercase border-b relative">
+          <div
+            className={`${
+              currTab === TabNames.PROMPTTEMPLATE
+                ? `${styles.selectedTab} text-[#2196F3] z-[2]`
+                : `${styles.notSelectedtab} ${styles.notSelectedPromptTemplate}`
+            }
               px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
-              onClick={() => {
-                if (showReport) {
-                  router.push(`/experiments/${selectedExperimentInfo.id}`);
-                  setShowReport(false);
-                }
-                setShowAdd(false);
-                setAddTestCase(false);
-                toggleTab(TabNames.PROMPTTEMPLATE);
-              }}
-            >
-              Prompt Template
-            </div>
-            <div
-              className={`${
-                currTab === TabNames.TESTCASES
-                  ? `${styles.selectedTab} text-[#2196F3] ml-[-20px]`
-                  : `${styles.notSelectedtab} ml-[-15px] ${styles.notSelectedTestCase}`
+            onClick={() => {
+              if (showReport) {
+                router.push(`/experiments/${selectedExperimentInfo.id}`);
+                setShowReport(false);
               }
-              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
-              onClick={() => {
-                if (showReport) {
-                  router.push(`/experiments/${selectedExperimentInfo.id}`);
-                  setShowReport(false);
-                }
-                setShowAdd(false);
-                setShowEdit(false);
-                setShowClone(false);
-                toggleTab(TabNames.TESTCASES);
-              }}
-            >
-              Test Cases
-            </div>
+              setShowAdd(false);
+              setAddTestCase(false);
+              toggleTab(TabNames.PROMPTTEMPLATE);
+            }}
+          >
+            Prompt Template
           </div>
-          {!showEmptyState && !showLoadingState && (
-            <Button
-              size="large"
-              style={{ textTransform: "none" }}
-              onClick={() => {
-                if (currTab === TabNames.PROMPTTEMPLATE) {
-                  setShowEdit(false);
-                  setShowAdd(true);
-                } else {
-                  setAddTestCase(true);
-                }
-              }}
-              sx={{ color: "#2196F3" }}
-            >
-              <AddIcon className="mr-[11px]" />
-              {currTab === TabNames.PROMPTTEMPLATE
-                ? "Add new template"
-                : "Add new test case"}
-            </Button>
-          )}
+          <div
+            className={`${
+              currTab === TabNames.TESTCASES
+                ? `${styles.selectedTab} text-[#2196F3] ml-[-20px]`
+                : `${styles.notSelectedtab} ml-[-15px] ${styles.notSelectedTestCase}`
+            }
+              px-[80px] pt-[20px] pb-[25px] cursor-pointer relative whitespace-nowrap`}
+            onClick={() => {
+              if (showReport) {
+                router.push(`/experiments/${selectedExperimentInfo.id}`);
+                setShowReport(false);
+              }
+              setShowAdd(false);
+              setShowEdit(false);
+              setShowClone(false);
+              toggleTab(TabNames.TESTCASES);
+            }}
+          >
+            Test Cases
+          </div>
         </div>
+        {!showEmptyState && !showLoadingState && (
+          <Button
+            size="large"
+            style={{ textTransform: "none" }}
+            onClick={() => {
+              if (currTab === TabNames.PROMPTTEMPLATE) {
+                setShowEdit(false);
+                setShowAdd(true);
+              } else {
+                setAddTestCase(true);
+              }
+            }}
+            sx={{ color: "#2196F3" }}
+          >
+            <AddIcon className="mr-[11px]" />
+            {currTab === TabNames.PROMPTTEMPLATE
+              ? "Add new template"
+              : "Add new test case"}
+          </Button>
+        )}
       </div>
       <div className="w-full">{getExperimentUi()}</div>
     </div>

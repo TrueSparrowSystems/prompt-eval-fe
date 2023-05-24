@@ -122,9 +122,10 @@ function EditePromptTemplate() {
 
   return (
     <>
-      <div className={`${styles.experimentBox} overflow-auto`}>
+      <div>
         <>
-          <div className="pb-[10px]">
+        <div className={`${styles.heading}`}>
+          <div className="py-[15px]">
             <Button
               className="flex items-center gap-[5px] pl-0"
               onClick={() => {
@@ -167,10 +168,12 @@ function EditePromptTemplate() {
             }}
             maxLength={70}
           />
+          </div>
+          <div className={`${styles.experimentBox1}`}>
           <ul>{promptsList}</ul>
           <div className="flex gap-[25px]">
             <div className="basis-20"></div>
-            <div>
+            <div className="pb-[37px]">
               <div className="ml-[15px] mt-[8px] mb-[15px]">
                 <Button
                   size="large"
@@ -218,6 +221,7 @@ function EditePromptTemplate() {
                 )}
               </Button>
             </div>
+          </div>
           </div>
           {error && <ErrorAlertToast message={error.message} />}
         </>

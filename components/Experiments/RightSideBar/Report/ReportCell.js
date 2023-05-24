@@ -29,7 +29,11 @@ function ReportCell({ report, index, setExpanded, expanded }) {
               {report?.testCaseName}
             </div>
             <div className="pr-[10px] pl-[20px] py-[34px] w-4/6 border-l-2">
-              {report?.testCaseDescription}
+              {report?.testCaseDescription == null ? (
+                <div className="text-white">{"No description found."}</div>
+              ) : (
+                <div>{report?.testCaseDescription}</div>
+              )}
             </div>
             <div className="px-[10px] py-[34px] ml-[10px]">
               <StatusBadge
@@ -62,7 +66,7 @@ function ReportCell({ report, index, setExpanded, expanded }) {
             </div>
             <textarea
               value={actualResult}
-              className={`w-full rounded-[4px] h-[120px] p-[10px] outline-none border ${
+              className={`w-full rounded-[4px] h-[220px] p-[10px] outline-none border ${
                 report.accuracy != null && report.accuracy < 0.6
                   ? "border-[#B3261E]"
                   : "border-[#2E7D32]"
@@ -80,7 +84,7 @@ function ReportCell({ report, index, setExpanded, expanded }) {
                   Acceptable Result {index + 1}
                 </div>
                 <textarea
-                  className={`w-full border rounded-[4px] h-[120px] p-[10px] outline-none`}
+                  className={`w-full border rounded-[4px] h-[220px] p-[10px] outline-none`}
                   value={result}
                   placeholder="No expected result found."
                   disabled={true}

@@ -9,6 +9,16 @@ export const getUnsanitizedValue = (obj) => {
   let newObj = {};
   Object.keys(obj).forEach((key) => {
     if (typeof obj[key] === "string") newObj[key] = decodeHTML(obj[key]);
+    else if (Array.isArray(obj[key])) {
+      let arr = [];
+      obj[key].forEach((item) => {
+        if (typeof item === "object") arr.push(getUnsanitizedValue(item));
+        else if (typeof item === "string") arr.push(decodeHTML(item));
+      });
+      newObj[key] = arr;
+      console.log("updated ", newObj[key], key);
+    } else if (typeof obj[key] === "object")
+      newObj[key] = getUnsanitizedValue(obj[key]);
     else newObj[key] = obj[key];
   });
   return newObj;

@@ -9,9 +9,11 @@ export const Accordion = styled((props) => (
 ))(({ theme }) => ({
   borderTop: `1px solid ${theme.palette.divider}`,
   borderBottom: `1px solid ${theme.palette.divider}`,
-  borderRight: `1px solid ${theme.palette.divider}`,
   "&:not(:last-child)": {
     borderBottom: 0,
+  },
+  ":first-child": {
+    borderTop: "none",
   },
   "&:before": {
     display: "none",
@@ -34,7 +36,7 @@ export const AccordionSummary = styled((props) => (
   },
   "& .MuiAccordionSummary-content": {
     margin: 0,
-    marginLeft:'-10px'
+    marginLeft:'-9px'
   },
 }));
 

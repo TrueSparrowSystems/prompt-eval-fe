@@ -5,6 +5,7 @@ import AddIcon from "../../../../assets/Svg/AddIcon";
 import { useCompSelectorContext } from "../../../../context/compSelectorContext";
 import styles from "./TestCaseTabs.module.scss";
 import { useExpContext } from "../../../../context/ExpContext";
+import { decodeHTML, getUnsanitizedValue } from "../../../../utils/DecodeString";
 
 function TestCasesList({ data, unsavedChanges}) {
   const { addTestCase, setAddTestCase } = useCompSelectorContext();
@@ -49,7 +50,7 @@ function TestCasesList({ data, unsavedChanges}) {
     
     
     setSelectedTestCase(index);
-    setTestCase(data?.testCases[index]);
+    setTestCase(getUnsanitizedValue(data?.testCases[index]));
   };
 
   return (
@@ -84,7 +85,7 @@ function TestCasesList({ data, unsavedChanges}) {
 
         {data?.testCases.map((testCase, index) => (
           <TestCaseCell
-            testCaseName={testCase.name}
+            testCaseName={decodeHTML(testCase.name)}
             key={index}
             index={index}
             selectedTestCase={selectedTestCase}

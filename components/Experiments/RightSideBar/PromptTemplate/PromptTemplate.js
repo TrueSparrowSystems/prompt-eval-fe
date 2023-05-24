@@ -10,6 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 import Select from "@mui/material/Select";
 import Pagination from "../../../Pagination/Pagination";
+import { getUnsanitizedValue } from "../../../../utils/DecodeString";
 
 function PromptTemplate({
   recordPerPage,
@@ -103,7 +104,8 @@ function PromptTemplate({
       selectedExperimentInfo == null ? (
         <EmptyState />
       ) : (
-        <div className={`${styles.experimentBox}`}>
+        <div>
+          <div className={`${styles.heading}`}>
           <div
             className={`flex items-center text-[15px] tracking-[0.2px] font-semibold border-b-2`}
           >
@@ -122,14 +124,17 @@ function PromptTemplate({
               <div>{"       "}</div>
             </div>
           </div>
-          <div>
-            <div className={`${styles.subBoxHeight} overflow-auto`}>
+          </div>
+          <div 
+          className={`${styles.experimentBox1}`}
+          >
+            <div className={`${styles.Box}`}>
               {data?.promptListByPagination.prompts.map(
                 (PromptTemplate, index) => (
                   <PromptTemplateCells
                     key={index}
                     index={index}
-                    PromptTemplate={PromptTemplate}
+                    PromptTemplate={getUnsanitizedValue(PromptTemplate)}
                     runSuccess={runSuccess}
                     setRunSuccess={setRunSuccess}
                     isRunnable={isRunnable}

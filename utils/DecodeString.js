@@ -16,7 +16,6 @@ export const getUnsanitizedValue = (obj) => {
         else if (typeof item === "string") arr.push(decodeHTML(item));
       });
       newObj[key] = arr;
-      console.log("updated ", newObj[key], key);
     } else if (typeof obj[key] === "object")
       newObj[key] = getUnsanitizedValue(obj[key]);
     else newObj[key] = obj[key];

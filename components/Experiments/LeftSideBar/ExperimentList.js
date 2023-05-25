@@ -19,6 +19,7 @@ export default function ExperimentList({
 
   const handleChange = (index) => {
     if (data?.experimentList == null) return;
+    console.log("index", index);
     setSelectedExperiment(index);
     setSelectedExperimentInfo(getUnsanitizedValue(data?.experimentList[index]));
   };
@@ -37,7 +38,7 @@ export default function ExperimentList({
       )
       handleChange(0);
     }
-    handleChange(selectedExperiment);
+    handleChange( selectedExperiment==null?0:selectedExperiment);
   }, [data]);
 
   useEffect(() => {

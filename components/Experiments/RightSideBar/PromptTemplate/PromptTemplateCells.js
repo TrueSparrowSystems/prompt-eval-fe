@@ -148,6 +148,15 @@ function PromptTemplateCells({
             setReportId(PromptTemplate.latestEvaluationReport[0].id);
           }}
         >
+          <Tooltip
+            title={
+              PromptTemplate.latestEvaluationReport[0]?.status ===
+              "Status.COMPLETED"
+                ? "Click here to access your report"
+                : "No report generated yet"
+            }
+          >
+            <span>
           <div className="flex items-center gap-[10px]">
             <Calendar />
             <div>
@@ -170,15 +179,6 @@ function PromptTemplateCells({
           ) : (
             <div className="mb-[10px]"></div>
           )}
-          <Tooltip
-            title={
-              PromptTemplate.latestEvaluationReport[0]?.status ===
-              "Status.COMPLETED"
-                ? "Click here to access your report"
-                : "No report generated yet"
-            }
-          >
-            <span>
               {PromptTemplate.latestEvaluationReport[0]?.status ===
               "Status.COMPLETED" ? (
                 <div
@@ -193,7 +193,7 @@ function PromptTemplateCells({
                 </div>
               ) : (
                 <div
-                  className={`flex items-center gap-[10px] z-10 opacity-60 cursor-not-allowed`}
+                  className={`flex items-center gap-[10px] z-10 opacity-40 cursor-not-allowed`}
                   onClick={(e) => {
                     e.stopPropagation();
                   }}
@@ -224,7 +224,7 @@ function PromptTemplateCells({
               Run
             </Button>
           </div>
-          <Tooltip title="Create Clone">
+          <Tooltip title="Clone">
             <span>
               <div
                 className="flex items-center gap-[20px] py-[10px] px-[10px] hover:bg-[#F8FAFB] rounded-[4px] opacity-60 hover:opacity-100"
@@ -233,7 +233,6 @@ function PromptTemplateCells({
                   handleClone();
                   setPromptTemplate(getUnsanitizedValue(PromptTemplate));
                 }}
-                title="Create Clone"
               >
                 <Clone />
               </div>

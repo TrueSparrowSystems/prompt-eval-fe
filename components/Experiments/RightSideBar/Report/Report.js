@@ -18,7 +18,7 @@ import { Button } from "@mui/material";
 import { getUnsanitizedValue } from "../../../../utils/DecodeString";
 
 function Report() {
-  const { reportId } = useExpContext();
+  const { reportId, selectedExperimentInfo } = useExpContext();
 
   const { setShowReport, setCurrTab, setShowLoadingState } =
     useCompSelectorContext();
@@ -86,9 +86,7 @@ function Report() {
       data?.getReport.testCaseEvaluationReport?.length === 0 ? (
         <EmptyState />
       ) : (
-        <div
-          style={error == null ? { height: "auto" } : {}}
-        >
+        <div style={error == null ? { height: "auto" } : {}}>
           {error ? (
             <div
               style={{ height: `calc(100vh - 300px)`, overflow: "auto" }}
@@ -98,33 +96,37 @@ function Report() {
             </div>
           ) : (
             <>
-            <div className={`${styles.heading}`}>
-              <div className="py-[15px]">
-                <Button
-                  className="flex items-center gap-[5px] pl-0"
-                  onClick={() => {
-                    setShowReport(false);
-                    setCurrTab(TabNames.PROMPTTEMPLATE);
-                    router.back();
-                  }}
-                  sx={{
-                    textTransform: "none",
-                    color: "#2196F3",
-                  }}
-                >
-                  <BackArrow isBlue={true} />
-                  Back to Prompt Templates
-                </Button>
-              </div>
-              <div
-                className={`flex items-center text-[15px] tracking-[0.2px] font-semibold border-t border-b`}
-              >
-                <div className="w-1/6 py-[34px] px-[10px]">Test Case Name</div>
-                <div className="w-4/6 pr-[10px] pl-[20px] py-[34px] border-l-2">
-                  Description
+              <div className={`${styles.heading}`}>
+                <div className="py-[15px]">
+                  <Button
+                    className="flex items-center gap-[5px] pl-0"
+                    onClick={() => {
+                      setShowReport(false);
+                      setCurrTab(TabNames.PROMPTTEMPLATE);
+                      router.push({
+                        pathname: `/experiments/${selectedExperimentInfo?.id}`,
+                      });
+                    }}
+                    sx={{
+                      textTransform: "none",
+                      color: "#2196F3",
+                    }}
+                  >
+                    <BackArrow isBlue={true} />
+                    Back to Prompt Templates
+                  </Button>
                 </div>
-                <div className="px-[10px] py-[34px]">Status</div>
-              </div>
+                <div
+                  className={`flex items-center text-[15px] tracking-[0.2px] font-semibold border-t border-b`}
+                >
+                  <div className="w-1/6 py-[34px] px-[10px]">
+                    Test Case Name
+                  </div>
+                  <div className="w-4/6 pr-[10px] pl-[20px] py-[34px] border-l-2">
+                    Description
+                  </div>
+                  <div className="px-[10px] py-[34px]">Status</div>
+                </div>
               </div>
               <div className={`${styles.experimentBox1}`}>
                 <div className={`${styles.Box}`}>

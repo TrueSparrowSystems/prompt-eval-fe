@@ -55,7 +55,7 @@ function PromptTemplate({
 
   useEffect(() => {
     refetch();
-  }, [currentPage, recordPerPage]);
+  }, [currentPage, recordPerPage, selectedExperimentInfo]);
 
   useEffect(() => {
     if (data?.promptListByPagination?.prompts.length === 0 && currentPage > 1) {

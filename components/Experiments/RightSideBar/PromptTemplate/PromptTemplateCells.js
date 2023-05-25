@@ -52,6 +52,56 @@ function PromptTemplateCells({
     error: errorForOptions,
   } = useQuery(Queries.getEvalAndModels);
 
+  const [modelOptions, setModelOptions] = useState([]);
+  const [evalOptions, setEvalOptions] = useState([]);
+
+  function sortModels(a, b) {
+    if (a.includes("gpt-4") && !b.includes("gpt-4")) {
+      return -1;
+    } else if (!a.includes("gpt-4") && b.includes("gpt-4")) {
+      return 1;
+    } else {
+      if (a.includes("gpt") && !b.includes("gpt")) {
+        return -1;
+      } else if (!a.includes("gpt") && b.includes("gpt")) {
+        return 1;
+      }
+      return a.localeCompare(b);
+    }
+  }
+
+  useEffect(() => {
+    const a = new Array(evalsAndModelOptions?.getEvalAndModels?.models.length);
+
+    for (
+      let i = 0;
+      i < evalsAndModelOptions?.getEvalAndModels?.models.length;
+      i++
+    ) {
+      a[i] = evalsAndModelOptions?.getEvalAndModels?.models[i];
+    }
+    a.sort(sortModels);
+    setModelOptions(a);
+
+    const b = new Array(evalsAndModelOptions?.getEvalAndModels?.evals.length);
+
+    for (
+      let i = 0;
+      i < evalsAndModelOptions?.getEvalAndModels.evals.length;
+      i++
+    ) {
+      b[i] = evalsAndModelOptions?.getEvalAndModels?.evals[i];
+    }
+
+    const index = b.findIndex((option) => option === "graphql");
+    if (index !== 0 && index !== -1) {
+      const temp = b[0];
+      b[0] = b[index];
+      b[index] = temp;
+    }
+    setEvalOptions(b);
+  }, [evalsAndModelOptions]);
+
   const {
     data: promptList,
     startPolling,
@@ -70,7 +120,7 @@ function PromptTemplateCells({
   const [isHover, setIsHover] = useState(false);
   useEffect(() => {
     if (startRun) {
-      startPolling(10000);
+      startPolling(3000);
     } else stopPolling();
   }, [startRun]);
 
@@ -148,28 +198,6 @@ function PromptTemplateCells({
             setReportId(PromptTemplate.latestEvaluationReport[0].id);
           }}
         >
-          <div className="flex items-center gap-[10px]">
-            <Calendar />
-            <div>
-              {PromptTemplate.createdAt &&
-                getFormattedDate(PromptTemplate.createdAt)}
-            </div>
-          </div>
-          {PromptTemplate.latestEvaluationReport[0] ? (
-            <div className="flex items-center gap-[10px] my-[3px]">
-              {(PromptTemplate.latestEvaluationReport[0]?.status ===
-                "Status.COMPLETED" && <Pass />) ||
-                (PromptTemplate.latestEvaluationReport[0]?.status ===
-                  "Status.FAILED" && <Fail />) || <RunningLoader />}
-              <div className="capitalize">
-                {PromptTemplate.latestEvaluationReport[0]?.status
-                  .split(".")[1]
-                  .toLowerCase()}
-              </div>
-            </div>
-          ) : (
-            <div className="mb-[10px]"></div>
-          )}
           <Tooltip
             title={
               PromptTemplate.latestEvaluationReport[0]?.status ===
@@ -179,6 +207,28 @@ function PromptTemplateCells({
             }
           >
             <span>
+              <div className="flex items-center gap-[10px]">
+                <Calendar />
+                <div>
+                  {PromptTemplate.createdAt &&
+                    getFormattedDate(PromptTemplate.createdAt)}
+                </div>
+              </div>
+              {PromptTemplate.latestEvaluationReport[0] ? (
+                <div className="flex items-center gap-[10px] my-[3px]">
+                  {(PromptTemplate.latestEvaluationReport[0]?.status ===
+                    "Status.COMPLETED" && <Pass />) ||
+                    (PromptTemplate.latestEvaluationReport[0]?.status ===
+                      "Status.FAILED" && <Fail />) || <RunningLoader />}
+                  <div className="capitalize">
+                    {PromptTemplate.latestEvaluationReport[0]?.status
+                      .split(".")[1]
+                      .toLowerCase()}
+                  </div>
+                </div>
+              ) : (
+                <div className="mb-[10px]"></div>
+              )}
               {PromptTemplate.latestEvaluationReport[0]?.status ===
               "Status.COMPLETED" ? (
                 <div
@@ -193,7 +243,7 @@ function PromptTemplateCells({
                 </div>
               ) : (
                 <div
-                  className={`flex items-center gap-[10px] z-10 opacity-60 cursor-not-allowed`}
+                  className={`flex items-center gap-[10px] z-10 opacity-40 cursor-not-allowed`}
                   onClick={(e) => {
                     e.stopPropagation();
                   }}
@@ -224,7 +274,7 @@ function PromptTemplateCells({
               Run
             </Button>
           </div>
-          <Tooltip title="Create Clone">
+          <Tooltip title="Clone">
             <span>
               <div
                 className="flex items-center gap-[20px] py-[10px] px-[10px] hover:bg-[#F8FAFB] rounded-[4px] opacity-60 hover:opacity-100"
@@ -233,7 +283,6 @@ function PromptTemplateCells({
                   handleClone();
                   setPromptTemplate(getUnsanitizedValue(PromptTemplate));
                 }}
-                title="Create Clone"
               >
                 <Clone />
               </div>
@@ -244,8 +293,8 @@ function PromptTemplateCells({
       <RunModal
         showRunModal={showRunModal}
         setShowRunModal={setShowRunModal}
-        modelOptions={evalsAndModelOptions?.getEvalAndModels?.models}
-        evalOptions={evalsAndModelOptions?.getEvalAndModels?.evals}
+        modelOptions={modelOptions}
+        evalOptions={evalOptions}
         isRunnable={isRunnable}
         refetchList={refetchList}
         setStartRun={setStartRun}

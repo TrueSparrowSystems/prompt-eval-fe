@@ -4,7 +4,7 @@ function StatusBadge({ status }) {
   return (
     <>
       {status === "failed" ? (
-        <div className="border bg-[#B3261E1A] rounded-[8px] flex items-center px-[10px] py-[2px] gap-[5px] ml-[2px]">
+        <div className="bg-[#B3261E1A] rounded-[8px] flex items-center px-[10px] py-[2px] gap-[5px] ml-[2px]">
           <svg
             width="10"
             height="10"
@@ -20,10 +20,10 @@ function StatusBadge({ status }) {
             />
           </svg>
 
-          <span className="text-md">Failed</span>
+          <span className="text-md text-[#794839]">Failed</span>
         </div>
       ) : (
-        <div className="border bg-[#2E7D321A] rounded-[8px] flex items-center px-[10px] py-[2px] gap-[5px]">
+        <div className="bg-[#2E7D321A] rounded-[8px] flex items-center px-[10px] py-[2px] gap-[5px]">
           <svg
             width="10"
             height="8"
@@ -39,7 +39,7 @@ function StatusBadge({ status }) {
               strokeLinejoin="round"
             />
           </svg>
-          <span className="text-md">Passed</span>
+          <span className="text-md text-[#2E7D54]">Passed</span>
         </div>
       )}
     </>

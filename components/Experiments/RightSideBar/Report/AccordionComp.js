@@ -12,7 +12,7 @@ export const Accordion = styled((props) => (
   "&:not(:last-child)": {
     borderBottom: 0,
   },
-  ":first-child": {
+  ":first-of-type": {
     borderTop: "none",
   },
   "&:before": {

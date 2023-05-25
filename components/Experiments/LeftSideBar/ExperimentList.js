@@ -37,7 +37,7 @@ export default function ExperimentList({
       )
       handleChange(0);
     }
-    handleChange(selectedExperiment);
+    handleChange( selectedExperiment==null?0:selectedExperiment);
   }, [data]);
 
   useEffect(() => {

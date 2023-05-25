@@ -4,6 +4,7 @@ import { Button } from "@mui/material";
 import AddIcon from "../../../assets/Svg/AddIcon";
 import { useCompSelectorContext } from "../../../context/compSelectorContext";
 import { TabNames } from "../../../constants/TabNames";
+import { useExpContext } from "../../../context/ExpContext";
 
 function EmptyState() {
   const {
@@ -15,6 +16,8 @@ function EmptyState() {
     showLoadingState,
     setShowLoadingState
   } = useCompSelectorContext();
+
+  const { selectedExperimentInfo } = useExpContext();
 
   useEffect(() => {
     return () => {
@@ -28,7 +31,7 @@ function EmptyState() {
       className={`relative ${styles.emptyState} bg-white flex justify-center items-center`}
     >
       <div className={`flex justify-center items-center flex-col`}>
-        {!showLoadingState && (
+        {(!showLoadingState && selectedExperimentInfo!=null) && (
           <div className="step-four p-[20px]">
             <p className="flex items-center opacity-[60%] text-[15px] leading-[24px] font-[400px] mb-[14px]">
               {currTab === TabNames.PROMPTTEMPLATE

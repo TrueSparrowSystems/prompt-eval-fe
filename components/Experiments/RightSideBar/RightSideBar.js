@@ -17,7 +17,6 @@ function RightSideBar() {
   );
 
   useEffect(() => {
-    console.log("selectedExperimentInfo", selectedExperimentInfo);
     if (
       selectedExperimentInfo &&
       Object.keys(selectedExperimentInfo).length !== 0

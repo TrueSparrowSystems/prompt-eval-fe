@@ -19,7 +19,6 @@ export default function ExperimentList({
 
   const handleChange = (index) => {
     if (data?.experimentList == null) return;
-    console.log("index", index);
     setSelectedExperiment(index);
     setSelectedExperimentInfo(getUnsanitizedValue(data?.experimentList[index]));
   };

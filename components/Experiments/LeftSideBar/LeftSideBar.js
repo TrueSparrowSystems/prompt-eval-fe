@@ -34,7 +34,8 @@ function LeftSideBar() {
             "Use this template to track your experiments. Add your experiment description here. \nClick + Add new template to create a new prompt template on this board.",
         },
       });
-
+      if(dataList?.experimentList?.length === 0) setSelectedExperiment(0);
+      else
       setSelectedExperiment((prevCount) => prevCount + 1);
     } catch (err) {
       return err;

@@ -130,7 +130,7 @@ function ExperimentsDetails() {
             Test Cases
           </div>
         </div>
-        {!showEmptyState && !showLoadingState && (
+        {!showEmptyState && !showLoadingState && selectedExperimentInfo!=null && (
           <Button
             size="large"
             style={{ textTransform: "none" }}

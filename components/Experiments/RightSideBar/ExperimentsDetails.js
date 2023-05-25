@@ -141,6 +141,7 @@ function ExperimentsDetails() {
               } else {
                 setAddTestCase(true);
               }
+              setShowReport(false);
             }}
             sx={{ color: "#2196F3" }}
           >

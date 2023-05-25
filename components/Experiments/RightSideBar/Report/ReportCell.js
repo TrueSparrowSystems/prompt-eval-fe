@@ -36,13 +36,13 @@ function ReportCell({ report, index, setExpanded, expanded }) {
               )}
             </div>
             <div className="px-[10px] py-[34px] ml-[10px]">
-              <StatusBadge
+              {report.accuracy == null ?  <div className="flex items-center justify-center px-[10px] py-[2px] ml-[2px]">{"N/A"}</div>:<StatusBadge
                 status={
                   report.accuracy != null && report.accuracy < 0.6
                     ? "failed"
                     : "pass"
                 }
-              />
+              />}
             </div>
           </div>
         </AccordionSummary>

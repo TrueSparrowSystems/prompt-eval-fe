@@ -128,7 +128,7 @@ export default function RunModal({
                     },
                   },
                 }}
-
+                autoWidth
               >
                 {modelOptions &&
                   modelOptions.map((item, index) => (

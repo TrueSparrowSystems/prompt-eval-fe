@@ -10,9 +10,7 @@ import Queries from "../../../../queries/Queries";
 import { useMutation } from "@apollo/client";
 import { useExpContext } from "../../../../context/ExpContext";
 import { MESSAGES } from "../../../../constants/Messages";
-import Tooltip from "@mui/material/Tooltip";
 import { useToastContext } from "../../../../context/ToastContext";
-import ErrorAlertToast from "../../../ToastMessage/ErrorAlertToast";
 import { useCompSelectorContext } from "../../../../context/compSelectorContext";
 import AddIcon from "../../../../assets/Svg/AddIcon";
 
@@ -30,7 +28,7 @@ export default function RunModal({
   const [model, setModel] = useState("");
   const [evaluation, setEvaluation] = useState("");
   const { setShowToast, setToastMessage, setToastType } = useToastContext();
-  const { currTab, setCurrTab, setAddTestCase } = useCompSelectorContext();
+  const { setCurrTab, setAddTestCase } = useCompSelectorContext();
 
   useEffect(() => {
     if (modelOptions) setModel(modelOptions[0]);
@@ -123,6 +121,14 @@ export default function RunModal({
                 )}
                 value={model}
                 onChange={(e) => setModel(e.target.value)}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      maxHeight: 224,
+                    },
+                  },
+                }}
+
               >
                 {modelOptions &&
                   modelOptions.map((item, index) => (
@@ -152,6 +158,13 @@ export default function RunModal({
                 )}
                 value={evaluation}
                 onChange={(e) => setEvaluation(e.target.value)}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      maxHeight: 224,
+                    },
+                  },
+                }}
               >
                 {evalOptions &&
                   evalOptions.map((item, index) => (

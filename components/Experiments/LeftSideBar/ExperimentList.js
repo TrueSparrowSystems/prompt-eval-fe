@@ -5,7 +5,6 @@ import Queries from "../../../queries/Queries";
 import ExperimentListSkeleton from "../../Skeletons/ExperimentListSkeleton";
 import { useExpContext } from "../../../context/ExpContext";
 import { useCompSelectorContext } from "../../../context/compSelectorContext";
-import { useRouter } from "next/router";
 import { getUnsanitizedValue, decodeHTML } from "../../../utils/DecodeString";
 
 export default function ExperimentList({
@@ -26,8 +25,6 @@ export default function ExperimentList({
 
   useEffect(() => {
     refetch();
-    handleChange(selectedExperiment);
-
     setAddDynamicVars(false);
   }, [addDynamicVars]);
 
@@ -38,29 +35,19 @@ export default function ExperimentList({
         selectedExperimentInfo == null ||
         Object.keys(selectedExperimentInfo).length === 0
       )
-        setSelectedExperimentInfo(getUnsanitizedValue(data.experimentList[0]));
+      handleChange(0);
     }
     handleChange(selectedExperiment);
   }, [data]);
 
-  const router = useRouter();
-
   useEffect(() => {
-    if (!router.isReady) return;
-    if (data?.experimentList == null) return;
-
-    if (router.query.reportId) {
-      let id = data?.experimentList.findIndex(
-        (experiment) => experiment.id === router.query["experiment-id"]
-      );
-      if (id != -1) {
-        setSelectedExperiment(id);
-        setSelectedExperimentInfo(
-          data?.experimentList && getUnsanitizedValue(data?.experimentList[id])
-        );
-      }
-    }
-  }, [router.isReady]);
+    let index = -1;
+    index = data?.experimentList?.findIndex(
+      (experiment) => experiment.id === selectedExperimentInfo?.id
+    );
+    if (index === -1) index = 0;
+    setSelectedExperiment(index);
+  }, [selectedExperimentInfo]);
 
   if (loading) {
     return <ExperimentListSkeleton />;

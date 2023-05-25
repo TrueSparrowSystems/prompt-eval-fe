@@ -11,6 +11,9 @@ import EditePromptTemplate from "./PromptTemplate/EditPromptTemplate";
 import { TabNames } from "../../../constants/TabNames";
 import { useExpContext } from "../../../context/ExpContext";
 import { useRouter } from "next/router";
+import { getUnsanitizedValue } from "../../../utils/DecodeString";
+import { useQuery } from "@apollo/client";
+import Queries from "../../../queries/Queries";
 
 function ExperimentsDetails() {
   const {
@@ -28,13 +31,15 @@ function ExperimentsDetails() {
     showLoadingState,
   } = useCompSelectorContext();
 
-  const { setReportId, selectedExperimentInfo } = useExpContext();
+  const { setReportId, selectedExperimentInfo, setSelectedExperimentInfo,setSelectedExperiment } = useExpContext();
 
   const [recordPerPage, setRecordPerPage] = useState(6);
   const [currentPage, setCurrentPage] = useState(1);
   const totalCount = useRef(0);
 
   const router = useRouter();
+
+  const { data, loading, error } = useQuery(Queries.experimentList);
 
   const toggleTab = (type) => {
     if (type != currTab) {
@@ -48,8 +53,16 @@ function ExperimentsDetails() {
     if (router.query?.reportId) {
       setReportId(router.query?.reportId);
       setShowReport(true);
+
+      let id = data?.experimentList.findIndex(
+        (experiment) => experiment.id === router.query["experiment-id"]
+      );
+
+      if (id != -1) {
+        setSelectedExperimentInfo(getUnsanitizedValue(data?.experimentList[id]));
+      }
     }
-  }, [router.isReady]);
+  }, [router.isReady, data]);
 
   const getExperimentUi = () => {
     if (showReport) {

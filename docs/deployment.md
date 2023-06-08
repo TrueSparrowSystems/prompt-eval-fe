@@ -14,7 +14,7 @@
 
  Kindly follow [this](https://developers.cloudflare.com/pages/get-started/guide/) article to setup the Frontend. 
 
-**Note: You would need to add the following environment vars**➖
+**Note: You would need to add the following environment vars**:-
 
  `NEXT_PUBLIC_API_BASE_URL` should be set to `https://<backend-url-endpoint>/graphql`
 

@@ -12,7 +12,7 @@ Prompt Evaluator is an AI assistant tool specifically designed for product manag
 
 - **Test Cases** - These are the cases on which the accuracy of a prompt is evaluated. Users can define their own test cases and associate them with prompts. Test cases can be defined as a list of inputs and expected outputs. 
 
-By running prompt templates with different models and test cases, users gain valuable insights into the performance and suitability of their prompts for different scenarios. For detailed information on the features, please refer to the [product guide](./docs/productGuide.md).
+By running prompt templates with different models and test cases, users gain valuable insights into the performance and suitability of their prompts for different scenarios. For detailed information on the features, please refer to the [product guide](https://github.com/TrueSparrowSystems/prompt-eval-be/blob/master/docs/productGuide.md).
 
 ## Architecture
 

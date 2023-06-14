@@ -116,6 +116,7 @@ function PromptTemplate({
             </div>
             <div className="basis-1/5 px-[10px] py-[34px]">Accuracy</div>
             <div className="basis-1/5 px-[10px] py-[34px]">Model</div>
+            <div className="basis-1/5 px-[10px] py-[34px]">Evaluation</div>
             <div className="basis-1/5 px-[10px] py-[34px]">
               Execution Report
             </div>

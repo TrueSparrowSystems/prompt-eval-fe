@@ -182,6 +182,11 @@ function PromptTemplateCells({
             ? PromptTemplate.latestEvaluationReport[0].model
             : "--"}
         </div>
+        <div className="basis-1/5 px-[10px] line-clamp-2 text-ellipsis">
+          {PromptTemplate.latestEvaluationReport[0] !== null
+            ? PromptTemplate.latestEvaluationReport[0].eval
+            : "--"}
+        </div>
         <div
           className="basis-1/5 px-[10px]"
           onMouseEnter={() => setIsHover(true)}

@@ -21,7 +21,7 @@ Prompt Evaluator has two components:
 - [**Frontend**](https://github.com/TrueSparrowSystems/prompt-eval-fe)
 - [**Backend**](https://github.com/TrueSparrowSystems/prompt-eval-be)
 
-This is the frontend component of the Prompt Evaluator tool. It is built using Next.js. The backend is built using Django and MongoDB. The frontend and backend communicate with each other using REST APIs. The frontend and backend communicate with each other using the GraphQL API. It is a standalone application that can be deployed separately.
+This is the frontend component of the Prompt Evaluator tool. It is built using Next.js. The backend is built using Django and MongoDB. The frontend and backend communicate with each other using the GraphQL API. It is a standalone application that can be deployed separately.
 
 ## Tech Stack
 

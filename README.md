@@ -12,3 +12,7 @@ You need to create a new `.env` file in your project directory and add a new env
 ```
 npm run dev
 ```
+
+## Documents
+
+1. Code deployment guide: - [docs/deployment.md](./docs/deployment.md)

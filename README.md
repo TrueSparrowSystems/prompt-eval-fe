@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Prompt Evaluator is an AI assistant tool specifically designed for product managers and developers. With a strong emphasis on versatility, our tool empowers users to effectively solve a wide range of problems tailored to their unique use cases. By enabling prompt template engineering and enhancement, we ensure that prompts are both easily testable and maintainable. Our tool also provides a seamless integration with the OpenAI API, allowing users to quickly generate and evaluate prompts. With a robust and intuitive UI, we ensure that users can easily navigate through the tool and leverage its full potential.
+The Prompt Evaluator is a test suite that helps evaluate prompt templates and AI models. It enables Product Managers and Developers to create prompt templates with custom variables, define test cases with specific variable values and expected responses, and match the generated responses exactly or fuzzily. The suite also allows for comparing GraphQL query responses and measuring the accuracy of prompt templates against different AI models. By leveraging the capabilities of the Prompt Evaluator, Product Managers and Developers can make informed decisions, iterate on their prompt designs, and enhance the overall quality and accuracy of their AI-powered applications.
 
 ## Features
 

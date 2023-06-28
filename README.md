@@ -36,7 +36,7 @@ Follow the instructions below for installation:
 
 1. Install all the dependencies required for the project by running the following command
 
-```
+```sh { language=sh }
 npm install
 ```
 

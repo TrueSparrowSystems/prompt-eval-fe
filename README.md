@@ -35,10 +35,12 @@ This is the frontend component of the Prompt Evaluator tool. It is built using N
 Follow the instructions below for installation:
 
 1. Install all the dependencies required for the project by running the following command
+
 ```
 npm install
 ```
-2. Go to the project directory and copy the contents of `.env` file in your project directory.
+
+2. Go to the project directory and copy the contents of `.env.sample` file in `.env` file and add the values for all env variables.
 
 ```sh { language=sh }
 cd prompt-eval-fe

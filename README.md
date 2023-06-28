@@ -35,24 +35,32 @@ This is the frontend component of the Prompt Evaluator tool. It is built using N
 Follow the instructions below for installation:
 
 1. Install all the dependencies required for the project by running the following command
-```
-npm install
-```
-2. For Environment Setup, you need to create a new `.env` file in your project directory.
 
 ```sh { language=sh }
+npm install
+```
+
+2. Go to the project directory and copy the contents of `.env.sample` file in `.env` file and add the values for all env variables.
+
+```sh { language=sh }
+cd prompt-eval-fe
+
 # For Linux/macOS
 cp .env.sample .env
 # For Windows
 copy .env.sample .env
 ```
 
-3. The value of `NEXT_PUBLIC_API_BASE_URL` should be the base URL of the [Prompt eval API Server](https://github.com/TrueSparrowSystems/prompt-eval-be) in the .env file.
+3. The value of `NEXT_PUBLIC_API_BASE_URL` in the .env file should be the base URL of the [Prompt eval API Server](https://github.com/TrueSparrowSystems/prompt-eval-be) followed by `/graphql`.
 
-3. Run the project using the following command
+## Start the server
+
+Run the server using the following command
+
 ```
 npm run dev
 ```
+
 ## Deploy  Frontend to Cloudflare Pages
 
 ## We are using Cloudflare pages to deploy the Prompt Eval frontend application.

@@ -24,6 +24,8 @@ export default function TestCases() {
   } = useCompSelectorContext();
 
   const [unsavedChanges, setUnsavedChanges] = useState(false);
+  const [enable, setEnable] = useState(true);
+  const [testCaseName, setTestCaseName] = useState("Untitled Test Case");
 
   useEffect(() => {
     setTestCase(getUnsanitizedValue(data?.testCases[0]));
@@ -64,12 +66,16 @@ export default function TestCases() {
           ) : (
             <>
               <div className={`basis-64 ${styles.subBoxHeight}`}>
-                <TestCasesList data={data} unsavedChanges={unsavedChanges} />
+                <TestCasesList data={data} unsavedChanges={unsavedChanges} enable={enable} testCaseName={testCaseName}/>
               </div>
               <div className="mt-[13px] w-full ">
                 <TestCaseTabs
+                  enable ={enable}
+                  setEnable={setEnable}
                   unsavedChanges={unsavedChanges}
                   setUnsavedChanges={setUnsavedChanges}
+                  testCaseName={testCaseName}
+                  setTestCaseName={setTestCaseName}
                 />
               </div>
             </>

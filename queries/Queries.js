@@ -319,6 +319,7 @@ class Queries {
             createdAt
             updatedAt
             experimentId
+            status
           }
         }
       }

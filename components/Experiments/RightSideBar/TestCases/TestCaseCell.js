@@ -3,12 +3,13 @@ import React from "react";
 function TestCaseCell({
   testCaseName,
   index,
+  active,
   selectedTestCase,
   handleSelection,
 }) {
   return (
     <div
-      className={`flex items-center gap-[10px] py-[20px] px-[18px] cursor-pointer hover:bg-[#F0F0F0] ${
+      className={`flex gap-[10px] py-[12px] px-[18px] cursor-pointer hover:bg-[#F0F0F0] ${
         selectedTestCase == index ? "bg-[#F8FAFB] rounded-[4px]" : "opacity-60"
       }`}
       onClick={() => {
@@ -30,7 +31,10 @@ function TestCaseCell({
           />
         </svg>
       </div>
+      <div className="flex-col">
       <div className="text-md text-[#000] text-ellipsis line-clamp-1">{testCaseName}</div>
+      <div className="text-[11px] text-[#00000099]">{active===false?"Disabled":"Enabled"}</div>
+      </div>
     </div>
   );
 }

@@ -325,6 +325,8 @@ function PromptTemplateCells({
         isRunnable={isRunnable}
         refetchList={refetchList}
         setStartRun={setStartRun}
+        selectedModel={PromptTemplate?.latestEvaluationReport[0]?.model}
+        selectedEval={PromptTemplate?.latestEvaluationReport[0]?.eval}
       />
     </>
   );

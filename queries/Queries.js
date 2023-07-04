@@ -89,6 +89,8 @@ class Queries {
               model
               eval
               accuracy
+              totalTestcases
+              passedTestcases
               status
               initiatedAt
               completedAt
@@ -144,6 +146,7 @@ class Queries {
         $description: String
         $dynamicVarValues: JSONString
         $expectedResult: [String]
+        $status: String
       ) {
         createTestCases(
           testCaseData: {
@@ -152,6 +155,7 @@ class Queries {
             name: $name
             dynamicVarValues: $dynamicVarValues
             expectedResult: $expectedResult
+            status: $status
           }
         ) {
           testCase {
@@ -181,6 +185,7 @@ class Queries {
           expectedResult
           updatedAt
           createdAt
+          status
         }
       }
     `;
@@ -293,6 +298,7 @@ class Queries {
         $description: String
         $dynamicVarValues: JSONString
         $expectedResult: [String]
+        $status: String
       ) {
         updateTestCases(
           updateTestCaseData: {
@@ -301,6 +307,7 @@ class Queries {
             description: $description
             dynamicVarValues: $dynamicVarValues
             expectedResult: $expectedResult
+            status: $status
           }
         ) {
           testCase {
@@ -344,6 +351,8 @@ class Queries {
           prompts {
             latestEvaluationReport {
               status
+              model
+              eval
             }
           updatedAt
           }

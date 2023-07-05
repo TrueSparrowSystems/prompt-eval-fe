@@ -244,6 +244,7 @@ export default function RunModal({
                 onClick={() => {
                   setCurrTab("testCases");
                   setAddTestCase(true);
+                  setStartRun(true);
                   handleClose();
                 }}
               >

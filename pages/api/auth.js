@@ -1,4 +1,7 @@
-import { createApiPage } from 'nextjs-basic-auth-middleware'
 export const runtime = 'edge';
 
-export default createApiPage();
+export default function handler(_, res) {
+    res.setHeader('WWW-authenticate', 'Basic realm="Secure Area"')
+    res.statusCode = 401
+    res.end(`Auth Required.`)
+  }

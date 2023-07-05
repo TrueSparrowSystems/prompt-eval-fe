@@ -162,7 +162,7 @@ function PromptTemplateCells({
           setShowEdit(true);
         }}
       >
-        <div className={`basis-1/5 border-r-2 px-[10px] py-[44px] mr-[10px] break-all`}>
+        <div className={`basis-1/5 border-r-2 px-[10px] py-[44px] mr-[10px] break-words`}>
           {PromptTemplate.name}
         </div>
         <div className="basis-1/5 px-[10px]">

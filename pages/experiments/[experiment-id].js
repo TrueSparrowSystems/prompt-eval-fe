@@ -8,12 +8,12 @@ function Experiments() {
   const { showToast, toastMessage, toastType } = useToastContext();
 
   return (
-    <div className="flex h-[100vh]">
+    <div className="flex">
       {showToast && <Toast msg={toastMessage} type={toastType} />}
-      <div className="basis-3/13 py-[26px]">
+      <div className="basis-3/13 py-[26px] h-[100vh]">
         <LeftSideBar />
       </div>
-      <div className="overflow-auto w-full bg-[#F3F4F6]">
+      <div className="overflow-auto w-full bg-[#F3F4F6] h-[100vh]">
       <div className="w-full md:px-[20px] lg:px-[35px] pt-[26px] pb-[38px]">
         <RightSideBar />
       </div>

@@ -92,7 +92,6 @@ export default function RunModal({
     setShowRunModal(!showRunModal);
     setErrorMsg(null);
     refetchList();
-    setStartRun(true);
   };
   return (
     <Modal
@@ -244,6 +243,7 @@ export default function RunModal({
                 onClick={() => {
                   setCurrTab("testCases");
                   setAddTestCase(true);
+                  setStartRun(true);
                   handleClose();
                 }}
               >

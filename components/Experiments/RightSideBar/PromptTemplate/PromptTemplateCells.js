@@ -232,10 +232,9 @@ function PromptTemplateCells({
                     "Status.COMPLETED" && (
                     <div className="flex gap-[10px] items-center">
                       <Pass />
-                      {PromptTemplate.latestEvaluationReport[0]?.passedTestcases.toString() +
+                      {"Passed ("+PromptTemplate.latestEvaluationReport[0]?.passedTestcases.toString() +
                         "/" +
-                        PromptTemplate.latestEvaluationReport[0]?.totalTestcases.toString() +
-                        " Passed"}
+                        PromptTemplate.latestEvaluationReport[0]?.totalTestcases.toString()+")"}
                     </div>
                   )) ||
                   <div className="flex gap-[10px] items-center">

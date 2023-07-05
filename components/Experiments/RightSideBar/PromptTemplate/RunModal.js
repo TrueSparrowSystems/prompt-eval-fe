@@ -74,6 +74,7 @@ export default function RunModal({
           eval: evaluation,
         },
       });
+      setStartRun(true);
       handleClose();
 
       setShowToast(true);

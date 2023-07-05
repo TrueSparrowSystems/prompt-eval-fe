@@ -74,6 +74,7 @@ export default function RunModal({
           eval: evaluation,
         },
       });
+      setStartRun(true);
       handleClose();
 
       setShowToast(true);
@@ -243,7 +244,6 @@ export default function RunModal({
                 onClick={() => {
                   setCurrTab("testCases");
                   setAddTestCase(true);
-                  setStartRun(true);
                   handleClose();
                 }}
               >

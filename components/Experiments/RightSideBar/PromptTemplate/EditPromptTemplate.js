@@ -14,6 +14,7 @@ import AddIcon from "../../../../assets/Svg/AddIcon";
 import { useToastContext } from "../../../../context/ToastContext";
 import ErrorAlertToast from "../../../ToastMessage/ErrorAlertToast";
 import CircularProgress from "@mui/material/CircularProgress";
+import Rename from "../../../../assets/Svg/Rename";
 
 function EditePromptTemplate() {
   const { promptTemplate } = useExpContext();
@@ -21,7 +22,6 @@ function EditePromptTemplate() {
   const { setShowToast, setToastMessage, setToastType } = useToastContext();
   const isTemplatedRead = useRef(false);
   const [templateName, setTemplateName] = useState(promptTemplate.name);
-  const [titleOpacity, setTitleOpacity] = useState("40");
 
   const initialPrompts = [];
 
@@ -120,6 +120,15 @@ function EditePromptTemplate() {
     isTemplatedRead.current = true;
   }, []);
 
+  const [showEditIcon, setShowEditIcon] = useState(false);
+  const [editable, setEditable] = useState(false);
+
+  useEffect(() => {
+    if (editable) inputRef.current.focus();
+  }, [editable]);
+
+  const inputRef = useRef(null);
+
   return (
     <>
       <div>
@@ -150,24 +159,58 @@ function EditePromptTemplate() {
               Back to Prompt Templates
             </Button>
           </div>
-          <input
-            className={`text-[20px] font-bold opacity-${titleOpacity} hover:opacity-80 outline-none pb-[25px] w-full`}
-            type="text"
-            value={templateName}
-            onChange={(e) => {
-              setTemplateName(e.target.value);
-              if (!unsavedChanges) setUnsavedChanges(true);
-            }}
-            onFocus={() => setTitleOpacity("80")}
-            onBlur={() => setTitleOpacity("40")}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                e.target.blur();
-              }
-            }}
-            maxLength={70}
-          />
+          <div
+              className={`flex items-center gap-[10px] p-[8px] cursor-pointer mb-[22px] ${
+                showEditIcon ? "bg-[#F0F0F0]" : ""
+              } rounded-[8px]`}
+              onMouseEnter={() => setShowEditIcon(true)}
+              onMouseLeave={() => {
+                if (!editable) setShowEditIcon(false);
+              }}
+              onClick={() => {
+                setEditable(true);
+              }}
+            >
+              <input
+                ref={inputRef}
+                className={`focus:outline-none outline-none text-ellipsis pl-[5px] text-[20px] w-full text-[#00000099]
+                ${showEditIcon ? "bg-[#F0F0F0]" : "bg-white"}
+                ${editable?"font-medium":"font-semibold"}
+                cursor-pointer
+                `}
+                type="text"
+                value={templateName}
+                onChange={(e) => {
+                  setTemplateName(e.target.value);
+                  if (!unsavedChanges) setUnsavedChanges(true);
+                }}
+                onBlur={() => {
+                  setEditable(false);
+                  setShowEditIcon(false);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    e.target.blur();
+                    setEditable(false);
+                    setShowEditIcon(false);
+                  }
+                }}
+                maxLength={70}
+                disabled={!editable}
+              />
+              <button
+                className={`ml-auto p-[5px] ${
+                  showEditIcon ? "opacity-100" : "opacity-0"
+                }`}
+                title="Rename"
+                onClick={() => {
+                  setEditable(true);
+                }}
+              >
+                <Rename />
+              </button>
+            </div>
           </div>
           <div className={`${styles.experimentBox1}`}>
           <ul>{promptsList}</ul>

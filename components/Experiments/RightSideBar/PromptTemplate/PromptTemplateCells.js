@@ -119,8 +119,9 @@ function PromptTemplateCells({
 
   const [isHover, setIsHover] = useState(false);
   useEffect(() => {
-    if (startRun) {
-      startPolling(3000);
+    if (startRun || promptList?.promptListByPagination?.prompts[index]
+      ?.latestEvaluationReport[0]?.status === "Status.RUNNING") {
+      startPolling(10000);
     } else stopPolling();
   }, [startRun]);
 
@@ -161,11 +162,11 @@ function PromptTemplateCells({
           setShowEdit(true);
         }}
       >
-        <div className={`basis-1/5 border-r-2 px-[10px] py-[44px] mr-[10px]`}>
+        <div className={`basis-1/5 border-r-2 px-[10px] py-[44px] mr-[10px] break-words`}>
           {PromptTemplate.name}
         </div>
         <div className="basis-1/5 px-[10px]">
-          {accuracy != null && typeof accuracy === "number" ? (
+          {startRun==false && accuracy != null && typeof accuracy === "number" ? (
             <div
               className={`flex flex-row items-center w-max rounded-[8px] h-[32px] p-[10px] ${bgColor} ${textColor}`}
             >
@@ -178,13 +179,17 @@ function PromptTemplateCells({
           )}
         </div>
         <div className="basis-1/5 px-[10px] line-clamp-2 text-ellipsis">
-          {PromptTemplate.latestEvaluationReport[0] !== null
-            ? PromptTemplate.latestEvaluationReport[0].model
+          {promptList?.promptListByPagination?.prompts[index]
+            ?.latestEvaluationReport[0] !== null
+            ? promptList?.promptListByPagination?.prompts[index]
+                ?.latestEvaluationReport[0].model
             : "--"}
         </div>
         <div className="basis-1/5 px-[10px] line-clamp-2 text-ellipsis">
-          {PromptTemplate.latestEvaluationReport[0] !== null
-            ? PromptTemplate.latestEvaluationReport[0].eval
+          {promptList?.promptListByPagination?.prompts[index]
+            ?.latestEvaluationReport[0] !== null
+            ? promptList?.promptListByPagination?.prompts[index]
+                ?.latestEvaluationReport[0].eval
             : "--"}
         </div>
         <div
@@ -192,15 +197,17 @@ function PromptTemplateCells({
           onMouseEnter={() => setIsHover(true)}
           onMouseLeave={() => setIsHover(false)}
           onClick={(e) => {
+            e.stopPropagation();
+            if(PromptTemplate.latestEvaluationReport[0] == null) return;
             router.push({
               pathname: `/experiments/${selectedExperimentInfo?.id}`,
               query: {
                 reportId: PromptTemplate.latestEvaluationReport[0]?.id,
               },
             });
-            e.stopPropagation();
+            
             setShowReport(true);
-            setReportId(PromptTemplate.latestEvaluationReport[0].id);
+            setReportId(PromptTemplate.latestEvaluationReport[0]?.id);
           }}
         >
           <Tooltip
@@ -222,14 +229,28 @@ function PromptTemplateCells({
               {PromptTemplate.latestEvaluationReport[0] ? (
                 <div className="flex items-center gap-[10px] my-[3px]">
                   {(PromptTemplate.latestEvaluationReport[0]?.status ===
-                    "Status.COMPLETED" && <Pass />) ||
-                    (PromptTemplate.latestEvaluationReport[0]?.status ===
-                      "Status.FAILED" && <Fail />) || <RunningLoader />}
-                  <div className="capitalize">
-                    {PromptTemplate.latestEvaluationReport[0]?.status
-                      .split(".")[1]
-                      .toLowerCase()}
-                  </div>
+                    "Status.COMPLETED" && (
+                    <div className="flex gap-[10px] items-center">
+                      <Pass />
+                      {"Passed ("+PromptTemplate.latestEvaluationReport[0]?.passedTestcases.toString() +
+                        "/" +
+                        PromptTemplate.latestEvaluationReport[0]?.totalTestcases.toString()+")"}
+                    </div>
+                  )) ||
+                  <div className="flex gap-[10px] items-center">
+                    {PromptTemplate.latestEvaluationReport[0]?.status ===
+                    "Status.FAILED" ? (
+                      <Fail />
+                    ) : (
+                      <RunningLoader />
+                    )}
+                      <div className="capitalize">
+                        {PromptTemplate.latestEvaluationReport[0]?.status
+                          .split(".")[1]
+                          .toLowerCase()}
+                      </div>
+                    
+                    </div>}
                 </div>
               ) : (
                 <div className="mb-[10px]"></div>
@@ -303,6 +324,8 @@ function PromptTemplateCells({
         isRunnable={isRunnable}
         refetchList={refetchList}
         setStartRun={setStartRun}
+        selectedModel={PromptTemplate?.latestEvaluationReport[0]?.model}
+        selectedEval={PromptTemplate?.latestEvaluationReport[0]?.eval}
       />
     </>
   );

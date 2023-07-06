@@ -18,8 +18,9 @@ import { MESSAGES } from "../../../../constants/Messages";
 import { CircularProgress } from "@mui/material";
 import { useToastContext } from "../../../../context/ToastContext";
 import ErrorAlertToast from "../../../ToastMessage/ErrorAlertToast";
+import Rename from "../../../../assets/Svg/Rename";
 
-export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
+export default function BasicTabs({ unsavedChanges, setUnsavedChanges, enable, setEnable, testCaseName, setTestCaseName }) {
   const [updateTestCases, { data, loading, error }] = useMutation(
     Queries.updateTestCases
   );
@@ -46,14 +47,13 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
     JSON.parse(testCase?.dynamicVarValues ? testCase?.dynamicVarValues : "{}")
   );
 
-  const [testCaseName, setTestCaseName] = useState("");
   const [testCaseDescription, setTestCaseDescription] = useState("");
-  const [opacity, setOpacity] = useState("40");
 
   useEffect(() => {
     if (!addTestCase && testCase && Object.keys(testCase).length > 0) {
       setTestCaseName(testCase?.name);
       setTestCaseDescription(testCase?.description);
+      setEnable(testCase?.status === "ACTIVE");
       setVariableValues(
         JSON.parse(
           testCase?.dynamicVarValues ? testCase?.dynamicVarValues : "{}"
@@ -65,11 +65,12 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
       setTestCaseDescription("");
       setVariableValues({});
       setExpectedResultsArr([]);
+      setEnable(true);
     }
 
     handleChange(null, 0);
     setUnsavedChanges(false);
-  }, [addTestCase, testCase]);
+  }, [addTestCase, testCase, data]);
 
   useEffect(() => {
     const root = document.querySelector("#testCaseContainer");
@@ -180,6 +181,7 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
             expectedResult: expectedResultsArr.map(
               (expectedResult) => expectedResult.result
             ),
+            status: enable ? "ACTIVE" : "DISABLED",
           },
         });
         setAddTestCase(false);
@@ -193,6 +195,7 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
             expectedResult: expectedResultsArr.map(
               (expectedResult) => expectedResult.result
             ),
+            status: enable ? "ACTIVE" : "DISABLED",
           },
         });
       }
@@ -216,6 +219,23 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
     }
   };
 
+  const [showEditIcon, setShowEditIcon] = useState(false);
+  const [editable, setEditable] = useState(false);
+
+  useEffect(() => {
+    if (editable) inputRef.current.focus();
+  }, [editable]);
+
+  const inputRef = useRef(null);
+
+  const buttonsx = {
+    color: "#2196F3",
+    borderColor: "#2196F3",
+    fontSize: "13px",
+    fontWeight: "400",
+    borderRadius: "4px",
+    textTransform: "none",
+  };
   return (
     <>
       <Box
@@ -241,27 +261,85 @@ export default function BasicTabs({ unsavedChanges, setUnsavedChanges }) {
           id="testCaseContainer"
           className={`relative ${styles.subBoxHeightForTestContent} overflow-auto scroll-smooth`}
         >
-          <div id="0" className="tab ml-[20px]">
-            <input
-              className={`text-[15px] font-bold opacity-${opacity} hover:opacity-80 outline-none pt-[27px] w-full text-ellipsis`}
-              type="text"
-              value={testCaseName}
-              onChange={(e) => {
-                setTestCaseName(e.target.value);
-                if (!unsavedChanges) setUnsavedChanges(true);
+          <div id="0" className="tab ml-[20px] pt-[26px]">
+            <div
+              className={`flex items-center gap-[10px] ml-[-15px] p-[8px] cursor-pointer ${
+                showEditIcon ? "bg-[#F0F0F0]" : ""
+              } rounded-[8px]`}
+              onMouseEnter={() => setShowEditIcon(true)}
+              onMouseLeave={() => {
+                if (!editable) setShowEditIcon(false);
               }}
-              onFocus={() => setOpacity("80")}
-              onBlur={() => setOpacity("40")}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  e.target.blur();
-                }
+              onClick={() => {
+                setEditable(true);
               }}
-              maxLength={70}
-            />
-
-            <p className="text-[14px] font-[500px] leading-[24px] tracking-[0.17px] text-black/[0.8] pt-[12px] pb-[6px]">
+            >
+              <input
+                ref={inputRef}
+                className={`focus:outline-none outline-none text-ellipsis pl-[5px] text-[15px] w-full text-[#00000099]
+                ${showEditIcon ? "bg-[#F0F0F0]" : "bg-white"}
+                ${editable ? "font-medium" : "font-semibold"}
+                cursor-pointer
+                `}
+                type="text"
+                value={testCaseName}
+                onChange={(e) => {
+                  setTestCaseName(e.target.value);
+                  if (!unsavedChanges) setUnsavedChanges(true);
+                }}
+                onBlur={() => {
+                  setEditable(false);
+                  setShowEditIcon(false);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    e.target.blur();
+                    setEditable(false);
+                    setShowEditIcon(false);
+                  }
+                }}
+                maxLength={70}
+                disabled={!editable}
+              />
+              <button
+                className={`ml-auto p-[5px] ${
+                  showEditIcon ? "opacity-100" : "opacity-0"
+                }`}
+                title="Rename"
+                onClick={() => {
+                  setEditable(true);
+                }}
+              >
+                <Rename />
+              </button>
+            </div>
+            <div className="pt-[10px]">
+              {enable ? (
+                <Button
+                  variant="outlined"
+                  style={buttonsx}
+                  onClick={() => {
+                    setEnable(!enable);
+                    setUnsavedChanges(true);
+                  }}
+                >
+                  Disable
+                </Button>
+              ) : (
+                <Button
+                  variant="outlined"
+                  style={buttonsx}
+                  onClick={() => {
+                    setEnable(!enable);
+                    setUnsavedChanges(true);
+                  }}
+                >
+                  Enable
+                </Button>
+              )}
+            </div>
+            <p className="text-[14px] font-[500px] leading-[24px] tracking-[0.17px] text-black/[0.8] pt-[17px] pb-[6px]">
               Description
             </p>
             <div className="pr-[40px]">

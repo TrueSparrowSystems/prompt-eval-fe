@@ -6,8 +6,9 @@ import { useCompSelectorContext } from "../../../../context/compSelectorContext"
 import styles from "./TestCaseTabs.module.scss";
 import { useExpContext } from "../../../../context/ExpContext";
 import { decodeHTML, getUnsanitizedValue } from "../../../../utils/DecodeString";
+import { concat } from "lodash";
 
-function TestCasesList({ data, unsavedChanges}) {
+function TestCasesList({ data, unsavedChanges, enable, testCaseName}) {
   const { addTestCase, setAddTestCase } = useCompSelectorContext();
   const { testCase, setTestCase } = useExpContext();
   const [selectedTestCase, setSelectedTestCase] = useState(0);
@@ -76,18 +77,20 @@ function TestCasesList({ data, unsavedChanges}) {
       </Button>
       <div className={`overflow-auto ${styles.scrollCont}`}>
         {addTestCase && <TestCaseCell  
-          testCaseName="Untitled Test Case"
+          testCaseName={decodeHTML(testCaseName)}
           key={-1}
           index={-1}
           selectedTestCase={selectedTestCase}
           handleSelection={handleSelection}
+          active={enable}
         /> }
 
         {data?.testCases.map((testCase, index) => (
           <TestCaseCell
-            testCaseName={decodeHTML(testCase.name)}
+            testCaseName={selectedTestCase === index?decodeHTML(testCaseName):decodeHTML(testCase.name)}
             key={index}
             index={index}
+            active={selectedTestCase === index?enable:testCase?.status==="ACTIVE"}
             selectedTestCase={selectedTestCase}
             handleSelection={handleSelection}
           />

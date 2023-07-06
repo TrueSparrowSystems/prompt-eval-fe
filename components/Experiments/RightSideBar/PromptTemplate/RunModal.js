@@ -24,6 +24,8 @@ export default function RunModal({
   isRunnable,
   refetchList,
   setStartRun,
+  selectedModel,
+  selectedEval
 }) {
   const [model, setModel] = useState("");
   const [evaluation, setEvaluation] = useState("");
@@ -31,6 +33,11 @@ export default function RunModal({
   const { setCurrTab, setAddTestCase } = useCompSelectorContext();
 
   useEffect(() => {
+    if(selectedModel && selectedEval){
+      setModel(selectedModel);
+      setEvaluation(selectedEval);
+      return;
+    }
     if (modelOptions) setModel(modelOptions[0]);
 
     if (evalOptions) setEvaluation(evalOptions[0]);
@@ -67,6 +74,7 @@ export default function RunModal({
           eval: evaluation,
         },
       });
+      setStartRun(true);
       handleClose();
 
       setShowToast(true);
@@ -85,7 +93,6 @@ export default function RunModal({
     setShowRunModal(!showRunModal);
     setErrorMsg(null);
     refetchList();
-    setStartRun(true);
   };
   return (
     <Modal
@@ -237,6 +244,7 @@ export default function RunModal({
                 onClick={() => {
                   setCurrTab("testCases");
                   setAddTestCase(true);
+                  setStartRun(true);
                   handleClose();
                 }}
               >

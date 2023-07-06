@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "../ExperimentsDetails.module.scss";
 import NewChat from "./NewChat";
 import Button from "@mui/material/Button";
@@ -14,10 +14,10 @@ import { MESSAGES } from "../../../../constants/Messages";
 import AddIcon from "../../../../assets/Svg/AddIcon";
 import CircularProgress from "@mui/material/CircularProgress";
 import ErrorAlertToast from "../../../ToastMessage/ErrorAlertToast";
+import Rename from "../../../../assets/Svg/Rename";
 
 function CreatePromptTemplate({ setCurrentPage }) {
   const [prevRole, setPrevRole] = useState("system");
-  const [titleOpacity, setTitleOpacity] = useState("40");
   const { selectedExperimentInfo, promptTemplate } = useExpContext();
   const { showClone, setCurrTab, showAdd, setShowAdd, setShowClone } =
     useCompSelectorContext();
@@ -127,109 +127,152 @@ function CreatePromptTemplate({ setCurrentPage }) {
     />
   ));
 
+  const [showEditIcon, setShowEditIcon] = useState(false);
+  const [editable, setEditable] = useState(false);
+
+  useEffect(() => {
+    if (editable) inputRef.current.focus();
+  }, [editable]);
+
+  const inputRef = useRef(null);
+
   return (
     <>
-      <div >
+      <div>
         <>
-        <div className={`${styles.heading}`}>
-          <div className=" py-[15px]">
-            <Button
-              className="flex items-center gap-[5px] pl-0"
-              onClick={() => {
-                if (unsavedChanges) {
-                  if (
-                    !confirm(
-                      "Your changes have not been saved. Are you sure you want to discard this changes?"
-                    )
-                  )
-                    return;
-                  setUnsavedChanges(false);
-                }
-                setShowAdd(false);
-                setShowClone(false);
-                setCurrTab(TabNames.PROMPTTEMPLATE);
-              }}
-              sx={{
-                textTransform: "none",
-                color: "#2196F3",
-              }}
-            >
-              <BackArrow isBlue={true} />
-              Back to Prompt Templates
-            </Button>
-          </div>
-          <input
-            className={`text-[20px] font-bold outline-none pb-[25px] w-full opacity-${titleOpacity} hover:opacity-80`}
-            type="text"
-            value={templateName}
-            onChange={(e) => {
-              setTemplateName(e.target.value);
-              if (!unsavedChanges) setUnsavedChanges(true);
-            }}
-            onFocus={() => setTitleOpacity("80")}
-            onBlur={() => setTitleOpacity("40")}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                e.target.blur();
-              }
-            }}
-            maxLength={70}
-          />
-          </div>
-          <div className={`${styles.experimentBox1}`}>
-          <ul>{promptsList}</ul>
-          <div className="flex gap-[25px]">
-            <div className="basis-20"></div>
-            <div className="pb-[37px]">
-              <div className="ml-[15px] mt-[8px] mb-[15px]">
-                <Button
-                  size="large"
-                  style={{
-                    textTransform: "none",
-                    color: "#000",
-                    fontSize: "14px",
-                    opacity: "0.8",
-                  }}
-                  onClick={(e) => {
-                    addNewPrompt(e);
-                  }}
-                >
-                  <AddIcon className="fill-black mr-[12px]" /> Add message
-                </Button>
-              </div>
+          <div className={`${styles.heading}`}>
+            <div className=" py-[15px]">
               <Button
-                variant="contained"
+                className="flex items-center gap-[5px] pl-0"
                 onClick={() => {
-                  createNewPromptTemplate();
-                  setUnsavedChanges(false);
+                  if (unsavedChanges) {
+                    if (
+                      !confirm(
+                        "Your changes have not been saved. Are you sure you want to discard this changes?"
+                      )
+                    )
+                      return;
+                    setUnsavedChanges(false);
+                  }
+                  setShowAdd(false);
+                  setShowClone(false);
+                  setCurrTab(TabNames.PROMPTTEMPLATE);
                 }}
-                className="bg-[#2196F3]"
                 sx={{
-                  ml: "10px",
                   textTransform: "none",
-                  backgroundColor: "#2196F3",
-                  border: "1px solid rgba(0, 0, 0, 0.23)",
+                  color: "#2196F3",
                 }}
-                disabled={loading}
               >
-                {showAdd && !showClone ? "Create" : "Clone template"}
-                {loading && (
-                  <CircularProgress
-                    size={24}
-                    sx={{
-                      color: "#2196F3",
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      marginTop: "-12px",
-                      marginLeft: "-15px",
-                    }}
-                  />
-                )}
+                <BackArrow isBlue={true} />
+                Back to Prompt Templates
               </Button>
             </div>
+            <div
+              className={`flex items-center gap-[10px] p-[8px] cursor-pointer mb-[22px] ${
+                showEditIcon ? "bg-[#F0F0F0]" : ""
+              } rounded-[8px]`}
+              onMouseEnter={() => setShowEditIcon(true)}
+              onMouseLeave={() => {
+                if (!editable) setShowEditIcon(false);
+              }}
+              onClick={() => {
+                setEditable(true);
+              }}
+            >
+              <input
+                ref={inputRef}
+                className={`text-[#00000099] w-full focus:outline-none outline-none text-ellipsis pl-[5px] text-[20px] 
+                ${showEditIcon ? "bg-[#F0F0F0]" : "bg-white"}
+                ${editable?"font-medium":"font-semibold"}
+                cursor-pointer
+                `}
+                type="text"
+                value={templateName}
+                onChange={(e) => {
+                  setTemplateName(e.target.value);
+                  if (!unsavedChanges) setUnsavedChanges(true);
+                }}
+                onBlur={() => {
+                  setEditable(false);
+                  setShowEditIcon(false);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    e.target.blur();
+                    setEditable(false);
+                    setShowEditIcon(false);
+                  }
+                }}
+                maxLength={70}
+                disabled={!editable}
+              />
+              <button
+                className={`ml-auto p-[5px] ${
+                  showEditIcon ? "opacity-100" : "opacity-0"
+                }`}
+                title="Rename"
+                onClick={() => {
+                  setEditable(true);
+                }}
+              >
+                <Rename />
+              </button>
+            </div>
           </div>
+          <div className={`${styles.experimentBox1}`}>
+            <ul>{promptsList}</ul>
+            <div className="flex gap-[25px]">
+              <div className="basis-20"></div>
+              <div className="pb-[37px]">
+                <div className="ml-[15px] mt-[8px] mb-[15px]">
+                  <Button
+                    size="large"
+                    style={{
+                      textTransform: "none",
+                      color: "#000",
+                      fontSize: "14px",
+                      opacity: "0.8",
+                    }}
+                    onClick={(e) => {
+                      addNewPrompt(e);
+                    }}
+                  >
+                    <AddIcon className="fill-black mr-[12px]" /> Add message
+                  </Button>
+                </div>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    createNewPromptTemplate();
+                    setUnsavedChanges(false);
+                  }}
+                  className="bg-[#2196F3]"
+                  sx={{
+                    ml: "10px",
+                    textTransform: "none",
+                    backgroundColor: "#2196F3",
+                    border: "1px solid rgba(0, 0, 0, 0.23)",
+                  }}
+                  disabled={loading}
+                >
+                  {showAdd && !showClone ? "Create" : "Clone template"}
+                  {loading && (
+                    <CircularProgress
+                      size={24}
+                      sx={{
+                        color: "#2196F3",
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        marginTop: "-12px",
+                        marginLeft: "-15px",
+                      }}
+                    />
+                  )}
+                </Button>
+              </div>
+            </div>
           </div>
           {error && <ErrorAlertToast message={error.message} />}
         </>

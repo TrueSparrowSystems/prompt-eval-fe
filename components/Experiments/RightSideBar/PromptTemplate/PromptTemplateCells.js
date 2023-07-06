@@ -370,6 +370,8 @@ function PromptTemplateCells({
         setStartRun={setStartRun}
         selectedModel={PromptTemplate?.latestEvaluationReport[0]?.model}
         selectedEval={PromptTemplate?.latestEvaluationReport[0]?.eval}
+        selectedModel={PromptTemplate?.latestEvaluationReport[0]?.model}
+        selectedEval={PromptTemplate?.latestEvaluationReport[0]?.eval}
       />
     </>
   );

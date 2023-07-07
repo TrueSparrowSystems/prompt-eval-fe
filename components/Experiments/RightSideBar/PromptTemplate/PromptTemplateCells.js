@@ -233,7 +233,7 @@ function PromptTemplateCells({
           onMouseLeave={() => setIsHover(false)}
           onClick={(e) => {
             e.stopPropagation();
-            if (PromptTemplate.latestEvaluationReport[0] == null) return;
+            if (PromptTemplate.latestEvaluationReport[0] == null || PromptTemplate.latestEvaluationReport[0]?.errorObject!=null) return;
 
             router.push({
               pathname: `/experiments/${selectedExperimentInfo?.id}`,

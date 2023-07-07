@@ -96,6 +96,7 @@ class Queries {
               completedAt
               createdAt
               updatedAt
+              errorObject
             }
             createdAt
             updatedAt
@@ -354,6 +355,7 @@ class Queries {
               status
               model
               eval
+              errorObject
             }
           updatedAt
           }

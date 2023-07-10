@@ -21,7 +21,7 @@ Prompt Evaluator has two components:
 - [**Frontend**](https://github.com/TrueSparrowSystems/prompt-eval-fe)
 - [**Backend**](https://github.com/TrueSparrowSystems/prompt-eval-be)
 
-This is the frontend component of the Prompt Evaluator tool. It is built using Next.js. The backend is built using Django and MongoDB. The frontend and backend communicate with each other using the GraphQL API. It is a standalone application that can be deployed separately.
+This is the frontend component of the Prompt Evaluator tool. It is built using Next.js. The backend is built using Django and MongoDB. The frontend and backend communicate with each other using the GraphQL API. Basic authentication is implemented for authentication in backend API calls. It is a standalone application that can be deployed separately.
 
 ## Tech Stack
 
@@ -55,11 +55,14 @@ copy .env.sample .env
 
 ## Start the server
 
-Run the server using the following command
+1. Run the server using the following command
 
 ```
 npm run dev
 ```
+
+2. Provide the username and password from your .env file when the alert window pops up.
+
 
 ## Deploy  Frontend to Cloudflare Pages
 

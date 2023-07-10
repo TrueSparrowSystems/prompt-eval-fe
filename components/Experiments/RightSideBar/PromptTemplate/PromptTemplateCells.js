@@ -16,6 +16,7 @@ import RunningLoader from "../../../../assets/Svg/RunningLoader";
 import { useRouter } from "next/router";
 import { Tooltip } from "@mui/material";
 import { getUnsanitizedValue } from "../../../../utils/DecodeString";
+import { useToastContext } from "../../../../context/ToastContext";
 
 function PromptTemplateCells({
   index,
@@ -116,24 +117,54 @@ function PromptTemplateCells({
 
   const [startRun, setStartRun] = useState(false);
   const router = useRouter();
+  const [prevState, setPrevState] = useState(
+    promptList?.promptListByPagination?.prompts[index]
+      ?.latestEvaluationReport[0]?.status
+  );
+  const { setShowToast, setToastMessage, setToastType } = useToastContext();
 
   const [isHover, setIsHover] = useState(false);
   useEffect(() => {
-    if (startRun || promptList?.promptListByPagination?.prompts[index]
-      ?.latestEvaluationReport[0]?.status === "Status.RUNNING") {
+    if (
+      startRun ||
+      promptList?.promptListByPagination?.prompts[index]
+        ?.latestEvaluationReport[0]?.status === "Status.RUNNING"
+    ) {
       startPolling(10000);
     } else stopPolling();
   }, [startRun]);
 
   useEffect(() => {
     if (!startRun) return;
-
+    if (
+      promptList?.promptListByPagination?.prompts[index]
+        ?.latestEvaluationReport[0]?.status === "Status.RUNNING"
+    )
+      setPrevState("Status.RUNNING");
     if (
       promptList?.promptListByPagination?.prompts[index]
         ?.latestEvaluationReport[0]?.status === "Status.COMPLETED" ||
       promptList?.promptListByPagination?.prompts[index]
         ?.latestEvaluationReport[0]?.status === "Status.FAILED"
     ) {
+      if (prevState != null && prevState === "Status.RUNNING") {
+        if (
+          promptList?.promptListByPagination?.prompts[index]
+            ?.latestEvaluationReport[0]?.errorObject != null
+        ) {
+          setShowToast(true);
+          setToastMessage(
+            JSON.parse(
+              promptList?.promptListByPagination?.prompts[
+                index
+              ]?.latestEvaluationReport[0]?.errorObject.replace(/'/g, '"')
+            ).message
+          );
+          setToastType("error");
+        }
+
+        setPrevState("Status.COMPLETED");
+      }
       setStartRun(false);
       setRunSuccess(true);
     }
@@ -162,11 +193,17 @@ function PromptTemplateCells({
           setShowEdit(true);
         }}
       >
-        <div className={`basis-1/5 border-r-2 px-[10px] py-[44px] mr-[10px] break-words`}>
+
+        <div
+          className={`basis-1/5 border-r-2 px-[10px] py-[44px] mr-[10px] break-words`}
+        >
           {PromptTemplate.name}
         </div>
         <div className="basis-1/5 px-[10px]">
-          {startRun==false && accuracy != null && typeof accuracy === "number" ? (
+          {startRun == false &&
+          accuracy != null &&
+          typeof accuracy === "number" ? (
+
             <div
               className={`flex flex-row items-center w-max rounded-[8px] h-[32px] p-[10px] ${bgColor} ${textColor}`}
             >
@@ -198,14 +235,17 @@ function PromptTemplateCells({
           onMouseLeave={() => setIsHover(false)}
           onClick={(e) => {
             e.stopPropagation();
-            if(PromptTemplate.latestEvaluationReport[0] == null) return;
+
+            if (PromptTemplate.latestEvaluationReport[0] == null || PromptTemplate.latestEvaluationReport[0]?.errorObject!=null) return;
+
+
             router.push({
               pathname: `/experiments/${selectedExperimentInfo?.id}`,
               query: {
                 reportId: PromptTemplate.latestEvaluationReport[0]?.id,
               },
             });
-            
+
             setShowReport(true);
             setReportId(PromptTemplate.latestEvaluationReport[0]?.id);
           }}
@@ -215,6 +255,12 @@ function PromptTemplateCells({
               PromptTemplate.latestEvaluationReport[0]?.status ===
               "Status.COMPLETED"
                 ? "Click here to access your report"
+                : PromptTemplate.latestEvaluationReport[0]?.errorObject != null
+                ? JSON.parse(
+                    promptList?.promptListByPagination?.prompts[
+                      index
+                    ]?.latestEvaluationReport[0]?.errorObject.replace(/'/g, '"')
+                  ).message
                 : "No report generated yet"
             }
           >
@@ -232,25 +278,30 @@ function PromptTemplateCells({
                     "Status.COMPLETED" && (
                     <div className="flex gap-[10px] items-center">
                       <Pass />
-                      {"Passed ("+PromptTemplate.latestEvaluationReport[0]?.passedTestcases.toString() +
+
+                      {"Passed (" +
+                        PromptTemplate.latestEvaluationReport[0]?.passedTestcases.toString() +
                         "/" +
-                        PromptTemplate.latestEvaluationReport[0]?.totalTestcases.toString()+")"}
+                        PromptTemplate.latestEvaluationReport[0]?.totalTestcases.toString() +
+                        ")"}
                     </div>
-                  )) ||
-                  <div className="flex gap-[10px] items-center">
-                    {PromptTemplate.latestEvaluationReport[0]?.status ===
-                    "Status.FAILED" ? (
-                      <Fail />
-                    ) : (
-                      <RunningLoader />
-                    )}
+                  )) || (
+                    <div className="flex gap-[10px] items-center">
+                      {PromptTemplate.latestEvaluationReport[0]?.status ===
+                      "Status.FAILED" ? (
+                        <Fail />
+                      ) : (
+                        <RunningLoader />
+                      )}
+
                       <div className="capitalize">
                         {PromptTemplate.latestEvaluationReport[0]?.status
                           .split(".")[1]
                           .toLowerCase()}
                       </div>
-                    
-                    </div>}
+                    </div>
+                  )}
+
                 </div>
               ) : (
                 <div className="mb-[10px]"></div>

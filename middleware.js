@@ -7,4 +7,5 @@ const auth =
     ? createNextAuthMiddleware()
     : createNextAuthMiddleware({ users: [{ user: "test", password: "test" }] });
 
+
 export default auth;

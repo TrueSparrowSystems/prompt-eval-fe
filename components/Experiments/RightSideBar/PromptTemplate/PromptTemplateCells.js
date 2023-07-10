@@ -193,6 +193,7 @@ function PromptTemplateCells({
           setShowEdit(true);
         }}
       >
+
         <div
           className={`basis-1/5 border-r-2 px-[10px] py-[44px] mr-[10px] break-words`}
         >
@@ -202,6 +203,7 @@ function PromptTemplateCells({
           {startRun == false &&
           accuracy != null &&
           typeof accuracy === "number" ? (
+
             <div
               className={`flex flex-row items-center w-max rounded-[8px] h-[32px] p-[10px] ${bgColor} ${textColor}`}
             >
@@ -233,7 +235,9 @@ function PromptTemplateCells({
           onMouseLeave={() => setIsHover(false)}
           onClick={(e) => {
             e.stopPropagation();
+
             if (PromptTemplate.latestEvaluationReport[0] == null || PromptTemplate.latestEvaluationReport[0]?.errorObject!=null) return;
+
 
             router.push({
               pathname: `/experiments/${selectedExperimentInfo?.id}`,
@@ -274,6 +278,7 @@ function PromptTemplateCells({
                     "Status.COMPLETED" && (
                     <div className="flex gap-[10px] items-center">
                       <Pass />
+
                       {"Passed (" +
                         PromptTemplate.latestEvaluationReport[0]?.passedTestcases.toString() +
                         "/" +
@@ -288,6 +293,7 @@ function PromptTemplateCells({
                       ) : (
                         <RunningLoader />
                       )}
+
                       <div className="capitalize">
                         {PromptTemplate.latestEvaluationReport[0]?.status
                           .split(".")[1]
@@ -295,6 +301,7 @@ function PromptTemplateCells({
                       </div>
                     </div>
                   )}
+
                 </div>
               ) : (
                 <div className="mb-[10px]"></div>
